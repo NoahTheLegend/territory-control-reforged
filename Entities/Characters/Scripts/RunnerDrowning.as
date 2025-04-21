@@ -5,7 +5,7 @@
 //config vars
 
 const int FREQ = 6; //must be >2 or breathing at top of water breaks
-const u16 default_aircount = 360; //12s, remember to update runnerhoverhud.as
+const u16 default_aircount = 240; //remember to update runnerhoverhud.as
 
 void onInit(CBlob@ this)
 {

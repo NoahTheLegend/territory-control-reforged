@@ -33,4 +33,12 @@ void onTick(CBlob@ this)
 			this.getSprite().PlaySound("sand_fall.ogg", 1.00f, 0.60f);
 		}
 	}
+
+	if (isClient())
+	{
+		if (this.hasTag("dusted"))
+		{
+			this.set_string("custom_material_anim", "dust");
+		}
+	}
 }

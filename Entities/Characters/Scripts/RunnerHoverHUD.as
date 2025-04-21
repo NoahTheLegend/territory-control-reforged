@@ -1,4 +1,4 @@
-const u16 default_aircount = 360; //12s, remember to update runnerdrowning.as
+const u16 default_aircount = 240; //remember to update runnerdrowning.as
 
 void onInit(CSprite@ this)
 {

@@ -14,8 +14,9 @@ const float MERGE_RADIUS = 20.0f;
 // Client-side: Update material frame
 void updateFrame(CBlob@ this)
 {
+	string custom_animation = this.exists("custom_material_anim") ? this.get_string("custom_material_anim") : "default";
 	CSprite@ sprite = this.getSprite();
-	Animation@ animation = sprite.getAnimation('default');
+	Animation@ animation = sprite.getAnimation(custom_animation);
 
 	if (animation is null) return;
 

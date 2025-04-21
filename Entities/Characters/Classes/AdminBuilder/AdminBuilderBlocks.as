@@ -140,6 +140,10 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 	AddIconToken("$plasteellauncher$", "PlasteelLauncher.png", Vec2f(8, 8), 0, teamnum);
 	AddIconToken("$plasteelseparator$", "PlasteelSeperator.png", Vec2f(8, 8), 0, teamnum);
 	AddIconToken("$icon_plasteelfurnace$", "PlasteelFurnace.png", Vec2f(40, 32), 0, teamnum);
+	AddIconToken("$icon_conveyorold$", "ConveyorOld.png", Vec2f(8, 8), 0, teamnum);
+	AddIconToken("$icon_filterold$", "FilterOld.png", Vec2f(32, 8), 0, teamnum);
+	AddIconToken("$icon_launcherold$", "LauncherOld.png", Vec2f(8, 8), 0, teamnum);
+	AddIconToken("$icon_separatorold$", "SeparatorOld.png", Vec2f(8, 8), 0, teamnum);
 	AddIconToken("$icon_conveyor$", "Conveyor.png", Vec2f(8, 8), 0, teamnum);
 	AddIconToken("$icon_filter$", "Filter.png", Vec2f(8, 8), 0, teamnum);
 	AddIconToken("$icon_climber$", "Climber.png", Vec2f(8, 8), 5, teamnum);
@@ -604,6 +608,34 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 
 	//LOGISTICS
 	{
+		// old logistic to test
+		BuildBlock b(0, "conveyorold", "$icon_conveyorold$", "Conveyor Belt:\n\nUsed to transport items.");
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 4);
+		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 6);
+		blocks[2].push_back(b);
+	}
+	{
+		BuildBlock b(0, "filterold", "$icon_filterold$", "Filter:\n\n$blue$Filtered$blue$ items will be ejected downwards.");
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 20);
+		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 10);
+		b.size.Set(16, 8);
+		blocks[2].push_back(b);
+	}
+	{
+		BuildBlock b(0, "launcherold", "$icon_launcherold$", "Launcher:\n\n$blue$Filtered$blue$ items will be launched straight up.");
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 50);
+		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 20);
+		AddRequirement(b.reqs, "blob", "adminbuilder", "You have to be an Engineer", 1);
+		blocks[2].push_back(b);
+	}
+	{
+		BuildBlock b(0, "separatorold", "$icon_separatorold$", "Separator:\n\n$blue$Filtered$blue$ items are pulled upward.");
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 20);
+		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 10);
+		AddRequirement(b.reqs, "blob", "adminbuilder", "You have to be an Engineer", 1);
+		blocks[2].push_back(b);
+	}
+	/*{
 		BuildBlock b(0, "rconveyor", "$icon_conveyor$", "Conveyor Belt:\n\nUsed to transport items.");
 		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 4);
 		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 6);
@@ -632,7 +664,7 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 50);
 		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 20);
 		blocks[2].push_back(b);
-	}
+	}*/
 	{
 		BuildBlock b(0, "inserter", "$icon_inserter$", "Inserter:\n\nTransfers items between inventories next to it.\nLarge funnel acts as input, small funnel as output.");
 		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 25);
