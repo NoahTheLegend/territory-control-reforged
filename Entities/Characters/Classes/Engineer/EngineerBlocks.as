@@ -588,7 +588,7 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 	blocks.push_back(page_3);
 	//PRODUCTION
 	{
-		BuildBlock b(0, "autoforge", "$icon_autoforge$", "Auto-Forge:\n\nProcesses raw materials and alloys just for you. Has a chance for a double yield.");
+		BuildBlock b(0, "autoforge", "$icon_autoforge$", "Auto-forge:\n\nProcesses raw materials and alloys just for you. Has a chance for a double yield.");
 		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 200);
 		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 100);
 		b.buildOnGround = true;

@@ -322,6 +322,7 @@ void onInit(CBlob@ this)
 	{
 		u32 cost = getRandomCost(@rand, 210, 370);
 		ShopItem@ s = addShopItem(this, "i fucking want all of your copper wires", "$COIN$", "coin-" + cost, "ill take 40 of this giggly shit off yer hands fer " + cost + " coins");
+		AddRequirement(s.requirements, "blob", "mat_copperwire", "Copper Wire", 40);
 	}
 
 	if (rand.NextRanged(100) < 35)

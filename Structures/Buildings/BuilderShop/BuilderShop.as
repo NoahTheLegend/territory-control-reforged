@@ -44,9 +44,8 @@ void onInit(CBlob@ this)
 	    s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Lantern", "$lantern$", "lantern", descriptions[9], false);
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 10);
-
+		ShopItem@ s = addShopItem(this, "Building for Dummies", "$artisancertificate$", "artisancertificate", "Simplified Builder manuscript for those dumb peasants.", true);
+		AddRequirement(s.requirements, "coin", "", "Coins", 200);
 		s.spawnNothing = true;
 	}
 	{
@@ -108,9 +107,8 @@ void onInit(CBlob@ this)
 	    s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Keg", "$keg$", "keg", "Highly explosive keg used by knight only.\nCan be worn.", true);
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 75);
-		AddRequirement(s.requirements, "coin", "", "Coins", 70);
+		ShopItem@ s = addShopItem(this, "Lantern", "$lantern$", "lantern", descriptions[9], false);
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 10);
 
 		s.spawnNothing = true;
 	}

@@ -23,7 +23,7 @@ void onInit(CBlob@ this)
 	this.Tag("upkeep building");
 	this.set_u8("upkeep cap increase", 1);
 	this.set_u8("upkeep cost", 0);
-	//this.Tag("can be captured by neutral");
+	this.Tag("can be captured by neutral");
 
 	this.SetMinimapOutsideBehaviour(CBlob::minimap_snap);
 	this.SetMinimapVars("MinimapIcons.png",48,Vec2f(8,8));
@@ -113,11 +113,9 @@ void onTick(CBlob@ this)
 CBlob@ FindStorage(u8 team)
 {
 	if (team >= 100) return null;
-	if (XORRandom(4)==0) return null; // 25% chance not to put oil in ur storage
 
 	CBlob@[] blobs;
 	getBlobsByName("oiltank", @blobs);
-
 	CBlob@[] validBlobs;
 
 	for (u32 i = 0; i < blobs.length; i++)

@@ -5,7 +5,6 @@ void onInit(CBlob@ this)
 {
 	this.Tag("explosive");
 	this.maxQuantity = 50;
-	this.Tag("medium weight");
 }
 
 void DoExplosion(CBlob@ this)

@@ -59,7 +59,7 @@ bool isBuildableAtPos(CBlob@ this, Vec2f p, TileType buildTile, CBlob @blob, boo
 		radius = blob.getRadius();
 	}
 	
-	if (!is_ladder)
+	/*if (!is_ladder)
 	{
 		u8 team = this.getTeamNum();
 		for (u8 i = 0; i < 6; i++)
@@ -88,7 +88,7 @@ bool isBuildableAtPos(CBlob@ this, Vec2f p, TileType buildTile, CBlob @blob, boo
 				}
 			}
 		}
-	}
+	}*/
 
 	//check height + edge proximity
 	if (p.y < 2 * map.tilesize ||
