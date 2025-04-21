@@ -501,7 +501,7 @@ void onRemoveFromInventory(CBlob@ this, CBlob@ blob )
 
 bool canBePutInInventory(CBlob@ this, CBlob@ inventoryBlob)
 {
-	return false;
+	return !inventoryBlob.hasTag("player");
 }
 
 void onRender(CSprite@ this)
