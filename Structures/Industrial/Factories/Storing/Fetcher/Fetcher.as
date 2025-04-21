@@ -104,7 +104,7 @@ void onTick(CBlob@ this)
 					}
 				}
 				else if (b.getConfig() == resource_name && !b.isAttached() && !b.getShape().isStatic()
-				&& Maths::Abs(b.getVelocity().x) <= 0.5f)
+				&& b.getVelocity().Length() <= 0.5f)
 				{
 					
 					if (isServer()) this.server_PutInInventory(b);
