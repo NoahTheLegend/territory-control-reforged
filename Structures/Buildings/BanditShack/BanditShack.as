@@ -165,10 +165,11 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 				CBlob@ mat = server_CreateBlob(spl[0]);
 
-				if (mat !is null)
+				if (mat !is null && spl.size() > 1)
 				{
 					mat.Tag("do not set materials");
 					mat.server_SetQuantity(parseInt(spl[1]));
+
 					if (!callerBlob.server_PutInInventory(mat))
 					{
 						mat.setPosition(callerBlob.getPosition());
