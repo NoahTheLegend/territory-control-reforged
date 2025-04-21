@@ -6,21 +6,22 @@ void onInit(CBlob@ this)
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
-	caller.CreateGenericButton(22, Vec2f(0, 0), this, this.getCommandID("server_consume"), "Drink");
+	if (caller is null) return;
+	CBitStream params;
+	params.write_netid(caller.getNetworkID());
+	caller.CreateGenericButton(22, Vec2f(0, 0), this, this.getCommandID("server_consume"), "Drink", params);
 }
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 {
-	if (cmd == this.getCommandID("server_consume") && isServer())
+	if (cmd == this.getCommandID("server_consume"))
 	{
-		CPlayer@ player = getNet().getActiveCommandPlayer();
-		if (player is null) return;
+		if (!isServer()) return;
 
-		CBlob@ caller = player.getBlob();
+		CBlob@ caller = getBlobByNetworkID(params.read_netid());
 		if (caller is null) return;
 
 		caller.server_Heal(1.0f);
-
 		SetDrunk(caller);
 
 		CBitStream stream;
@@ -29,8 +30,10 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 
 		this.server_Die();
 	}
-	else if (cmd == this.getCommandID("client_consume") && isClient())
+	else if (cmd == this.getCommandID("client_consume"))
 	{
+		if (!isClient()) return;
+
 		CBlob@ caller = getBlobByNetworkID(params.read_netid());
 		if (caller is null) return;
 

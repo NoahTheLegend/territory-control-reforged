@@ -642,17 +642,17 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 		blocks[2].push_back(b);
 	}
 	{
-		BuildBlock b(0, "stonepile", "$icon_stonepile$", "Stone Silo:\n\nAutomatically collects ores from all of your team's mines.");
+		BuildBlock b(0, "rcompactor", "$icon_compactor$", "Compactor:\n\nCan store enormous amounts of single resource.\nIs a part of team's remote storage.");
 		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 300);
-		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 75);
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 250);
 		b.buildOnGround = true;
 		b.size.Set(24, 32);
 		blocks[2].push_back(b);
 	}
 	{
-		BuildBlock b(0, "rcompactor", "$icon_compactor$", "Compactor:\n\nCan store enormous amounts of single resource.\nIs a part of team's remote storage.");
+		BuildBlock b(0, "stonepile", "$icon_stonepile$", "Stone Silo:\n\nAutomatically collects ores from all of your team's mines.");
 		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 300);
-		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 250);
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 75);
 		b.buildOnGround = true;
 		b.size.Set(24, 32);
 		blocks[2].push_back(b);
@@ -748,7 +748,7 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 		blocks[3].push_back(b);
 	}
 	{
-		BuildBlock b(0, "electricfurnace", "$icon_electricfurnace$", "Electric furnace:\n\nAn advanced analogue for induction furnace. Smelts ore up to 3x ingots and does not require coal for smelting. Also has toggle mode.\n\nHas a multiplier mode that increases output for cost of smelting speed.");
+		BuildBlock b(0, "electricfurnace", "$icon_electricfurnace$", "Industrial furnace:\n\nAn advanced analogue for induction furnace. Smelts ore up to 3x ingots and does not require coal for smelting. Also has toggle mode.\n\nHas a multiplier mode that increases output for cost of smelting speed.");
 		AddRequirement(b.reqs, "blob", "mat_ironingot", "Iron Ingot", 50);
 		AddRequirement(b.reqs, "blob", "mat_copperwire", "Copper wire", 40);
 		AddRequirement(b.reqs, "blob", "mat_battery", "Voltron Battery Plus", 50);

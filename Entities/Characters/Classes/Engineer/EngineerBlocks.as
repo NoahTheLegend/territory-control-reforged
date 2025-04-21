@@ -621,7 +621,7 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 		blocks[3].push_back(b);
 	}
 	{
-		BuildBlock b(0, "electricfurnace", "$icon_electricfurnace$", "Electric furnace:\n\nAn advanced furnace. Smelts ore up to 3x ingots. Includes toggle mode.\n\nHas a multiplier mode that increases output for cost of smelting speed.");
+		BuildBlock b(0, "electricfurnace", "$icon_electricfurnace$", "Industrial furnace:\n\nAn advanced furnace. Smelts ore up to 3x ingots. Includes toggle mode.\n\nHas a multiplier mode that increases output for cost of smelting speed.");
 		AddRequirement(b.reqs, "blob", "mat_ironingot", "Iron Ingot", 50);
 		AddRequirement(b.reqs, "blob", "mat_steelingot", "Steel Ingot", 20);
 		AddRequirement(b.reqs, "blob", "mat_copperwire", "Copper wire", 40);

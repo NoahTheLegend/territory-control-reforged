@@ -168,7 +168,15 @@ void onTick(CBlob@ this)
 
 void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 {
+    if (isClient())
+    {
+        CSprite@ sprite = this.getSprite();
+        if (sprite is null) return;
+        sprite.SetEmitSoundPaused(true);
+    }
+    
     if (this.hasTag("collided")) return;
+    
     if (solid || (blob !is null && blob.getShape().isStatic() && blob.doesCollideWithBlob(this)))
         onHitGround(this);
 }

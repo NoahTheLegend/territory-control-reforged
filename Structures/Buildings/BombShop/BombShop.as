@@ -65,18 +65,7 @@ void onInit(CBlob@ this)
 
 		s.spawnNothing = true;
 	}
-	{
-		ShopItem@ s = addShopItem(this, "B.D. Bomb (1)", "$mat_bd$", "mat_bd-1", "Evil.");
-		AddRequirement(s.requirements, "coin", "", "Coins", 2000);
-		AddRequirement(s.requirements, "blob", "mat_mithrilenriched", "Enriched Mithril", 250);
-		AddRequirement(s.requirements, "blob", "mat_sulphur", "Sulphur", 1750);
-		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 30);
-		s.customButton = true;
-		s.buttonwidth = 1;
-		s.buttonheight = 2;
-
-		s.spawnNothing = true;
-	}
+	
 	{
 		ShopItem@ s = addShopItem(this, "R.O.F.L.", "$icon_nuke$", "nuke", "A dangerous warhead stuffed in a cart. Since it's heavy, it can be only pushed around or picked up by vehicles.");
 		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 8);
@@ -90,14 +79,18 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, "Mine", "$icon_mine$", "mine", descriptions[20], false);
 		AddRequirement(s.requirements, "coin", "", "Coins", 75);
 		AddRequirement(s.requirements, "blob", "mat_sulphur", "Sulphur", 15);
-
+		s.customButton = true;
+		s.buttonwidth = 2;
+		s.buttonheight = 1;
 		s.spawnNothing = true;
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Fragmentation Mine", "$icon_fragmine$", "fragmine", "A fragmentation mine that fills the surroundings with shards of metal upon detonation.");
 		AddRequirement(s.requirements, "coin", "", "Coins", 125);
 		AddRequirement(s.requirements, "blob", "mat_sulphur", "Sulphur", 30);
-
+		s.customButton = true;
+		s.buttonwidth = 2;
+		s.buttonheight = 1;
 		s.spawnNothing = true;
 	}
 	{
@@ -115,8 +108,8 @@ void onInit(CBlob@ this)
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Bunker Buster (1)", "$icon_bunkerbuster$", "mat_bunkerbuster-1", "Perfect for making holes in heavily fortified bases. Detonates upon strong impact.");
-		AddRequirement(s.requirements, "coin", "", "Coins", 150);
-		AddRequirement(s.requirements, "blob", "mat_sulphur", "Sulphur", 125);
+		AddRequirement(s.requirements, "coin", "", "Coins", 100);
+		AddRequirement(s.requirements, "blob", "mat_sulphur", "Sulphur", 100);
 
 		s.spawnNothing = true;
 	}

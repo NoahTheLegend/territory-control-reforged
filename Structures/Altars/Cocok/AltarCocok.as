@@ -6,7 +6,7 @@
 void onInit(CBlob@ this)
 {
 	this.set_u8("deity_id", Deity::cocok);
-	this.set_Vec2f("shop menu size", Vec2f(4, 2));
+	this.set_Vec2f("shop menu size", Vec2f(5, 2));
 
 	this.addCommandID("turn_sounds");
 	this.addCommandID("sync_deity");
@@ -46,24 +46,35 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 
-	AddIconToken("$icon_cocok_offering_1$", "AltarCocok_Icons.png", Vec2f(24, 24), 1);
-	{
-		ShopItem@ s = addShopItem(this, "Offering of Molothrower", "$icon_cocok_offering_1$", "offering_molothrower", "Sacrifice a heap of mithril to upgrade a Scorcher into a Molothrower.");
-		AddRequirement(s.requirements, "blob", "flamethrower", "Scorcher", 1);
-		AddRequirement(s.requirements, "blob", "mat_mithril", "Mithril", 500);
-		s.customButton = true;
-		s.buttonwidth = 1;
-		s.buttonheight = 1;
-
-		s.spawnNothing = true;
-	}
-
 	AddIconToken("$icon_cocok_offering_2$", "AltarCocok_Icons.png", Vec2f(24, 24), 2);
 	{
 		ShopItem@ s = addShopItem(this, "Offering of Bomba", "$icon_cocok_offering_2$", "offering_bomb", "Sacrifice your dignity to weld a L.O.L. and a big bomb together.");
 		AddRequirement(s.requirements, "blob", "mat_mininuke", "L.O.L.", 1);
 		AddRequirement(s.requirements, "blob", "mat_bigbomb", "Big Bomb", 1);
 		AddRequirement(s.requirements, "blob", "mat_mithrilenriched", "Enriched Mithril", 20);
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 2;
+
+		s.spawnNothing = true;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "B.D. Bomb (1)", "$mat_bd$", "mat_bd-1", "Evil.");
+		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
+		AddRequirement(s.requirements, "blob", "mat_mithrilenriched", "Enriched Mithril", 250);
+		AddRequirement(s.requirements, "blob", "mat_sulphur", "Sulphur", 1500);
+		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 24);
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 2;
+
+		s.spawnNothing = true;
+	}
+	AddIconToken("$icon_cocok_offering_1$", "AltarCocok_Icons.png", Vec2f(24, 24), 1);
+	{
+		ShopItem@ s = addShopItem(this, "Offering of Molothrower", "$icon_cocok_offering_1$", "offering_molothrower", "Sacrifice a heap of mithril to upgrade a Scorcher into a Molothrower.");
+		AddRequirement(s.requirements, "blob", "flamethrower", "Scorcher", 1);
+		AddRequirement(s.requirements, "blob", "mat_mithril", "Mithril", 500);
 		s.customButton = true;
 		s.buttonwidth = 1;
 		s.buttonheight = 1;

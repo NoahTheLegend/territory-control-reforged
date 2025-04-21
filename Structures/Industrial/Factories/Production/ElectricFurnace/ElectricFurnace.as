@@ -38,8 +38,8 @@ const int[] coalRatio = {
 	0,
 	0,
 	0,
-	2,
-	2
+	3,
+	3
 };
 
 void onInit(CBlob@ this)

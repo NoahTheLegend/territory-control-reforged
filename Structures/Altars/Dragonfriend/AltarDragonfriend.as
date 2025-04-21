@@ -288,7 +288,19 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 								this.add_f32("deity_power", 799);
 							
 								f32 map_width = getMap().tilemapwidth * 8.00f;
-								CBlob@ item = server_CreateBlob("meteorsmall"+XORRandom(3), this.getTeamNum(), Vec2f(XORRandom(map_width), 0));
+								CBlob@ item = server_CreateBlobNoInit("meteor");
+								if (item !is null)
+								{
+									item.server_setTeamNum(-1);
+									item.setPosition(Vec2f(XORRandom(map_width), 0.00f));
+									item.Tag("spawn_at_sky");
+									item.Init();
+									
+									// item.server_SetTimeToDie(5.00f);
+									// item.server_SetHealth(1.00f);
+									
+									// item.server_Die();
+								}
 								
 								server_DropCoins(this.getPosition(), XORRandom(100));
 							}

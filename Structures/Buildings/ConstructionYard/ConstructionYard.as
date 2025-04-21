@@ -28,6 +28,13 @@ void onInit(CBlob@ this)
 	AddIconToken("$icon_howitzer$", "Icon_Vehicles.png", Vec2f(24, 24), 4);
 	AddIconToken("$icon_zeppelin$", "Zepplin.png", Vec2f(181, 90), 0);
 	AddIconToken("$icon_autocannon$", "AutocannonIcon.png", Vec2f(96, 48), 0);
+	AddIconToken("$icon_gatlinggun$", "Icon_Vehicles.png", Vec2f(24, 24), 2);
+	AddIconToken("$icon_mortar$", "Icon_Vehicles.png", Vec2f(24, 24), 3);
+	AddIconToken("$icon_incendiarymortar$", "IncendiaryMortar_Icon.png", Vec2f(24, 24), 0);
+	AddIconToken("$icon_howitzer$", "Icon_Vehicles.png", Vec2f(24, 24), 4);
+	AddIconToken("$icon_zeppelin$", "Zepplin.png", Vec2f(181, 90), 0);
+	AddIconToken("$icon_autocannon$", "AutocannonIcon.png", Vec2f(96, 48), 0);
+	AddIconToken("$icon_submarine$", "Submarine.png", Vec2f(90, 32), 0);
 
 	AddIconToken("$mat_ironingot$", "Material_IronIngot.png", Vec2f(16, 16), 1);
 	AddIconToken("$antiair", "AntiAC_top.png", Vec2f(32, 16), 3);
@@ -68,15 +75,6 @@ void onInit(CBlob@ this)
 		s.buttonwidth = 2;
 		s.buttonheight = 2;
 	}
-	// {
-		// ShopItem@ s = addShopItem(this, "Ballista Ammo", "$mat_bolts$", "mat_bolts", "$mat_bolts$\n\n\n" + descriptions[15], false, false);
-		// s.crate_icon = 5;
-		// s.customButton = true;
-		// s.buttonwidth = 2;
-		// s.buttonheight = 2;
-		// AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 160);
-		// AddRequirement(s.requirements, "blob", "mat_stone", "Stone", 80);
-	// }
 	{
 		ShopItem@ s = addShopItem(this, "Dinghy", "$icon_dinghy$", "dinghy", "$dinghy$\n\n\n" + descriptions[10]);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 100);
@@ -87,13 +85,6 @@ void onInit(CBlob@ this)
 		s.buttonwidth = 2;
 		s.buttonheight = 2;
 	}
-	// {
-		// ShopItem@ s = addShopItem(this, "Buoy", "$buoy_icon$", "buoy", "Useful for anchoring.");
-		// AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 100);
-		// AddRequirement(s.requirements, "blob", "mat_gold", "Gold", 100);
-		// AddRequirement(s.requirements, "blob", "mat_stone", "Stone", 100);
-		// s.spawnNothing = true;
-	// }
 	{
 		ShopItem@ s = addShopItem(this, "Longboat", "$icon_longboat$", "longboat", "$longboat$\n\n\n" + descriptions[33], false, true);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
@@ -157,24 +148,24 @@ void onInit(CBlob@ this)
 		s.buttonheight = 2;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Autocannon", "$icon_autocannon$", "autocannon", "A slow and sturdy wooden monstrosity.", false, true);
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 24);
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 1000);
-		AddRequirement(s.requirements, "coin", "", "Coins", 750);
-
-		s.crate_icon = 11;
-		s.customButton = true;
-		s.buttonwidth = 4;
-		s.buttonheight = 2;
-	}
-	{
 		ShopItem@ s = addShopItem(this, "Bomber", "$icon_bomber$", "bomber", "$icon_bomber$\n\n\n\n\n\n\n\n" + "A large aerial vehicle used for safe transport and bombing the peasants below.\n[Space] to drop items out of inventory.", false, true);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
 		AddRequirement(s.requirements, "coin", "", "Coins", 300);
 
 		s.crate_icon = 13;
 		s.customButton = true;
-		s.buttonwidth = 3;
+		s.buttonwidth = 2;
+		s.buttonheight = 3;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Armored Bomber", "$icon_armoredbomber$", "armoredbomber", "$icon_armoredbomber$\n\n\n\n\n\n\n\n" + "A fortified but slow moving balloon with an iron basket and two attachment slots. Resistant against gunfire.\n[Space] to drop items out of inventory.", false, true);
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 6);
+		AddRequirement(s.requirements, "coin", "", "Coins", 750);
+
+		s.crate_icon = 13;
+		s.customButton = true;
+		s.buttonwidth = 2;
 		s.buttonheight = 3;
 	}
 	{
@@ -198,6 +189,28 @@ void onInit(CBlob@ this)
 		s.customButton = true;
 		s.buttonwidth = 5;
 		s.buttonheight = 3;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Charge Drill", "$chargedrill$", "chargedrill", "$chargedrill$\n\n\n\n\n" + "A giant drill that is capable to dig giant tunnels and omoron heartstones.\nYou can roll it while driving, press [DOWN] button.\nYou can reverse modes while driving, press [SPACEBAR] button.", false, false);
+		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 24);
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 20);
+		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 12);
+		AddRequirement(s.requirements, "blob", "mat_copperwire", "Copper Wire", 40);
+		AddRequirement(s.requirements, "coin", "", "Coins", 1750);
+
+		//s.crate_icon = 0;
+		s.customButton = true;
+		s.buttonwidth = 4;
+		s.buttonheight = 3;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Cargo Container", "$icon_cargocontainer$", "cargocontainer", "$icon_cargocontainer$\n\n\n\n" + "A large shipping container with a huge storage capacity.\n\nCan be moved around by vehicles.\nActs as a remote inventory.", false, true);
+		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 16);
+
+		s.crate_icon = 0;
+		s.customButton = true;
+		s.buttonwidth = 4;
+		s.buttonheight = 2;
 	}
 }
 
