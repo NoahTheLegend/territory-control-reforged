@@ -59,7 +59,7 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "B.D. Bomb (1)", "$mat_bd$", "mat_bd-1", "Evil.");
+		ShopItem@ s = addShopItem(this, "B.D. Bomb (1)", "$mat_bd$", "mat_bd", "Evil.");
 		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
 		AddRequirement(s.requirements, "blob", "mat_mithrilenriched", "Enriched Mithril", 250);
 		AddRequirement(s.requirements, "blob", "mat_sulphur", "Sulphur", 1500);
