@@ -296,17 +296,23 @@ void onInit(CBlob@ this)
 	}
 	if (rand.NextRanged(100) < 30)
 	{
-		ShopItem@ s = addShopItem(this, "same sheeeeeesht parody", "$macrogun$", "macrogun", "dumb toy shot mAh nosee offf");
+		ShopItem@ s = addShopItem(this, "same sheeeeeesht parody", "$macrogun$", "macrogun", "dumb toy shot ma mom nosee offf");
 		AddRequirement(s.requirements, "coin", "", "Coins", 3500 + rand.NextRanged(3000));
 		s.buttonwidth = 2;
 		s.spawnNothing = true;
 		this.set_u32("shop_space", this.get_u32("shop_space") + 2);
 	}
-	if (rand.NextRanged(100) < 30)
+	if (rand.NextRanged(100) < 20)
 	{
 		{	
 			ShopItem@ s = addShopItem(this, "thos is 3 times as illegal", "$mosin$", "mosin", "a BIG rifle for a BIG gunner");
-			AddRequirement(s.requirements, "coin", "", "Coins", 1500 + rand.NextRanged(750));
+			AddRequirement(s.requirements, "coin", "", "Coins", 1500 + rand.NextRanged(1250));
+
+			s.spawnNothing = true;
+		}
+		{	
+			ShopItem@ s = addShopItem(this, "butt", "$svd$", "svd", "whet is this?");
+			AddRequirement(s.requirements, "coin", "", "Coins", 2000 + XORRandom(1500));
 
 			s.spawnNothing = true;
 		}

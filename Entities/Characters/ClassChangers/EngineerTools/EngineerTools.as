@@ -14,7 +14,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	if (this.getDistanceTo(caller) > 96.0f) return;
 	bool canChangeClass = caller.getName() == "engineer";
 
-	if(canChangeClass)
+	if (canChangeClass)
 	{
 		this.Untag("class button disabled");
 	}

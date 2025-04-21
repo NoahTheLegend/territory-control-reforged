@@ -343,19 +343,6 @@ void React(CBlob@ this)
 				this.getSprite().PlaySound("DrugLab_Create_Acidic.ogg", 1.00f, 1.00f);
 			}
 
-			if (heat < 500 && pressure > 5000 && hasPumpkin)
-			{
-				if (isServer())
-				{
-					if (pumpkin_blob.getQuantity() == 1) pumpkin_blob.server_Die();
-					else pumpkin_blob.server_SetQuantity(Maths::Max(pumpkin_blob.getQuantity() - 1, 0));
-					Material::createFor(this, "cider", 1);
-				}
-
-				ShakeScreen(30.0f, 15, this.getPosition());
-				this.getSprite().PlaySound("DrugLab_Create_Acidic.ogg", 1.00f, 1.00f);
-			}
-
 			if (pressure < 5000 && heat > 500  && hasFiks)
 			{
 				if (isServer())
@@ -592,8 +579,8 @@ void React(CBlob@ this)
 					sulphur_count -= 50;
 					acid_count -= 25;
 
-					Material::createFor(this, "stimpill", 4 + XORRandom(3));
-					if (XORRandom(100) < 50) Material::createFor(this, "stim", 1 + XORRandom(2));
+					Material::createFor(this, "stimpill", 1 + XORRandom(2));
+					if (XORRandom(100) < 50) Material::createFor(this, "stim", XORRandom(3));
 					Material::createFor(this, "mat_dirt", XORRandom(15));
 					Material::createFor(this, "mat_mustard", 5 + XORRandom(15));
 				}
@@ -773,16 +760,16 @@ void React(CBlob@ this)
 				this.getSprite().PlaySound("DrugLab_Create_Solid.ogg", 1.00f, 1.00f);
 			}
 
-			if (pressure < 100000 && heat > 500 && hasAcid && hasCoal && hasSulphur && acid_count >= 50 && sulphur_count >= 250 && coal_count >= 100)
+			if (pressure < 100000 && heat > 500 && hasFuel && hasCoal && hasSulphur && fuel_count >= 25 && sulphur_count >= 150 && coal_count >= 100)
 			{
 				if (isServer())
 				{
-					acid_blob.server_SetQuantity(Maths::Max(acid_blob.getQuantity() - 50, 0));
-					sulphur_blob.server_SetQuantity(Maths::Max(sulphur_blob.getQuantity() - 250, 0));
+					fuel_blob.server_SetQuantity(Maths::Max(fuel_blob.getQuantity() - 25, 0));
+					sulphur_blob.server_SetQuantity(Maths::Max(sulphur_blob.getQuantity() - 150, 0));
 					coal_blob.server_SetQuantity(Maths::Max(coal_blob.getQuantity() - 100, 0));
 
-					acid_count -= 50;
-					sulphur_count -= 250;
+					fuel_count -= 25;
+					sulphur_count -= 150;
 					coal_count -= 100;
 
 					Material::createFor(this, "propesko", 1);
@@ -870,58 +857,6 @@ void React(CBlob@ this)
 
 				ShakeScreen(30.0f, 60, this.getPosition());
 				this.getSprite().PlaySound("DrugLab_Create_Solid.ogg", 1.00f, 1.00f);
-			}
-			// Steroid recipe
-			if (heat >= 2000 && hasFiks && hasDomino && hasStim)
-			{
-				if (isServer())
-				{
-					fiks_blob.server_Die();
-					domino_blob.server_Die();
-					stim_blob.server_Die();
-
-					Material::createFor(this, "steroid", 1 + XORRandom(2));
-				}
-
-				ShakeScreen(30.0f, 60, this.getPosition());
-				this.getSprite().PlaySound("DrugLab_Create_Solid.ogg", 1.00f, 1.00f);
-			}
-			// Sturd recipe
-			if (heat >= 500 && hasFiks && hasPumpkin && pumpkin_count >= 2)
-			{
-				if (isServer())
-				{
-					fiks_blob.server_Die();
-					pumpkin_blob.server_Die();
-
-					Material::createFor(this, "sturd", 1 + (XORRandom(3) == 0 ? 1 : 0));
-				}
-
-				ShakeScreen(30.0f, 60, this.getPosition());
-				this.getSprite().PlaySound("DrugLab_Create_Creamy.ogg", 1.00f, 1.00f);
-			}
-			// Polymorphine recipe
-			if (heat <= 500 && hasMithrilEnriched && e_mithril_count >= 10 && hasSteroid && mat_boof_count >= 25)
-			{
-				if (isServer())
-				{
-					u8 rand = XORRandom(11);
-					steroid_blob.server_Die();
-					mat_boof.server_SetQuantity(Maths::Max(mat_boof.getQuantity() - (25-rand), 0));
-					e_mithril_blob.server_SetQuantity(Maths::Max(e_mithril_blob.getQuantity() - 10, 0));
-
-					e_mithril_count -= 10;
-					mat_boof_count -= 25-rand;
-
-					Material::createFor(this, "polymorphine", 1 + (XORRandom(4) == 0 ? 1 : 0));
-					if (XORRandom(6) == 0)
-					{
-						Material::createFor(this, "mat_polymorphine", 10+XORRandom(11));
-					}
-				}
-
-				ShakeScreen(30.0f, 60, this.getPosition());
-				this.getSprite().PlaySound("DrugLab_Create_Acidic.ogg", 1.00f, 1.00f);
 			}
 		}
 	}

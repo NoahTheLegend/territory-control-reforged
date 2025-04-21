@@ -158,8 +158,8 @@ void onTick(CBlob@ this)
 
 	const bool myplayer = this.isMyPlayer();
 
-	moveVars.walkFactor *= 0.625f;
-	moveVars.jumpFactor *= 0.75f;
+	moveVars.walkFactor *= 0.7f;
+	moveVars.jumpFactor *= 0.8f;
 		
 	//with the code about menus and myplayer you can slash-cancel;
 	//we'll see if knights dmging stuff while in menus is a real issue and go from there
@@ -1133,11 +1133,17 @@ void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@
 	            knight.state == KnightStates::sword_cut_mid_down ||
 	            knight.state == KnightStates::sword_cut_up ||
 	            knight.state == KnightStates::sword_cut_down
-	        )
-	        && blockAttack(hitBlob, velocity, 0.0f))
+	        ))
 	{
-		this.getSprite().PlaySound("/Stun", 1.0f, this.getSexNum() == 0 ? 1.0f : 2.0f);
-		SetKnocked(this, 30);
+		if (blockAttack(hitBlob, velocity, 0.0f))
+		{
+			this.getSprite().PlaySound("/Stun", 1.0f, this.getSexNum() == 0 ? 1.0f : 2.0f);
+			SetKnocked(this, 30);
+		}
+		else if (hitBlob !is null && hitBlob.hasTag("player"))
+		{
+			SetKnocked(hitBlob, 15);
+		}
 	}
 
 	if (customData == Hitters::shield)
@@ -1147,10 +1153,7 @@ void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@
 	}
 }
 
-
-
 // bomb pick menu
-
 void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 {
 	if (bombTypeNames.length == 0)

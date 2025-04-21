@@ -380,12 +380,12 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 		blocks[0].push_back(b);
 	}
 	{
-		BuildBlock b(CMap::tile_castle_moss, "castle_moss", "$castle_moss_block$", "Mosus stone block \n ");
+		BuildBlock b(CMap::tile_castle_moss, "castle_moss", "$castle_moss_block$", "Mossy stone block \n ");
 		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 10);
 		blocks[0].push_back(b);
 	}
 	{
-	    BuildBlock b(CMap::tile_castle_back_moss, "castle_back_moss", "$castle_back_moss_block$", "Mosus stone block \n ");
+	    BuildBlock b(CMap::tile_castle_back_moss, "castle_back_moss", "$castle_back_moss_block$", "Mossy stone block \n ");
 	    AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 5);
 		blocks[0].push_back(b);
 	}

@@ -16,11 +16,10 @@ const string buzz_prop = "drill timer";
 
 const string heat_prop = "drill heat";
 const u8 heat_max = 200;
-
 const string last_drill_prop = "drill last active";
 
-const u8 heat_add = 4;
-const u8 heat_add_constructed = 7;
+const u8 heat_add = 2;
+const u8 heat_add_constructed = 4;
 const u8 heat_add_blob = 1;
 const u8 heat_cool_amount = 5;
 
@@ -28,7 +27,6 @@ const u8 heat_cooldown_time = 5;
 const u8 heat_cooldown_time_water = u8(heat_cooldown_time / 3);
 
 const f32 max_heatbar_view_range = 65;
-
 const bool show_heatbar_when_idle = false;
 
 void onInit(CSprite@ this)
@@ -348,8 +346,8 @@ void onTick(CBlob@ this)
 							{
 								for (uint i = 0; i < 2; i++)
 								{
-									if (isTileTitanium(tile) || (isTileIron(tile) && XORRandom(8) != 0)
-										|| isTilePlasteel(tile)) // titanium
+									if (isTileTitanium(tile) || (isTileIron(tile) && XORRandom(4) != 0)
+										|| isTilePlasteel(tile))
 									{
 										sprite.PlaySound("metal_stone.ogg", 1.0f, 1.1f);
 										sparks(hi.hitpos, attackVel.Angle(), 1.0f);

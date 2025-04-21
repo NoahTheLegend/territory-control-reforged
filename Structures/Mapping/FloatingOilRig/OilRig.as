@@ -26,7 +26,7 @@ void onInit(CBlob@ this)
 	this.Tag("upkeep building");
 	this.set_u8("upkeep cap increase", 2);
 	this.set_u8("upkeep cost", 0);
-	this.Tag("can be captured by neutral");
+	//this.Tag("can be captured by neutral");
 	
 	this.SetMinimapOutsideBehaviour(CBlob::minimap_snap);
 	this.SetMinimapVars("MinimapIcons.png",64,Vec2f(8,8));

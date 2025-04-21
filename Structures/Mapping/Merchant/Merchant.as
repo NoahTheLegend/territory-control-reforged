@@ -51,8 +51,7 @@ void onInit(CBlob@ this)
 	this.set_Vec2f("shop offset", Vec2f(0, 0));
 	this.set_Vec2f("shop menu size", Vec2f(6, 5));
 	this.set_string("shop description", "Merchant");
-
-	this.Tag("can be captured by neutral");
+	//this.Tag("can be captured by neutral");
 	
 	if (this.hasTag("name_changed"))
 	{
@@ -237,20 +236,8 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", 30);
 		s.spawnNothing = true;
 	}
-	// {
-		// ShopItem@ s = addShopItem(this, "Sell Mystery Meat (50)", "$COIN$", "coin-50", "Sell 50 Mystery Meat for 50 coins.");
-		// AddRequirement(s.requirements, "blob", "mat_meat", "Mystery Meat", 50);
-		// s.spawnNothing = true;
-	// }
-	// {
-		// ShopItem@ s = addShopItem(this, "Sell Grain (1)", "$COIN$", "coin-30", "Sell 1 Grain for 30 coins.");
-		// AddRequirement(s.requirements, "blob", "grain", "Grain", 1);
-		// s.spawnNothing = true;
-	// }
-
 
 	CSprite@ sprite = this.getSprite();
-
 	if (sprite !is null)
 	{
 		// string sex = traderRandom.NextRanged(2) == 0 ? "TraderMale.png" : "TraderFemale.png";

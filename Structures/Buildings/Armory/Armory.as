@@ -38,7 +38,7 @@ void onInit(CBlob@ this)
 	addTokens(this); //colored shop icons
 
 	this.set_Vec2f("shop offset", Vec2f(0,0));
-	this.set_Vec2f("shop menu size", Vec2f(5, 5));
+	this.set_Vec2f("shop menu size", Vec2f(5, 4));
 	this.set_string("shop description", "Armory");
 	this.set_u8("shop icon", 15);
 
@@ -67,9 +67,9 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Bushy Helm", "$bush$", "bushyhelm", "Add bush camo to helm.");
-		AddRequirement(s.requirements, "blob", "militaryhelmet", "Combat Helmet", 1);
-	
+		ShopItem@ s = addShopItem(this, "Backpack", "$icon_backpack$", "backpack", "A large leather backpack that can be equipped and used as an inventory.\nOccupies the Torso slot");
+		AddRequirement(s.requirements, "coin", "", "Coins", 150);
+
 		s.spawnNothing = true;
 	}
 	{
@@ -127,45 +127,19 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Backpack", "$icon_backpack$", "backpack", "A large leather backpack that can be equipped and used as an inventory.\nOccupies the Torso slot");
-		AddRequirement(s.requirements, "coin", "", "Coins", 150);
+		ShopItem@ s = addShopItem(this, "Rendezook", "$icon_rendezook$", "rendezook", "A replica of a rocket launcher found behind the UPF shop in a trash can.\nDoes not seem to hurt anybody.");
+		AddRequirement(s.requirements, "coin", "", "Coins", 250);
 
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
+		
 		s.spawnNothing = true;
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Royal Guard Armor", "$icon_royalarmor$", "royalarmor", "A heavy armor that offers high damage resistance at cost of low mobility. Has a shield which is tough enough to block bullets.");
 		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 8);
 		AddRequirement(s.requirements, "coin", "", "Coins", 500);
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Night Vision Device (NVD)", "$nvd$", "nvd", "Night vision googles fixed on a military helmet.\nRequires mithril.\n\nHold mithril and press [E]\nYou can also toggle it.");
-		AddRequirement(s.requirements, "blob", "militaryhelmet", "Combat Helmet", 1);
-		AddRequirement(s.requirements, "blob", "mat_mithril", "Mithril", 50);
-	
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Repair Night Vision Device", "$nvd$", "repair_nvd", "Repair NVD.");
-		//AddRequirement(s.requirements, "blob", "nvd", "Night Vision Device", 1);
-		//AddRequirement(s.requirements, "coin", "", "Coins", 75);
-		AddRequirement(s.requirements, "has armor", "nvd", "Night Vision Device", 0);
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Jump Shoes", "$jumpshoes$", "jumpshoes", "Makes you better, faster, stronger.");
-		AddRequirement(s.requirements, "blob", "combatboots", "Combat Boots", 1);
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 5);
-		AddRequirement(s.requirements, "blob", "mat_copperwire", "Copper Wire", 10);
-		AddRequirement(s.requirements, "coin", "", "Coins", 500);
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Repair Jump Shoes", "$jumpshoes$", "repair_jumpshoes", "Repair jump shoes.");
-		AddRequirement(s.requirements, "has armor", "jumpshoes", "Jump Shoes", 0);
 
 		s.spawnNothing = true;
 	}
@@ -196,16 +170,6 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, "Water Arrow (2)", "$mat_waterarrows$", "mat_waterarrows-2", descriptions[50], true);
 		AddRequirement(s.requirements, "coin", "", "Coins", 50);
 
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Rendezook", "$icon_rendezook$", "rendezook", "A replica of a rocket launcher found behind the UPF shop in a trash can.\nDoes not seem to hurt anybody.");
-		AddRequirement(s.requirements, "coin", "", "Coins", 250);
-
-		s.customButton = true;
-		s.buttonwidth = 1;
-		s.buttonheight = 1;
-		
 		s.spawnNothing = true;
 	}
 }

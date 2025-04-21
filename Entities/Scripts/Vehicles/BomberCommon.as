@@ -3,8 +3,7 @@
 #include "Explosion.as";
 #include "VehicleFuel.as";
 
-// Boat logic
-
+const u8 cooldown = 45;
 void onInit(CBlob@ this)
 {
 	this.Tag("aerial");
@@ -279,7 +278,7 @@ void BomberHandling(CBlob@ this, VehicleInfo@ v)
 						}
 					}
 				}
-				this.set_u32("lastDropTime",getGameTime()+60);
+				this.set_u32("lastDropTime",getGameTime()+cooldown);
 			}
 		}
 		//Handling

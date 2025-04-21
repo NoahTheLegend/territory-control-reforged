@@ -45,7 +45,7 @@ void onInit(CBlob@ this)
 	this.Tag("teamlocked tunnel");
 	this.Tag("change team on fort capture");
 	this.Tag("extractable");
-	this.Tag("can be captured by neutral");
+	//this.Tag("can be captured by neutral");
 	this.Tag("no_die");
 
 	this.Tag("upkeep building");

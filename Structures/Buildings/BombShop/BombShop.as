@@ -235,13 +235,6 @@ void onInit(CBlob@ this)
 
 		s.spawnNothing = true;
 	}
-	{
-		ShopItem@ s = addShopItem(this, "Glue Grenade (1)", "$icon_gluegrenade$", "mat_gluegrenade-1", "A glue grenade. Calm that stupid runner down!");
-		AddRequirement(s.requirements, "coin", "", "Coins", 100);
-		AddRequirement(s.requirements, "blob", "mat_dirt", "Dirt", 5);
-
-		s.spawnNothing = true;
-	}
 	//{
 	//	ShopItem@ s = addShopItem(this, "Mound!", "$moundscroll$", "moundscroll", "MoundScroll");
 	//	AddRequirement(s.requirements, "coin", "", "Coins", 30000);

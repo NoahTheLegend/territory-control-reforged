@@ -4,7 +4,7 @@
 #include "GunCommon.as";
 
 // const u32 fuel_timer_max = 30 * 600;
-const f32 SPEED_MAX = 60;
+const f32 SPEED_MAX = 55;
 
 string[] particles = 
 {

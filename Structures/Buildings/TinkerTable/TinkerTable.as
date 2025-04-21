@@ -30,14 +30,32 @@ void onInit(CBlob@ this)
 	addTokens(this); //colored shop icons
 
 	this.set_Vec2f("shop offset", Vec2f(0,0));
-	this.set_Vec2f("shop menu size", Vec2f(7, 5));
+	this.set_Vec2f("shop menu size", Vec2f(7, 4));
 	this.set_string("shop description", "Mechanist's Workshop");
 	this.set_u8("shop icon", 15);
+
+	AddIconToken("$bp_aa_icon$", "Blueprints.png", Vec2f(16, 16), 16);
+	AddIconToken("$bp_en_icon$", "Blueprints.png", Vec2f(16, 16), 17);
+	AddIconToken("$bp_ch_icon$", "Blueprints.png", Vec2f(16, 16), 18);
+	AddIconToken("$bp_we_icon$", "Blueprints.png", Vec2f(16, 16), 19);
 
 	{
 		ShopItem@ s = addShopItem(this, "Drill", "$icon_drill$", "drill", descriptions[43], false);
 		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 6);
-
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
+		s.spawnNothing = true;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Giga Drill Breaker", "$powerdrill$", "powerdrill", "A huge overpowered drill with a durable mithril head.");
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
+		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 4);
+		AddRequirement(s.requirements, "blob", "mat_copperingot", "Copper Ingot", 4);
+		AddRequirement(s.requirements, "blob", "mat_copperwire", "Copper Wire", 10);
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
 		s.spawnNothing = true;
 	}
 	{
@@ -82,11 +100,15 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Giga Drill Breaker", "$powerdrill$", "powerdrill", "A huge overpowered drill with a durable mithril head.");
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
-		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 4);
-		AddRequirement(s.requirements, "blob", "mat_copperingot", "Copper Ingot", 4);
-		AddRequirement(s.requirements, "blob", "mat_copperwire", "Copper Wire", 10);
+		ShopItem@ s = addShopItem(this, "Zapthrottle Gas Extractor", "$icon_gasextractor$", "gasextractor", "A handheld air pump commonly used for cleaning, martial arts and gas cloud extraction.\nThrows a beam of water if carrier has a filled bucket in inventory. Can put out fire and cool meteors.\n\n[LMB]: Pull\n[RMB]: Push");
+		AddRequirement(s.requirements, "blob", "mat_goldingot", "Gold Ingot", 2);
+		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 1);
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 80);
+		AddRequirement(s.requirements, "coin", "", "Coins", 150);
+
+		s.customButton = true;
+		s.buttonwidth = 2;
+		s.buttonheight = 1;
 
 		s.spawnNothing = true;
 	}
@@ -129,11 +151,10 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Zapthrottle Gas Extractor", "$icon_gasextractor$", "gasextractor", "A handheld air pump commonly used for cleaning, martial arts and gas cloud extraction.\nThrows a beam of water if carrier has a filled bucket in inventory. Can put out fire and cool meteors.\n\n[LMB]: Pull\n[RMB]: Push");
-		AddRequirement(s.requirements, "blob", "mat_goldingot", "Gold Ingot", 2);
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 1);
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 80);
-		AddRequirement(s.requirements, "coin", "", "Coins", 150);
+		ShopItem@ s = addShopItem(this, "Dart Gun", "$icon_dartgun$", "dartgun", "Dart Gun that can be used to remotely deliver drugs.");
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 6);
+		AddRequirement(s.requirements, "blob", "mat_methane", "Methane", 50);
+		AddRequirement(s.requirements, "coin", "", "Coins", 500);
 
 		s.customButton = true;
 		s.buttonwidth = 2;
@@ -181,10 +202,10 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Dart Gun", "$icon_dartgun$", "dartgun", "Dart Gun that can be used to remotely deliver drugs.");
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 6);
-		AddRequirement(s.requirements, "blob", "mat_methane", "Methane", 50);
-		AddRequirement(s.requirements, "coin", "", "Coins", 500);
+		ShopItem@ s = addShopItem(this, "Handheld Irradiator", "$icon_raygun$", "raygun", "A rather dangerous mithril-powered device used for cancer research.");
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 5);
+		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 3);
+		AddRequirement(s.requirements, "coin", "", "Coins", 100);
 
 		s.customButton = true;
 		s.buttonwidth = 2;
@@ -192,14 +213,13 @@ void onInit(CBlob@ this)
 
 		s.spawnNothing = true;
 	}
-	{
-		ShopItem@ s = addShopItem(this, "Bear Trap", "$icon_beartrap$", "beartrap", "An intricate device used for capturing of oversized badgers.");
-		AddRequirement(s.requirements, "blob", "mat_stone", "Stone", 100);
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 6);
-		AddRequirement(s.requirements, "coin", "", "Coins", 400);
-
-		s.spawnNothing = true;
-	}
+	//{
+	//	ShopItem@ s = addShopItem(this, "Bear Trap", "$icon_beartrap$", "beartrap", "An intricate device used for capturing of oversized badgers.");
+	//	AddRequirement(s.requirements, "blob", "mat_stone", "Stone", 100);
+	//	AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 6);
+	//	AddRequirement(s.requirements, "coin", "", "Coins", 400);
+	//	s.spawnNothing = true;
+	//}
 	AddIconToken("$icon_tflippy_offering_0$", "AltarTFlippy_Icons.png", Vec2f(24, 24), 0);
 	{
 		ShopItem@ s = addShopItem(this, "Saw", "$saw$", "saw", "Construct a saw.");
@@ -210,6 +230,14 @@ void onInit(CBlob@ this)
 		s.buttonwidth = 1;	
 		s.buttonheight = 1;
 		
+		s.spawnNothing = true;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Autonomous Activator", "$icon_automat$", "automat", "A magic-operated contraption that uses anything in its tiny hands. May be only carried around when not holding anything.");
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 4);
+		AddRequirement(s.requirements, "blob", "bubblegem", "Bubble gem", 1);
+		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
+
 		s.spawnNothing = true;
 	}
 	{
@@ -228,70 +256,6 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Music Disc Replacement", "$musicdisc$", "musicdisc", "Change out the tunes to see if it fits your groove.");
-		AddRequirement(s.requirements, "blob", "musicdisc", "Music Disc", 1);
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Handheld Irradiator", "$icon_raygun$", "raygun", "A rather dangerous mithril-powered device used for cancer research.");
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 5);
-		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 3);
-		AddRequirement(s.requirements, "coin", "", "Coins", 100);
-
-		s.customButton = true;
-		s.buttonwidth = 2;
-		s.buttonheight = 1;
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Autonomous Activator", "$icon_automat$", "automat", "A magic-operated contraption that uses anything in its tiny hands. May be only carried around when not holding anything.");
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 4);
-		AddRequirement(s.requirements, "blob", "bubblegem", "Bubble gem", 1);
-		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Catalyzer", "$icon_catalyzer$", "catalyzer", "Increases reactor's irradiation just like if you put 75 of enriched mithril instead.\nUsed for nuclear reactor synthesis.\nSlightly destabilizes the reactor.");
-		AddRequirement(s.requirements, "blob", "mat_mithrilenriched", "Enriched Mithril", 50);
-		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 5);
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 5);
-		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
-
-		s.customButton = true;
-		s.buttonwidth = 1;
-		s.buttonheight = 1;
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Refrigerant", "$icon_refrigerant$", "refrigerant", "Decreases reactor's irradiation.\mUsed for nuclear reactor synthesis.\nModerately stabilizes and inverses the reactor heat.");
-		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 4);
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 8);
-		AddRequirement(s.requirements, "blob", "bubblegem", "Bubble gem", 1);
-		AddRequirement(s.requirements, "coin", "", "Coins", 500);
-
-		s.customButton = true;
-		s.buttonwidth = 1;
-		s.buttonheight = 1;
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Codebreaker", "$codebreaker$", "codebreaker", "Used for resetting password in reactor's console.\nTakes 15 seconds.");
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 4);
-		AddRequirement(s.requirements, "blob", "mat_copperwire", "Copper Wire", 20);
-		AddRequirement(s.requirements, "coin", "", "Coins", 750);
-
-		s.customButton = true;
-		s.buttonwidth = 1;
-		s.buttonheight = 1;
-
-		s.spawnNothing = true;
-	}
-	{
 		ShopItem@ s = addShopItem(this, "Anti-pickup Magnet", "$apmagnet$", "apmagnet", "Disables auto-pickup");
 		AddRequirement(s.requirements, "coin", "", "Coins", 250);
 
@@ -300,15 +264,7 @@ void onInit(CBlob@ this)
 		s.buttonheight = 1;
 
 		s.spawnNothing = true;
-	}/*
-	{
-		ShopItem@ s = addShopItem(this, "Grappling Hook For Dummies", "$grapplingcertificate$", "grapplingcertificate", "A knight without shield, but with hook!");
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 10);
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 4);
-		AddRequirement(s.requirements, "coin", "", "Coins", 500);
-
-		s.spawnNothing = true;
-	}*/
+	}
 }
 
 void onChangeTeam(CBlob@ this, const int oldTeam)
@@ -330,8 +286,8 @@ void addTokens(CBlob@ this)
 	AddIconToken("$icon_flippers$", "Flippers.png", Vec2f(16, 16), 0, teamnum);
 	AddIconToken("$icon_backpack$", "Backpack.png", Vec2f(16, 16), 0, teamnum);
 	AddIconToken("$icon_jetpackv2$", "JetpackV2.png", Vec2f(16, 16), 0, teamnum);
-	AddIconToken("$icon_catalyzer$", "Catalyzer.png", Vec2f(9, 11), 0, teamnum);
 	AddIconToken("$icon_drill$", "Drill.png", Vec2f(32, 16), 0, teamnum);
+	AddIconToken("$icon_catalyzer$", "Catalyzer.png", Vec2f(9, 11), 0, teamnum);
 	AddIconToken("$icon_refrigerant$", "RefrigerantIcon.png", Vec2f(16, 16), 0, teamnum);
 }
 

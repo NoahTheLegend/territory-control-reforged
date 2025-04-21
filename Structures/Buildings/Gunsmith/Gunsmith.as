@@ -45,12 +45,14 @@ void onInit(CBlob@ this)
 	this.inventoryButtonPos = Vec2f(-8, 0);
 
 	this.set_Vec2f("shop offset", Vec2f(0,0));
-	this.set_Vec2f("shop menu size", Vec2f(7, 6));
+	this.set_Vec2f("shop menu size", Vec2f(7, 5));
 	this.set_string("shop description", "Gunsmith's Workshop");
 	this.set_u8("shop icon", 15);
 
-	AddIconToken("$dp27$", "DP-27.png", Vec2f(32, 12), this.getTeamNum());
+	u8 teamnum = this.getTeamNum();
+	AddIconToken("$dp27$", "DP-27.png", Vec2f(32, 12), teamnum);
 	AddIconToken("$icon_sniperammo$", "AmmoIcon_Sniper.png", Vec2f(24,24), 255);
+	AddIconToken("$icon_grenadelauncher$", "PumpActionGrenadeLauncher.png", Vec2f(22, 9), 0, teamnum);
 
 	{
 		ShopItem@ s = addShopItem(this, "Low Caliber Ammunition (20)", "$icon_pistolammo$", "mat_pistolammo-20", "Bullets for pistols and SMGs.");
@@ -79,9 +81,10 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "PPSH", "$ppsh$", "ppsh", "WW2 most-used russian weapon.\n\nUses Lowcal Rounds.");
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 150);
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 10);
+		ShopItem@ s = addShopItem(this, "Brand-new AK", "$bnak$", "bnak", "Popular russian weapon.\n\nUses Highcal Rounds.");
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
+		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 12);
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 2);
 		AddRequirement(s.requirements, "coin", "", "Coins", 500);
 		
 		s.customButton = true;
@@ -116,12 +119,15 @@ void onInit(CBlob@ this)
 
 		s.spawnNothing = true;
 	}
-	{	
-		ShopItem@ s = addShopItem(this, "Sniper Rifle Dragunova", "$svd$", "svd", "A strong semi-auto sniper rifle.\n\nUses High Power Rounds.");
-		AddRequirement(s.requirements, "blob",  "mat_wood", "Wood", 500);
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 8);
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 8);
-		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
+	{
+		ShopItem@ s = addShopItem(this, "Gauss Rifle", "$icon_gaussrifle$", "gaussrifle", "A modified toy used to kill people.\n\nUses Steel Ingots.");
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 12);
+		AddRequirement(s.requirements, "blob", "mat_mithril", "Mithril", 50);
+		AddRequirement(s.requirements, "coin", "", "Coins", 750);
+
+		s.customButton = true;
+		s.buttonwidth = 2;
+		s.buttonheight = 1;
 
 		s.spawnNothing = true;
 	}
@@ -180,12 +186,11 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Brand-new AK", "$bnak$", "bnak", "Popular russian weapon.\n\nUses Highcal Rounds.");
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
+		ShopItem@ s = addShopItem(this, "Bazooka", "$icon_bazooka$", "bazooka", "A long tube capable of shooting rockets. Make sure nobody is standing behind it.\n\nUses Small Rockets.");
 		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 12);
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 2);
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
 		AddRequirement(s.requirements, "coin", "", "Coins", 500);
-		
+
 		s.customButton = true;
 		s.buttonwidth = 2;
 		s.buttonheight = 1;
@@ -214,19 +219,19 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", 750);
 
 		s.customButton = true;
-		s.buttonwidth = 2;
+		s.buttonwidth = 1;
 		s.buttonheight = 1;
 
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Gauss Rifle", "$icon_gaussrifle$", "gaussrifle", "A modified toy used to kill people.\n\nUses Steel Ingots.");
-		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 12);
-		AddRequirement(s.requirements, "blob", "mat_mithril", "Mithril", 50);
+		ShopItem@ s = addShopItem(this, "Grenade Launcher M79", "$icon_grenadelauncher$", "grenadelauncher", "A short-ranged weapon that launches grenades.\n\nUses Grenades.");
+		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 16);
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 350);
 		AddRequirement(s.requirements, "coin", "", "Coins", 750);
 
 		s.customButton = true;
-		s.buttonwidth = 2;
+		s.buttonwidth = 1;
 		s.buttonheight = 1;
 
 		s.spawnNothing = true;
@@ -244,36 +249,6 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Small Rocket (1)", "$icon_smallrocket$", "mat_smallrocket-1", "Self-propelled ammunition for rocket launchers.");
-		AddRequirement(s.requirements, "coin", "", "Coins", 50);
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Bazooka", "$icon_bazooka$", "bazooka", "A long tube capable of shooting rockets. Make sure nobody is standing behind it.\n\nUses Small Rockets.");
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 12);
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
-		AddRequirement(s.requirements, "coin", "", "Coins", 500);
-
-		s.customButton = true;
-		s.buttonwidth = 2;
-		s.buttonheight = 1;
-
-		s.spawnNothing = true;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Grenade Launcher M79", "$icon_grenadelauncher$", "grenadelauncher", "A short-ranged weapon that launches grenades.\n\nUses Grenades.");
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 16);
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 350);
-		AddRequirement(s.requirements, "coin", "", "Coins", 750);
-
-		s.customButton = true;
-		s.buttonwidth = 2;
-		s.buttonheight = 1;
-
-		s.spawnNothing = true;
-	}
-	{
 		ShopItem@ s = addShopItem(this, "Blazethrower", "$icon_blazethrower$", "blazethrower", "A Scorcher modification providing support for gaseous fuels.\n\nUses Fuel.");
 		AddRequirement(s.requirements, "blob", "flamethrower", "Scorcher", 1);
 		AddRequirement(s.requirements, "blob", "mat_copperingot", "Copper Ingot", 12);
@@ -281,7 +256,7 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", 2000);
 
 		s.customButton = true;
-		s.buttonwidth = 4;
+		s.buttonwidth = 2;
 		s.buttonheight = 1;
 
 		s.spawnNothing = true;

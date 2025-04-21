@@ -1,4 +1,6 @@
-﻿#include "Hitters.as";
+﻿#include "Requirements.as";
+#include "ShopCommon.as";
+#include "Hitters.as";
 #include "HittersTC.as";
 #include "MakeMat.as";
 #include "MaterialCommon.as";
@@ -154,6 +156,7 @@ void onInit(CBlob@ this)
 	this.Tag("builder always hit");
 	this.Tag("generator");
 	this.Tag("extractable");
+	this.Tag("change team on fort capture");
 
 	this.set_u32("switch_cooldown", 0);
 	this.set_u32("set_temp_mode_cooldown", 0);
@@ -262,28 +265,66 @@ void onInit(CBlob@ this)
 			anim.AddFrames(frames);}
 		}
 	}
+
+	u8 teamnum = this.getTeamNum();
+	AddIconToken("$icon_catalyzer$", "Catalyzer.png", Vec2f(9, 11), 0, teamnum);
+	AddIconToken("$icon_refrigerant$", "RefrigerantIcon.png", Vec2f(16, 16), 0, teamnum);
+	
+	this.set_Vec2f("shop offset", Vec2f(24, 16));
+	this.set_Vec2f("shop menu size", Vec2f(3, 1));
+	this.set_string("shop description", "Construct an utility");
+	this.set_u8("shop icon", 15);
+
+	{
+		ShopItem@ s = addShopItem(this, "Catalyzer", "$icon_catalyzer$", "catalyzer", "Increases reactor's irradiation just like if you put 75 of enriched mithril instead.\nUsed for nuclear reactor synthesis.\nSlightly destabilizes the reactor.");
+		AddRequirement(s.requirements, "blob", "mat_mithrilenriched", "Enriched Mithril", 50);
+		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 5);
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 5);
+		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
+
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
+
+		s.spawnNothing = true;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Refrigerant", "$icon_refrigerant$", "refrigerant", "Decreases reactor's irradiation.\mUsed for nuclear reactor synthesis.\nModerately stabilizes and inverses the reactor heat.");
+		AddRequirement(s.requirements, "blob", "mat_mithrilingot", "Mithril Ingot", 4);
+		AddRequirement(s.requirements, "blob", "mat_steelingot", "Steel Ingot", 8);
+		AddRequirement(s.requirements, "blob", "bubblegem", "Bubble gem", 1);
+		AddRequirement(s.requirements, "coin", "", "Coins", 500);
+
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
+
+		s.spawnNothing = true;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Codebreaker", "$codebreaker$", "codebreaker", "Used for resetting password in reactor's console.\nTakes 15 seconds.");
+		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 4);
+		AddRequirement(s.requirements, "blob", "mat_copperwire", "Copper Wire", 20);
+		AddRequirement(s.requirements, "coin", "", "Coins", 750);
+
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
+
+		s.spawnNothing = true;
+	}
 }
 
 void onTick(CBlob@ this)
 {
+	if (this.get_string("password") == "") this.set_bool("locked", false);
+
 	if (isServer() && this.hasTag("require_sync"))
 	{
 		this.Untag("require_sync");
 		server_Sync(this);
 	}
 
-	if (isClient())
-	{
-		CRules@ rules = getRules();
-		if (rules is null || !rules.exists("terminal_id")) return;
-
-		u16 id = rules.get_u16("terminal_id");
-		bool closing = id != this.getNetworkID();
-		if (closing) return;
-	}
-
-	if (this.get_string("password") == "") this.set_bool("locked", false);
-	
 	CInventory@ inv = this.getInventory();
 	if (inv is null) return;
 
@@ -301,7 +342,37 @@ void onTick(CBlob@ this)
 
 	const bool enabled = this.get_bool("enabled");
 	const bool locked = this.get_bool("locked");
+	const bool sabotaging = this.get_bool("sabotage");
 	const bool codebreaking = this.get_bool("codebreaking");
+
+	if (isClient() && sabotaging)
+	{
+		CSprite@ sprite = this.getSprite();
+		if (this.getTickSinceCreated() % 30 == 0)
+		{
+			this.add_u8("sustimer", 1);
+			if (this.get_u8("sustimer") == 2)
+			{
+				sprite.PlaySound("SusMeltdown.ogg", 5.0f);
+
+				this.SetLight(true);
+				this.SetLightRadius(128.0f);
+				this.SetLightColor(SColor(255, 255, 0, 0));
+
+				this.set_u8("sustimer", 0);
+			}
+			else this.SetLight(false);
+		}
+	}
+
+	if (isClient())
+	{
+		CRules@ rules = getRules();
+		if (rules is null || !rules.exists("terminal_id")) return;
+
+		u16 id = rules.get_u16("terminal_id");
+		bool closing = id != this.getNetworkID();
+	}
 
 	const f32 max_heat = max_temp_c;
 	UpdateHeat(this);
@@ -335,7 +406,6 @@ void onTick(CBlob@ this)
 	if (!enabled) heat = 0;
 	this.set_f32("heat", Maths::Clamp(Maths::Lerp(old_heat, heat, heat_lerp + enriched_count * heat_lerp_gain_per_enriched), min_temp_c, max_temp_c));
 
-	const bool sabotaging = this.get_bool("sabotage");
 	f32 irradiate_factor = old_heat < 0
 						? old_heat > negative_danger_zone_irradiate_heat ? 0 : Maths::Clamp(Maths::Abs(old_heat - negative_danger_zone_irradiate_heat) / Maths::Abs(min_temp_c - negative_danger_zone_irradiate_heat), 0.0f, 1.0f)
 						: old_heat < positive_danger_zone_irradiate_heat ? 0 : Maths::Clamp((old_heat - positive_danger_zone_irradiate_heat) / (max_temp_c - positive_danger_zone_irradiate_heat), 0.0f, 1.0f);
@@ -474,25 +544,6 @@ void onTick(CBlob@ this)
 				}
 			}
 		}
-
-		if (sabotaging)
-		{
-			if (this.getTickSinceCreated() % 30 == 0)
-			{
-				this.add_u8("sustimer", 1);
-				if (this.get_u8("sustimer") == 2)
-				{
-					sprite.PlaySound("SusMeltdown.ogg", 5.0f);
-
-					this.SetLight(true);
-					this.SetLightRadius(128.0f);
-					this.SetLightColor(SColor(255, 255, 0, 0));
-
-					this.set_u8("sustimer", 0);
-				}
-				else this.SetLight(false);
-			}
-		}
 	}
 }
 
@@ -583,6 +634,7 @@ bool RequirementsMet(CBlob@ this, u8 index)
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
+	this.set_bool("shop available", true);
 	if (this.getDistanceTo(caller) > 96.0f) return;
 	CBlob@ carried = caller.getCarriedBlob();
 
@@ -645,15 +697,15 @@ void ConsoleMenu(CBlob@ this, CBlob@ caller)
 		{
 			menu.deleteAfterClick = true;
 			
-			CGridButton@ buttonlock = menu.AddButton("$icon0$", "Lock console", this.getCommandID("lock_console"), Vec2f(1, 1), params);
-			CGridButton@ buttonresetpassword = menu.AddButton("$icon4$", "Reset password", this.getCommandID("reset_password"), Vec2f(1, 1), params);
-			CGridButton@ buttonterminal = menu.AddButton("$icon1$", "Terminal", this.getCommandID("request_terminal_for_local"), Vec2f(1, 1), params);
-
-			CGridButton@ buttonsabotage = menu.AddButton("$icon2$", "Overload reactor\nSets a timer for a minute to explode the reactor", this.getCommandID("sabotage"), Vec2f(1, 1), params);
-			if (buttonsabotage !is null && this.get_bool("sabotage")) buttonsabotage.SetEnabled(false);
-			
 			CGridButton@ buttondesabotage = menu.AddButton("$icon3$", "Unload reactor\nStabilizes reactor and cancels overload", this.getCommandID("desabotage"), Vec2f(1, 1), params);
 			if (buttondesabotage !is null && !this.get_bool("sabotage")) buttondesabotage.SetEnabled(false);
+		
+			CGridButton@ buttonresetpassword = menu.AddButton("$icon4$", "Reset password", this.getCommandID("reset_password"), Vec2f(1, 1), params);
+			CGridButton@ buttonterminal = menu.AddButton("$icon1$", "Terminal", this.getCommandID("request_terminal_for_local"), Vec2f(1, 1), params);
+			
+			CGridButton@ buttonlock = menu.AddButton("$icon0$", "Lock console", this.getCommandID("lock_console"), Vec2f(1, 1), params);
+			CGridButton@ buttonsabotage = menu.AddButton("$icon2$", "Overload reactor\nSets a timer for a minute to explode the reactor", this.getCommandID("sabotage"), Vec2f(1, 1), params);
+			if (buttonsabotage !is null && this.get_bool("sabotage")) buttonsabotage.SetEnabled(false);
 		}
 	}
 }
@@ -1872,8 +1924,10 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	else if (cmd == this.getCommandID("set_password"))
 	{
 		u16 id = params.read_u16();
+
 		CBlob@ caller = getBlobByNetworkID(id);
 		if (caller is null) return;
+
 		CBlob@ b = caller.getCarriedBlob();
 		if (b is null || b.getName() != "paper") return;
 
@@ -1946,6 +2000,69 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		if (!this.get_bool("codebreaking")) this.set_u32("codebreaking_time", 0);
 
 		this.getSprite().PlaySound(this.get_bool("codebreaking") ? "Security_TurnOn" : "Security_TurnOff", 0.30f, 1.00f);
+	}
+	else if (cmd == this.getCommandID("shop made item"))
+	{
+		this.getSprite().PlaySound("ConstructShort");
+
+		u16 caller, item;
+
+		if(!params.saferead_netid(caller) || !params.saferead_netid(item))
+			return;
+
+		string name = params.read_string();
+		CBlob@ callerBlob = getBlobByNetworkID(caller);
+
+		if (callerBlob is null) return;
+
+		if (isServer())
+		{
+			string[] spl = name.split("-");
+
+			if (spl[0] == "coin")
+			{
+				CPlayer@ callerPlayer = callerBlob.getPlayer();
+				if (callerPlayer is null) return;
+
+				callerPlayer.server_setCoins(callerPlayer.getCoins() +  parseInt(spl[1]));
+			}
+			else if (name.findFirst("mat_") != -1)
+			{
+				CPlayer@ callerPlayer = callerBlob.getPlayer();
+				if (callerPlayer is null) return;
+
+				MakeMat(callerBlob, this.getPosition(), spl[0], parseInt(spl[1]));
+
+				// CBlob@ mat = server_CreateBlob(spl[0]);
+
+				// if (mat !is null)
+				// {
+					// mat.Tag("do not set materials");
+					// mat.server_SetQuantity(parseInt(spl[1]));
+					// if (!callerBlob.server_PutInInventory(mat))
+					// {
+						// mat.setPosition(callerBlob.getPosition());
+					// }
+				// }
+			}
+			else
+			{
+				CBlob@ blob = server_CreateBlob(spl[0], callerBlob.getTeamNum(), this.getPosition());
+
+				if (blob is null) return;
+
+				if (callerBlob.getPlayer() !is null ) blob.SetDamageOwnerPlayer(callerBlob.getPlayer());
+
+				if (!blob.canBePutInInventory(callerBlob))
+				{
+					callerBlob.server_Pickup(blob);
+				}
+				else if (callerBlob.getInventory() !is null && !callerBlob.getInventory().isFull())
+				{
+					callerBlob.server_PutInInventory(blob);
+				}
+			}
+		}
 	}
 }
 
