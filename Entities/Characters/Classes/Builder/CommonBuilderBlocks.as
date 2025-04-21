@@ -250,13 +250,13 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 		blocks[0].push_back(b);
 	}
 	{
-		BuildBlock b(0, "ladder", "$ladder$", "Ladder:\n\nAnyone can climb it");
-		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 10);
+		BuildBlock b(0, "ironladder", "$icon_ironladder$", "Iron Ladder:\n\nAnyone can climb it like the regular ladder, but it's more durable.");
+		AddRequirement(b.reqs, "blob", "mat_ironingot", "Iron Ingot", 3);
 		blocks[0].push_back(b);
 	}
 	{
-		BuildBlock b(0, "ironladder", "$icon_ironladder$", "Iron Ladder:\n\nAnyone can climb it like the regular ladder, but it's more durable.");
-		AddRequirement(b.reqs, "blob", "mat_ironingot", "Iron Ingot", 3);
+		BuildBlock b(0, "ladder", "$ladder$", "Ladder:\n\nAnyone can climb it");
+		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 10);
 		blocks[0].push_back(b);
 	}
 	{
