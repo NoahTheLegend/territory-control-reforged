@@ -34,7 +34,7 @@ void onTick(CRules@ this)
 			        !first_fish.hasTag("dead") && //both parents alive
 			        !second_fish.hasTag("dead"))
 			{
-				CBlob@ babby_fish = server_CreateBlobNoInit(XORRandom(7) == 0 ? "jellyfish" : fish_name);
+				CBlob@ babby_fish = server_CreateBlobNoInit(fish_name);
 				if (babby_fish !is null)
 				{
 					babby_fish.server_setTeamNum(-1);
@@ -69,7 +69,7 @@ void onTick(CRules@ this)
 					Vec2f pos = Vec2f(x, y - i * map.tilesize);
 					if (map.isInWater(pos))
 					{
-						server_CreateBlob(XORRandom(7) == 0 ? "jellyfish" : fish_name, -1, pos);
+						server_CreateBlob(fish_name, -1, pos);
 						break;
 					}
 				}

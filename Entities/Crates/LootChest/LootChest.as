@@ -48,7 +48,6 @@ const LootItem@[] c_items =
 	LootItem("foodcan", 2, 8, 600),
 	LootItem("bp_automation_advanced", 1, 0, 850),
 	LootItem("bp_energetics", 1, 0, 1000),
-	LootItem("bp_weapons", 1, 0, 850),
 	LootItem("phone", 1, 0, 650),
 	LootItem("scubagear", 1, 0, 300),
 	LootItem("ninjascroll", 1, 1, 200),

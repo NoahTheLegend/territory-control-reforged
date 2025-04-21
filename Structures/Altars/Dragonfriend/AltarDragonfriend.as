@@ -208,8 +208,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 				{
 					if (data == "follower")
 					{
-						//if (callerBlob.getTeamNum() < 7)
-						if (true)
+						if (callerBlob.getTeamNum() < 7)
 						{
 							this.add_f32("deity_power", 199);
 							

@@ -611,22 +611,13 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 						CBlob@ destBlob = tpDest.getBlob();
 						if (destBlob !is null)
 						{
-							if (isCool || blob.getName() == "grandpa")
-							{
-								CBitStream params1;
-								params1.write_u16(tpBlob.getNetworkID());
-								params1.write_u16(destBlob.getNetworkID());
-								this.SendCommand(this.getCommandID("teleport"), params1);
-							}
-							else if (!isCool)
-							{
-								player.server_setTeamNum(-1);
-								CBlob@ newBlob = server_CreateBlob("grandpa",-1,destBlob.getPosition());
-								newBlob.server_SetPlayer(player);
-								tpBlob.server_Die();
-							}
+							CBitStream params1;
+							params1.write_u16(tpBlob.getNetworkID());
+							params1.write_u16(destBlob.getNetworkID());
+							this.SendCommand(this.getCommandID("teleport"), params1);
 						}
 					}
+					
 					return false;
 				}
 			}

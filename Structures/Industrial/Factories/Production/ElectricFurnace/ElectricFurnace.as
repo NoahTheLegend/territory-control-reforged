@@ -154,11 +154,15 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 		return;
 	}
 
-	for(int i = 0; i < 5; i += 1) // i < matNames.length!
-	if (!blob.isAttached() && blob.hasTag("material") && blob.getName() == matNames[i])
+	bool is_coal = blob.getName() == "mat_coal";
+	for (int i = 0; i < 5; i += 1) // i < matNames.length!
 	{
-		if (isServer()) this.server_PutInInventory(blob);
-		if (isClient()) this.getSprite().PlaySound("bridge_open.ogg");
+		bool valid = is_coal || blob.getName() == matNames[i];
+		if (!blob.isAttached() && blob.hasTag("material") && valid)
+		{
+			if (isServer()) this.server_PutInInventory(blob);
+			if (isClient()) this.getSprite().PlaySound("bridge_open.ogg");
+		}
 	}
 }
 
