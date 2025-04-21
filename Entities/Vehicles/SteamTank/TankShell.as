@@ -20,8 +20,8 @@ void onInit(CBlob@ this)
 
 	this.Tag("explosive");
 
-	this.set_f32("map_damage_radius", 48.0f);
-	this.set_f32("map_damage_ratio", 0.075f);
+	this.set_f32("map_damage_radius", 64.0f);
+	this.set_f32("map_damage_ratio", 0.1f);
 
 	this.Tag("projectile");
 	this.getSprite().SetFrame(0);
@@ -145,7 +145,7 @@ void DoExplosion(CBlob@ this)
 	this.set_f32("map_damage_radius", 32.0f);
 	this.set_f32("map_damage_ratio", 0.25f);
 
-	Explode(this, 64.0f, 4.0f);
+	Explode(this, 64.0f, 8.0f);
 
 	for (int i = 0; i < XORRandom(4); i++) 
 	{
