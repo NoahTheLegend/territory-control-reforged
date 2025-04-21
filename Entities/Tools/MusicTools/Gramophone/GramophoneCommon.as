@@ -58,7 +58,6 @@ const GramophoneRecord@[] records =
 	GramophoneRecord("Bella Ciao", "Disc_BellaCiao.ogg"),
 	GramophoneRecord("Deus Pátria Rei", "Disc_DeusPatriaRei.ogg"),
 	GramophoneRecord("Super Idol", "SUPER_IDOL!!11!!!1.ogg"),
-	GramophoneRecord("Red Sun in The Sky", "Disc_RedSunInTheSky.ogg", 1.5f),
 	GramophoneRecord("Puppy Love", "Disc_PuppyLove.ogg", 1.5f),
 	GramophoneRecord("Cannon Fodder Intro", "Disc_CannonFodderIntro.ogg", 1.5f),
 	GramophoneRecord("Devil's Lab ", "Disc_DevilsLab.ogg"),
