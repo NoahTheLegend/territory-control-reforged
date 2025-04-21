@@ -34,11 +34,11 @@ void onTick(CBlob@ this)
 		}
 	}
 
-	if (isClient())
-	{
-		if (this.hasTag("dusted"))
-		{
-			this.set_string("custom_material_anim", "dust");
-		}
-	}
+	//if (isClient())
+	//{
+	//	if (this.hasTag("dusted"))
+	//	{
+	//		this.set_string("custom_material_anim", "dust");
+	//	}
+	//}
 }
