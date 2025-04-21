@@ -43,16 +43,15 @@ void onInit(CBlob@ this)
 	this.set_u8("shop icon", 25);
 
 	{
-		ShopItem@ s = addShopItem(this, "Unlucky Badger", "$badgerBomb$", "badgerbomb", "A badger with an explosive personality.");
-		AddRequirement(s.requirements, "coin", "", "Coins", 150);
-		AddRequirement(s.requirements, "blob", "mat_oil", "Oil Drum (25)", 25);
+		ShopItem@ s = addShopItem(this, "Some Badger", "$badger$", "badger", "I found ths guy under my bed.");
+		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
 		s.buttonwidth = 4;
 		s.buttonheight = 1;
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Small Bomb (2)", "$icon_smallbomb$", "mat_smallbomb-2", "Explosive technology at its finest.");
-		AddRequirement(s.requirements, "coin", "", "Coins", 84);
+		ShopItem@ s = addShopItem(this, "Bomb", "$bomb$", "mat_bombs", "Explosive technology at its finest.");
+		AddRequirement(s.requirements, "coin", "", "Coins", 52);
 
 		s.spawnNothing = true;
 	}
@@ -104,6 +103,12 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, "Bandit Rifle", "$banditboltrifle$", "banditboltrifle", "How the heck does it even shoot?");
 		AddRequirement(s.requirements, "coin", "", "Coins", 190);
+		s.spawnNothing = true;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Molotov", "$mat_molotov$", "mat_molotov-1", "A funny fire cocktail.");
+		AddRequirement(s.requirements, "coin", "", "Coins", 100);
+		AddRequirement(s.requirements, "blob", "mat_oil", "Oil Drum (35 l)", 35);
 		s.spawnNothing = true;
 	}
 }
