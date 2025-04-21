@@ -149,12 +149,16 @@ bool canSaw(CBlob@ this, CBlob@ blob)
 	string name = blob.getName();
 
 	if (
-	    name == "migrant" ||
 	    name == "wooden_door" ||
 	    name == "mat_wood" ||
 	    name == "tree_bushy" ||
 		name == "tree_apple" ||
-	    name == "tree_pine")
+	    name == "tree_pine" ||
+		name == "scoutchicken" ||
+		name == "soldierchicken" ||
+		name == "heavychicken" ||
+		name == "commanderchicken" ||
+		name == "civillianchicken")
 	{
 		return false;
 	}

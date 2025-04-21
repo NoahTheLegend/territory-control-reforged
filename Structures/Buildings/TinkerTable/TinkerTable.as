@@ -66,16 +66,17 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Wrench", "$wrench$", "wrench", "Repair damaged vehicles and structures.\nFaction leaders can use this to abandon captured structures.\nUse this to disable auto-extraction from certain structures.");
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 20);
-		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 5);
-		AddRequirement(s.requirements, "coin", "", "Coins", 100);
+		ShopItem@ s = addShopItem(this, "Hazmat Suit", "$icon_hazmat$", "hazmatitem", "A hazardous materials suit giving the wearer protection against fire, toxic gases, radiation and drowning.");
+		AddRequirement(s.requirements, "blob", "mat_mithril", "Mithril", 75);
+		AddRequirement(s.requirements, "coin", "", "Coins", 500);
 
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Copper Wire (2)", "$mat_copperwire$", "mat_copperwire-2", "A copper wire. Kids' favourite toy.");
-		AddRequirement(s.requirements, "blob", "mat_copperingot", "Copper Ingot", 1);
+		ShopItem@ s = addShopItem(this, "Wrench", "$wrench$", "wrench", "Repair damaged vehicles and structures.\nFaction leaders can use this to abandon captured structures.\nUse this to disable auto-extraction from certain structures.");
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 20);
+		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 5);
+		AddRequirement(s.requirements, "coin", "", "Coins", 100);
 
 		s.spawnNothing = true;
 	}

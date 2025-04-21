@@ -141,8 +141,6 @@ void onInit(CBlob@ this)
 				break;
 
 			case 17:
-			case 18:
-			case 19:
 				gun_config = "macrogun";
 				ammo_config = "mat_gatlingammo";
 
@@ -152,6 +150,19 @@ void onInit(CBlob@ this)
 				this.set_f32("inaccuracy", 0.03f);
 				this.set_bool("bomber", false);
 
+				break;
+
+			case 18:
+			case 19:
+				gun_config = "m40";
+				ammo_config = "mat_pistolammo";
+
+				this.set_u8("attackDelay", 2);
+				this.set_f32("chaseDistance", 128);
+				this.set_f32("minDistance", 128);
+				this.set_f32("maxDistance", 512);
+				this.set_bool("bomber", false);
+				
 				break;
 
 			default:

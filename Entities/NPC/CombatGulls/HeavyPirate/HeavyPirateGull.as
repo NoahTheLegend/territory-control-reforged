@@ -44,7 +44,7 @@ void onInit(CBlob@ this)
 		string gun_config;
 		string ammo_config;
 
-		switch(XORRandom(11))
+		switch(XORRandom(12))
 		{
 			case 0:
 			case 1:
@@ -110,6 +110,16 @@ void onInit(CBlob@ this)
 				this.set_f32("chaseDistance", 100);
 				this.set_f32("minDistance", 32);
 				this.set_f32("maxDistance", 400);
+				break;
+			case 11:
+				gun_config = "ppsh";
+				ammo_config = "mat_pistolammo";
+
+				this.set_u8("attackDelay", 0);
+				this.set_u8("reactionTime", 0);
+				this.set_f32("chaseDistance", 100);
+				this.set_f32("minDistance", 32);
+				this.set_f32("maxDistance", 320);
 				break;
 			default:
 				gun_config = "smg";

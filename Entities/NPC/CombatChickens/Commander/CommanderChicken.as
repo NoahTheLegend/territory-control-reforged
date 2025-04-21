@@ -121,7 +121,7 @@ void onInit(CBlob@ this)
 			*/
 
 			default:
-				gun_config = "beagle";
+				gun_config = "c96";
 				ammo_config = "mat_rifleammo";
 
 				this.set_u8("attackDelay", 2);
