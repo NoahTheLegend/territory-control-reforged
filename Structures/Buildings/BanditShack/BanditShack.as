@@ -50,7 +50,7 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Bomb", "$bomb$", "mat_bombs", "Explosive technology at its finest.");
+		ShopItem@ s = addShopItem(this, "Bomb", "$bomb$", "mat_bombs-1", "Explosive technology at its finest.");
 		AddRequirement(s.requirements, "coin", "", "Coins", 52);
 
 		s.spawnNothing = true;
