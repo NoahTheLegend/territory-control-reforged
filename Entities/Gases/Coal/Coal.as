@@ -85,6 +85,13 @@ void onTick(CBlob@ this)
 			blob.setInventoryName("Coal Dust");
 		}
 	}
+	if (isClient())
+	{
+		if (this.hasTag("dusted"))
+		{
+			this.getSprite().SetAnimation("dust");
+		}
+	}
 }
 
 void DoExplosion(CBlob@ this)
