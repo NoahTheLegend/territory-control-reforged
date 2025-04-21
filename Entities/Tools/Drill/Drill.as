@@ -517,8 +517,9 @@ void onThisAddToInventory(CBlob@ this, CBlob@ blob)
 void onRender(CSprite@ this)
 {
 	CPlayer@ local = getLocalPlayer();
-	CBlob@ localBlob = local.getBlob();
+	if (local is null) return;
 
+	CBlob@ localBlob = local.getBlob();
 	if (local is null || localBlob is null)
 		return;
 
