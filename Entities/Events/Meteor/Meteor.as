@@ -104,7 +104,7 @@ void onTick(CBlob@ this)
 
     f32 t = (int((1.0f - heatscale) * 9.0f) + 1) == 0;
     if (t <= 0) t = 1;
-    if (isClient() && heat > 0 && getGameTime() % t)
+    if (isClient() && heat > 0 && getGameTime() % t == 0)
     {
         MakeParticle(this, XORRandom(100) < 10 ? ("SmallSmoke" + (1 + XORRandom(2))) : "SmallExplosion" + (1 + XORRandom(3)));
     }
