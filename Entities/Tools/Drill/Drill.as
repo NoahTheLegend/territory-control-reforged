@@ -208,7 +208,7 @@ void onTick(CBlob@ this)
 			sprite.PlaySound("DrillOverheat.ogg");
 		}
 
-		if (holder.getName() != "builder" && holder.getName() != "engineer" && holder.getName() != "adminbuilder" && holder.getName() != "exosuit" && holder.getName() != "freak")
+		if (holder.getName() != "engineer" && holder.getName() != "adminbuilder" && holder.getName() != "exosuit" && holder.getName() != "freak")
 		{
 			if (holder.isMyPlayer() && point.isKeyPressed(key_action1) && getGameTime() % 5 == 0)
 				Sound::Play("NoAmmo.ogg");
@@ -536,7 +536,7 @@ void onRender(CSprite@ this)
 	Vec2f blobPos = blob.getPosition();
 	Vec2f localPos = localBlob.getPosition();
 
-	if (holderBlob.getName() != "builder" && holderBlob.getName() != "engineer" && holderBlob.getName() != "susengineer" && holderBlob.getName() != "exosuit" && holderBlob.getName() != "robosuit" && holderBlob.getName() != "adminbuilder" && holderBlob.getName() != "freak")
+	if (holderBlob.getName() != "engineer" && holderBlob.getName() != "susengineer" && holderBlob.getName() != "exosuit" && holderBlob.getName() != "robosuit" && holderBlob.getName() != "adminbuilder" && holderBlob.getName() != "freak")
 	{
 		Vec2f pos = holderBlob.getInterpolatedScreenPos() + (blob.getScreenPos() - holderBlob.getScreenPos()) + Vec2f(0, -40);
 		GUI::DrawTextCentered("Only an engineer can use this drill!", pos, SColor(255, 183, 51, 51));
