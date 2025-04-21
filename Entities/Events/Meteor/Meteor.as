@@ -366,7 +366,7 @@ void onDie(CBlob@ this)
 
 bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 {
-    return this.getName() == "meteorsmall0" || this.getName() == "meteorsmall1";
+    return this.getName() == "meteor" || this.getName() == "meteorsmall0" || this.getName() == "meteorsmall1";
 }
 
 bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
