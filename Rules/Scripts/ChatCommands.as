@@ -272,6 +272,40 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 
 				return false;
 			}
+			else if (tokens.length > 0 && tokens[0] == "!chesstexturepack")
+			{
+				if (tokens.length <= 3)
+				{
+					client_AddToChat("Incorrect format: !chesstexturepack <texturepack.png> <size x> <size y> <scale> optional tile white <r,g,b> optional tile black <r,g,b>", SColor(255, 0, 0, 0));
+				}
+				else
+				{
+					ConfigFile cfg;
+					if (!cfg.loadFile("../Cache/chesstexturepack.cfg"))
+					{
+						printf("Initializing empty texturepack.cfg");
+						cfg.add_string("texturepack", "ChessPieces.png");
+						cfg.add_s32("texturepack_size_x", 36);
+						cfg.add_s32("texturepack_size_y", 36);
+						cfg.add_f32("texturepack_scale", 1.0f);
+						cfg.add_string("board_tile_white", "255,255,255");
+						cfg.add_string("board_tile_black", "0,0,0");
+						cfg.saveFile("chesstexturepack.cfg");
+					}
+
+					cfg.add_string("texturepack", tokens[1]);
+					cfg.add_s32("texturepack_size_x", parseInt(tokens[2]));
+					cfg.add_s32("texturepack_size_y", parseInt(tokens[3]));
+					cfg.add_f32("texturepack_scale", parseFloat(tokens[4]));
+					if (tokens.length > 5) cfg.add_string("board_tile_white", tokens[5]);
+					if (tokens.length > 6) cfg.add_string("board_tile_black", tokens[6]);
+
+					client_AddToChat("Texturepack set to: " + tokens[1] + " with size: " + tokens[2] + ", " + tokens[3], SColor(255, 0, 0, 0));
+					cfg.saveFile("chesstexturepack.cfg");
+
+					this.Tag("update_chess_texturepack");
+				}
+			}
 			else if (tokens.length > 1 && tokens[0] == "!write") 
 			{
 				if (getGameTime() > this.get_u32("nextwrite"))

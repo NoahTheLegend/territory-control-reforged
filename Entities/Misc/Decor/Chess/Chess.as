@@ -3,6 +3,12 @@
 // perform changes to Seats.as using "seat turn around" tag to avoid hard setting occupied facepos
 // made by NoahTheLegend
 
+string chess_texturepack_name = "ChessPieces.png";
+Vec2f chess_texturepack_size = Vec2f(36,36);
+f32 chess_texturepack_scale = 1.0f;
+SColor col_white = SColor(255, 255, 255, 255);
+SColor col_black = SColor(255, 0, 0, 0);
+
 namespace Chess
 {
 	enum PieceType
@@ -49,7 +55,7 @@ void onInit(CBlob@ this)
 	this.set_string("last_player_attached_0", "none");
 	this.set_string("last_player_attached_1", "none");
 
-	if (isClient()) this.set_f32("tilesize", 24.0f * getCamera().targetDistance); // getCamera() doesnt exist serverside
+	if (isClient()) this.set_f32("tilesize", chess_texturepack_size.x * getCamera().targetDistance); // getCamera() doesnt exist serverside
 	this.getSprite().SetRelativeZ(-50);
 
 	AttachmentPoint@ ap0 = this.getAttachments().getAttachmentPointByName("PLAYER0");
@@ -64,10 +70,52 @@ void onInit(CBlob@ this)
 	// initialize log props
 	ResetGameLog(this);
 	this.getShape().getConsts().net_threshold_multiplier = 0.5f;
+
+	if (isClient())
+	{
+		UpdateTexturepack(this);
+	}
+}
+
+void UpdateTexturepack(CBlob@ this)
+{
+	// load texturepacks
+	ConfigFile cfg = ConfigFile();
+	if (cfg.loadFile("../Cache/chesstexturepack.cfg"))
+	{
+		chess_texturepack_name = cfg.read_string("texturepack", "ChessPieces.png");
+		chess_texturepack_size.x = cfg.read_f32("texturepack_size_x", 32.0f);
+		chess_texturepack_size.y = cfg.read_f32("texturepack_size_y", 32.0f);
+		chess_texturepack_scale = cfg.read_f32("texturepack_scale", 1.0f);
+
+		// board_tile_white
+		string white_tile_argb = cfg.read_string("board_tile_white", "255,255,255");
+		string[] white_tile_split = white_tile_argb.split(",");
+		if (white_tile_split.size() == 3)
+			col_white = SColor(215, parseInt(white_tile_split[0]), parseInt(white_tile_split[1]), parseInt(white_tile_split[2]));
+
+		// board_tile_black
+		string black_tile_argb = cfg.read_string("board_tile_black", "0,0,0");
+		string[] black_tile_split = black_tile_argb.split(",");
+		if (black_tile_split.size() == 3)
+			col_black = SColor(215, parseInt(black_tile_split[0]), parseInt(black_tile_split[1]), parseInt(black_tile_split[2]));
+	}
+
+	getRules().Untag("update_chess_texturepack");
 }
 
 void onTick(CBlob@ this)
 {
+	CRules@ rules = getRules();
+	if (rules !is null)
+	{
+		if (isClient() && rules.hasTag("update_chess_texturepack"))
+		{
+			print("Updating chess texturepack");
+			UpdateTexturepack(this);
+		}
+	}
+
 	u8 sw = this.get_u8("selected_white");
 	s8 cw = this.get_s8("captured_white");
 	u8 sb = this.get_u8("selected_black");
@@ -257,8 +305,6 @@ void onTick(CBlob@ this)
 	}
 }
 
-const SColor col_white = SColor(215,255,255,255);
-const SColor col_black = SColor(215,15,15,15);
 const SColor col_selection = SColor(140,255,255,0);
 const SColor col_selection_disabled = col_enemy;
 const SColor col_captured = SColor(140,55,55,255);
@@ -277,7 +323,7 @@ void onRender(CSprite@ sprite)
 
 	// zoom transition
 	f32 zoom = getCamera().targetDistance;
-	f32 tilesize = Maths::Lerp(this.get_f32("tilesize"), 24.0f * zoom, 0.2f);
+	f32 tilesize = Maths::Lerp(this.get_f32("tilesize"), chess_texturepack_size.x * zoom, 0.2f);
 	this.set_f32("tilesize", tilesize);
 
 	Table@ table;
@@ -286,7 +332,7 @@ void onRender(CSprite@ sprite)
 	Driver@ driver = getDriver();
 	Vec2f thispos = this.getPosition();
 
-	Vec2f offset = Vec2f(0, -24.0f);
+	Vec2f offset = Vec2f(0, -chess_texturepack_size.x);
 	f32 area = tilesize * 8;
 
 	// position on screen
@@ -306,14 +352,14 @@ void onRender(CSprite@ sprite)
 	// defining canvas area
 	Vec2f tl = pos2d - Vec2f(area/2, area);
 	Vec2f br = pos2d + Vec2f(area/2, 0);
-	f32 factor = tilesize/24.0f*0.5f;
+	f32 factor = tilesize/chess_texturepack_size.x * 0.5f;
 
 	// disable visual render
 	bool rendering = local !is null;
 	if (local !is null && !local.isAttachedTo(this))
 	{
 		Vec2f mpos = driver.getWorldPosFromScreenPos(getControls().getInterpMouseScreenPos());
-		if ((mpos-thispos).Length() > this.getRadius()+4.0f) rendering = false;
+		if ((mpos-thispos).Length() > this.getRadius() + 4.0f) rendering = false;
 	}
 
 	if (rendering)
@@ -560,13 +606,13 @@ void onRender(CSprite@ sprite)
 		bool not_empty = p !is null && p.type != Chess::EMPTY;
 
 		Vec2f tile_offset = Vec2f(f32(x) * tilesize, f32(y) * tilesize) + tl;
-		if (my_p1) // Mirror the board for black player
+		if (my_p1) // Mirror the board for black team
 		{
 			tile_offset = Vec2f(f32(7 - x) * tilesize, f32(7 - y) * tilesize) + tl;
 		}
 		if (not_empty)
 		{
-			Vec2f pos = driver.getWorldPosFromScreenPos(tile_offset - Vec2f(7, 8) * factor);
+			Vec2f pos = driver.getWorldPosFromScreenPos(tile_offset);
 			if (p.icon_pos == Vec2f_zero) p.icon_pos = pos;
 
 			p.icon_pos = Vec2f_lerp(p.icon_pos, pos, lerp);
@@ -661,7 +707,8 @@ class Board // breaks solid, but who cares
 
 	void render_icon(f32 factor)
 	{
-		GUI::DrawIcon("ChessPieces.png", type-1+color*6, Vec2f(32,32), getDriver().getScreenPosFromWorldPos(icon_pos), factor);
+		Vec2f pos = getDriver().getScreenPosFromWorldPos(icon_pos) + (chess_texturepack_size - chess_texturepack_size * chess_texturepack_scale) * factor;
+		GUI::DrawIcon(chess_texturepack_name, type-1+color*6, chess_texturepack_size, pos, factor * chess_texturepack_scale);
 	}
 
 	Board@[][] get_board()
