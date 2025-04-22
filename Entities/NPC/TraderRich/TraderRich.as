@@ -81,8 +81,7 @@ const string[] textsIdle =
 	"We used them as parachutes...",
 	"It's a rough life with the UPF out there.",
 	"I supply only the finest goods.",
-	"Are you a wizard?",
-	"I hate niggers!"
+	"Are you a wizard?"
 };
 
 const string[] textsDanger = 
