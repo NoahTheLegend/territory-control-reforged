@@ -156,7 +156,7 @@ void onInit(CBlob@ this)
 		s.spawnNothing = true;
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Chess Table", "$chess$", "chess", "Chess table:\n\nChess.\nWrite !chesstexturepack for texturepacks tooltip.", true);
+		ShopItem@ s = addShopItem(this, "Chess Table", "$chess$", "chess", "Chess table:\n\nChess.\nWrite @chesstexturepack for texturepacks tooltip.", true);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 500);
 
 		s.spawnNothing = true;
