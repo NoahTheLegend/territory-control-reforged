@@ -170,8 +170,13 @@ void onTick(CBlob@ this)
 			//print("syncing this guy "+player.getUsername());
 			
 			CBlob@ player_blob = player.getBlob();
-			
 			if (player_blob is null) continue;
+			if (player_blob.get_u8("deity_id") != Deity::none && player_blob.get_u8("deity_id") != Deity::leutnant) continue;
+			{
+				new_fanatics.removeAt(idx);
+				idx--;
+				continue;
+			}
 			
 			//player_blob.set_u8("deity_id", Deity::leutnant);
 			//player_blob.set_f32("deity_power", this.get_f32("deity_power"));
@@ -182,6 +187,8 @@ void onTick(CBlob@ this)
 			params.write_u16(player_blob.getNetworkID());
 			this.SendCommand(this.getCommandID("update my fanatics"), params);
 		}
+
+		this.set("fanatics", new_fanatics);
 	}
 	u32 genocidal_points = Maths::Min(power / 100, fakemax);
 	f32 additional_defense_percent = genocidal_points*0.001*5;
