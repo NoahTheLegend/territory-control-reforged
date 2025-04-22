@@ -150,79 +150,86 @@ void ReloadHead(CSprite@ this)
 			head_index = 101;
 		}
 		
-		if (ply.getUsername() == "PURPLExeno")
+		else if (ply.getUsername() == "PURPLExeno")
 		{	
 		
 			head_index = 109;
 
 		}
 		
-		if (ply.getUsername() == "ZOMBICEK")
+		else if (ply.getUsername() == "ZOMBICEK")
 		{	
 		
 			head_index = 110;
 
 		}
 		
-		if (ply.getUsername() == "Killy07")
+		else if (ply.getUsername() == "Killy07")
 		{	
 			head_index = 111;
 		}
 		
-		if (ply.getUsername() == "reqzites")
+		else if (ply.getUsername() == "reqzites")
 		{	
 		
 			head_index = 112;
 
 		}
-		
-		if (ply.getUsername() == "NoahTheLegend")
-		{	
-		
-			head_index = 113;
 
+		else if (ply.getUsername() == "arsenpip")
+		{
+			head_index = 127;
 		}
 
-		if (ply.getUsername() == "Markoss")
+		else if (ply.getUsername() == "kusaka79")
+		{
+			head_index = 128;
+		}
+		
+		else if (ply.getUsername() == "NoahTheLegend")
+		{	
+		
+			head_index = 129;
+		}
+
+		else if (ply.getUsername() == "Markoss")
 		{	
 		
 			head_index = 122;
 		}
 
-		if (ply.getUsername() == "Bohdanu")
+		else if (ply.getUsername() == "Bohdanu")
 		{	
 		
 			head_index = 123;
 		}
 		
-		if (ply.getUsername() == "cbryant21")
+		else if (ply.getUsername() == "cbryant21")
 		{	
 		
 			head_index = 36;
 
 		}
 		
-		if (ply.getUsername() == "FrankStain")
+		else if (ply.getUsername() == "FrankStain")
 		{	
 		
 			head_index = 116;
 
 		}
 		
-		if (ply.getUsername() == "GoldenGuy")
+		else if (ply.getUsername() == "GoldenGuy")
 		{	
 		
 			head_index = 118;
 
 		}
 		
-		if (ply.getUsername() == "TheCustomerMan")
-		{	
-		
-			head_index = 119;
-
-		}
-		if (ply.getUsername() == "strangelizard")
+		//if (ply.getUsername() == "TheCustomerMan")
+		//{	
+		//	head_index = 119;
+		//}
+		else if (ply.getUsername() == "strangelizard")
 		{	
 		
 			head_index = 126;
