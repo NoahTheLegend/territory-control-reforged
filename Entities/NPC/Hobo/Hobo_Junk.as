@@ -4,7 +4,7 @@
 
 // defines amount of damage as well as maximum separate hits
 // - in terms of this's health. see config
-const f32 ROCK_DAMAGE = 0.125f;
+const f32 ROCK_DAMAGE = 0.0f;
 
 u32 g_lastplayedsound = 0;
 
