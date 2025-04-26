@@ -61,15 +61,15 @@ void onTick(CBlob@ this)
 		RunnerMoveVars@ moveVars;
 		if (this.get("moveVars", @moveVars))
 		{
-			moveVars.walkFactor *= 1.50f * modifier;
-			moveVars.jumpFactor *= 1.50f * modifier;
+			moveVars.walkFactor *= 1.30f * modifier;
+			moveVars.jumpFactor *= 1.40f * modifier;
 		}	
 				
 		if (modifier >= 1)
 		{
-			if (this.getTickSinceCreated() % 30 == 0)
+			if (this.getTickSinceCreated() % 40 == 0)
 			{
-				f32 maxHealth = Maths::Ceil(this.getInitialHealth() * 2.00f);
+				f32 maxHealth = Maths::Ceil(this.getInitialHealth() * 1.50f);
 				if (this.getHealth() < maxHealth)
 				{				
 					if (isServer())
