@@ -313,6 +313,7 @@ const string[] rolling = { // from 0 to 2500, as bigger value as more chance to 
     "mat_mithrilbomb-1150",
     "mat_plasteel-1500",
     "mat_stone-2500",
+    "mat_mithrilingot-2250",
     "mat_sulphur-1250",
     "molecularfabricator-750",
     "oof-650",
@@ -342,7 +343,6 @@ const u16[] valAsteroid = {
     900,
     1500,
     1400,
-    1000,
     75,
     1, //infernal stone
     1, //amogi
@@ -350,18 +350,16 @@ const u16[] valAsteroid = {
 };
 // yields are the random increasing amount, as more it is (from 1 to 1000), as more mats it can summon with a random chance
 const u16[] yieldAsteroid = { // depending on the value
-    200,
-    75,
-    75,
-    225,
-    90,
-    275, // mithril
-    500,
-    300,
-    150,
-    0,
-    0,
-    0
+   200, // iron
+    75, // copper
+    75, // gold
+    225, // concrete
+    90, // mithril
+    275, // sulphur
+    100, //mithril ingots
+    0, //infernal stone
+    0, // amogi
+    0 //covfefe
 };
 
 const string[] matMoon = {
