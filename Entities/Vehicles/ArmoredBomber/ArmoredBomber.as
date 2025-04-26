@@ -1,5 +1,6 @@
 #include "VehicleCommon.as"
 #include "Hitters.as"
+#include "HittersTC.as";
 #include "Explosion.as";
 
 //most of the code is in BomberCommon.as
@@ -166,11 +167,11 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			dmg *= 0.25f;
 			break;
 		case Hitters::bomb:
-			dmg *= 3.0f;
+			dmg *= 6.0f;
 			break;
 		case Hitters::keg:
 		case Hitters::explosion:
-			dmg *= 3.0f;
+			dmg *= 7.0f;
 			break;
 		case Hitters::bomb_arrow:
 			dmg *= 3.00f;
