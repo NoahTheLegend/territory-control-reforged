@@ -123,7 +123,7 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks)
 	}
 	{	//Report fil, he stole my fireplace // Ye ~Fil
 		BuildBlock b(0, "fireplace", "$fireplace$", "Campfire\nCan be used to cook various foods.");
-		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 50);
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 25);
 		AddRequirement(b.reqs, "blob", "mat_wood", "Wood", 50);
 		b.buildOnGround = true;
 		b.size.Set(16, 16);
@@ -131,7 +131,7 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks)
 	}
 	{
 		BuildBlock b(CMap::tile_bricks, "bricks", "$bricks_block$", "Fancy and cheap bricks.\n");
-		AddRequirement(b.reqs, "blob", "mat_dirt", "Dirt", 5);
+		AddRequirement(b.reqs, "blob", "mat_dirt", "Dirt", 3);
 		blocks[0].push_back(b);
 	}
 	{
