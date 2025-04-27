@@ -14,11 +14,11 @@ void onInit(CBlob@ this)
 	//settings.CLIP = 0; //Amount of ammunition in the gun at creation
 	settings.TOTAL = 1; //Max amount of ammo that can be in a clip
 	settings.FIRE_INTERVAL = 10; //Time in between shots
-	settings.RELOAD_TIME = 45; //Time it takes to reload (in ticks)
+	settings.RELOAD_TIME = 35; //Time it takes to reload (in ticks)
 	settings.AMMO_BLOB = "mat_banditammo"; //Ammunition the gun takes
 
 	//Bullet
-	//settings.B_PER_SHOT = 1; //Shots per bullet | CHANGE B_SPREAD, otherwise both bullets will come out together
+	settings.B_PER_SHOT = 1; //Shots per bullet | CHANGE B_SPREAD, otherwise both bullets will come out together
 	//settings.B_SPREAD = 4; //the higher the value, the more 'uncontrollable' bullets get
 	settings.B_GRAV = Vec2f(0, 0.001); //Bullet gravity drop
 	settings.B_SPEED = 100; //Bullet speed, STRONGLY AFFECTED/EFFECTS B_GRAV
