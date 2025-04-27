@@ -36,7 +36,7 @@ void onInit(CBlob@ this)
 	//this.set_Vec2f("class offset", Vec2f(-6, 0));
 	//this.set_string("required class", "pus");
     {
-        ShopItem@ s = addShopItem(this, "Decorative Plant", "$decorativeplant$", "decorativeplant", "Decorative Plant.", true);
+        ShopItem@ s = addShopItem(this, "Decorative Plant", "$decorativeplant$", "decorativeplant", "A perfect decoration for your base.", true);
         AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 125);
 		AddRequirement(s.requirements, "blob", "mat_dirt", "Dirt", 20);
 		AddRequirement(s.requirements, "coin", "", "Coins", 100);

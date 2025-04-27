@@ -27,7 +27,7 @@ void onInit(CBlob@ this)
 	// getMap().server_SetTile(this.getPosition(), CMap::tile_wood_back);
 	
 	AddIconToken("$grainplant$", "NurseryIcons.png", Vec2f(16, 30), 0);
-	AddIconToken("$ganjaplant$", "NurseryIcons.png", Vec2f(20, 30), 1);
+	AddIconToken("$ganjaplant$", "NurseryIcons.png", Vec2f(20, 30), 4);
 	AddIconToken("$flowerplant$", "NurseryIcons.png", Vec2f(16, 16), 3);
 
 	this.set_Vec2f("shop offset", Vec2f(0,0));
