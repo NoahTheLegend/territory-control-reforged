@@ -302,87 +302,29 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						int cost_coins;
 						string blob_name;
 						CBitStream reqs, missing;
-						
-						//blobName = blobName.replace("repair_", "");
-						if (spll[1] == "nvd" || spll[1] == "jumpshoes")
-						{
-							if (spll[1] == "nvd") cost_coins = 75;
-							else cost_coins = 150;
-							blob_name = spll[1];
-						}
-						else 
-						{
-							type = spll[1] == "head" ? 0 : spll[1] == "body" ? 1 : 2;
-							armor = spll[2] == "steel" ? 0 : spll[2] == "carbon" ? 1 : 2;
-							cost_coins = costs[type + 3*armor];
-							blob_name = repair_blobnames[type+3*armor];
-						}
 
-						string headname = callerBlob.get_string("equipment_head");
-						string torsoname = callerBlob.get_string("equipment_torso");
-						string torso2name = callerBlob.get_string("equipment2_torso");
-						string bootsname = callerBlob.get_string("equipment_boots");
+						type = spll[1] == "head" ? 0 : spll[1] == "body" ? 1 : 2;
+						armor = spll[2] == "steel" ? 0 : spll[2] == "carbon" ? 1 : 2;
+						cost_coins = costs[type + 3*armor];
+						blob_name = repair_blobnames[type+3*armor];
+
 						//print('headname: '+callerBlob.get_f32(headname+"_health"));
 						//print('torsoname: '+callerBlob.get_f32(torsoname+"_health"));
 						//print('torso2name: '+callerBlob.get_f32(torso2name+"_health"));
 						//print('bootsname: '+callerBlob.get_f32(bootsname+"_health"));
 
-
-						if (headname == blob_name && callerBlob.get_f32(headname+"_health") != 0) 
-						{
-							AddRequirement(reqs, "coin", "", "Coins", cost_coins);
-							if (hasRequirements(callerBlob.getInventory(), reqs, missing)) 
-							{
-								server_TakeRequirements(callerBlob.getInventory(),reqs);
-								this.SendCommand(this.getCommandID("make sound1"));
-								callerBlob.set_f32(headname+"_health", 0);
-							}
-							else this.SendCommand(this.getCommandID("make sound"));
-							return;
-						}
-						if ((torsoname == blob_name || torso2name == blob_name))	 
-						{	
-							if (torsoname == torso2name && (callerBlob.get_f32(torsoname+"_health") != 0 || callerBlob.get_f32(torso2name+"_health") != 0))
-							{
-								AddRequirement(reqs, "coin", "", "Coins", cost_coins*2);
-								if (hasRequirements(callerBlob.getInventory(), reqs, missing)) 
-								{
-									server_TakeRequirements(callerBlob.getInventory(),reqs);
-									this.SendCommand(this.getCommandID("make sound1"));
-									callerBlob.set_f32(torsoname+"_health", 0);
-								}
-								else this.SendCommand(this.getCommandID("make sound"));
-							}
-							else 
-							{
-								if (callerBlob.get_f32(blob_name+"_health") != 0)
-								{
-									AddRequirement(reqs, "coin", "", "Coins", cost_coins);
-									if (hasRequirements(callerBlob.getInventory(), reqs, missing))
-									{
-										server_TakeRequirements(callerBlob.getInventory(),reqs);
-										this.SendCommand(this.getCommandID("make sound1"));
-										callerBlob.set_f32(blob_name+"_health", 0);
-										return;
-									}
-								}	
-								this.SendCommand(this.getCommandID("make sound"));
-							}
-							return;
-						}
-						if (bootsname == blob_name && callerBlob.get_f32(bootsname+"_health") != 0) 
+						if (callerBlob.get_f32(blob_name+"_health") != 0)
 						{
 							AddRequirement(reqs, "coin", "", "Coins", cost_coins);
 							if (hasRequirements(callerBlob.getInventory(), reqs, missing))
 							{
 								server_TakeRequirements(callerBlob.getInventory(),reqs);
 								this.SendCommand(this.getCommandID("make sound1"));
-								callerBlob.set_f32(bootsname+"_health", 0);
+								callerBlob.set_f32(blob_name+"_health", 0);
+								callerBlob.Sync(blob_name+"_health", true);
+								return;
 							}
-							else this.SendCommand(this.getCommandID("make sound"));
-							//this.getSprite().PlaySound("ConstructShort");
-							return;
-						}
+						}	
 
 						if (callerBlob.getInventory().getItem(blob_name) !is null) 
 						{
