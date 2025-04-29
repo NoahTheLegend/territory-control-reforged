@@ -183,7 +183,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 	CBlob@[] factionBases;
 	CBlob@[] backpacks;
 	
-	bool storageEnabled = false;
+	bool storageEnabled, safe_storageEnabled = false;
 	bool hasBackpack = false;
 	
 	if (playerBlob !is null)
@@ -213,7 +213,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 				getBlobsByTag("remote_storage", @baseBlobs);
 				for (int i = 0; i < baseBlobs.length; i++)
 				{
-					if (baseBlobs[i].getName() != "safe" && baseBlobs[i].getTeamNum() != playerTeam)
+					if ((baseBlobs[i].getName() == "safe" ? safe_storageEnabled ? false : true : true) && baseBlobs[i].getTeamNum() != playerTeam)
 					{
 						baseBlobs.erase(i);
 						i--;
@@ -270,6 +270,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 							{	
 								baseBlobs.push_back(baseBoobs[i]);
 								storageEnabled = true;
+								safe_storageEnabled = true;
 								break;
 							}
 						}
@@ -489,7 +490,7 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 	CBlob@[] baseBlobs;
 	CBlob@[] backpacks;
 	
-	bool storageEnabled = false;
+	bool storageEnabled, safe_storageEnabled = false;
 	bool hasBackpack = false;
 
 	if (playerBlob !is null)
@@ -542,7 +543,8 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 							if (playerBlob.getPlayer().getUsername() == spl[j] || playerBlob.getPlayer().getUsername() == baseBoobs[i].get_string("Owner"))
 							{
 								baseBlobs.push_back(baseBoobs[i]);
-								storageEnabled = true;
+								storageEnabled = true; 
+								safe_storageEnabled = true;
 								break;
 							}
 						}
@@ -565,7 +567,7 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 			getBlobsByTag("remote_storage", @baseBlobs);
 			for (int i = 0; i < baseBlobs.length; i++)
 			{
-				if (baseBlobs[i].getName() != "safe" && baseBlobs[i].getTeamNum() != playerTeam)
+				if ((baseBlobs[i].getName() == "safe" ? safe_storageEnabled ? false : true : true) && baseBlobs[i].getTeamNum() != playerTeam)
 				{
 					baseBlobs.erase(i);
 					i--;
