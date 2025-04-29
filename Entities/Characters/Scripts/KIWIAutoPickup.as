@@ -1,4 +1,4 @@
-//#define SERVER_ONLY
+// script by Skemonde
 
 #include "GunCommon"
 
@@ -17,12 +17,6 @@ bool EngiPickup(CBlob@ this, CBlob@ item)
 	if (!this.hasScript("BlockPlacement.as")) return false;
 	
 	return item.hasScript("MaterialStandard.as") && !item.hasTag("ammo");
-}
-
-bool SoldiPickup(CBlob@ this)
-{
-	if (this.getName()!="soldat") return false;
-	return false;
 }
 
 void Take(CBlob@ this, CBlob@ blob)
@@ -91,12 +85,22 @@ void Take(CBlob@ this, CBlob@ blob)
 			
 			//if we managed to put a blob in our inventory but then we can't store our carried - pulling that blob back
 			if (carried !is null) {
-				if (!this.server_PutInInventory(carried)) {
-					this.server_PutOutInventory(blob);
-					blob.setPosition(blob_old_pos);
-				} else {
-					this.server_Pickup(carried);
-				}
+				if (!blob.hasTag("weapon")) {
+					if (!this.server_PutInInventory(carried)) {
+						this.server_PutOutInventory(blob);
+						blob.setPosition(blob_old_pos);
+					} else {
+						this.server_Pickup(carried);
+					}} else {
+						CInventory@ inv = this.getInventory();
+						Vec2f inventory_slots = inv.getInventorySlots();
+						int max_slots = inventory_slots.x * inventory_slots.y;
+						int width = blob.inventoryFrameDimension.x;
+
+						if (width <= 0 || width >= max_slots) return;
+						if (inv.getItem(max_slots - width) is null)
+							this.server_Pickup(carried);
+					}
 			}
 			//not keeping this tag
 			SendTagCommand(this, blob_id);
