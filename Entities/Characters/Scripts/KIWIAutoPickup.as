@@ -83,9 +83,6 @@ void Take(CBlob@ this, CBlob@ blob)
 			s32 blob_id = -1;
 			if (carried !is null && this.isMyPlayer())
 				blob_id = carried.getNetworkID();
-			
-			//tagging so gun doesn't stop reloading
-			SendTagCommand(this, blob_id);
 
 			if (carried !is null)
 			{
@@ -95,6 +92,9 @@ void Take(CBlob@ this, CBlob@ blob)
 					return;
 				}
 			}
+
+			//tagging so gun doesn't stop reloading
+			SendTagCommand(this, blob_id);
 			
 			//if inventory is full to the brim
 			if (!this.server_PutInInventory(blob)) {

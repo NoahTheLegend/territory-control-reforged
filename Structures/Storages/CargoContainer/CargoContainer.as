@@ -4,7 +4,6 @@ void onInit(CBlob@ this)
 {
 	this.getSprite().SetZ(-10.0f);
 	
-	
 	this.inventoryButtonPos = Vec2f(-22, 0);
 	this.set_Vec2f("store_offset", Vec2f(4, 0));
 	this.Tag("remote_storage");
@@ -170,7 +169,7 @@ void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu@ gridmenu)
 
 	Vec2f mscpos = forBlob.getControls().getMouseScreenPos(); 
 
-	Vec2f MENU_POS = mscpos+Vec2f(-424,-168);
+	Vec2f MENU_POS = mscpos+Vec2f(-416,-168);
 	CGridMenu@ sv = CreateGridMenu(MENU_POS, this, Vec2f(1, 1), "Store ");
 	
 	CBitStream params;

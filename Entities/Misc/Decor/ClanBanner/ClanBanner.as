@@ -172,7 +172,7 @@ void onTick(CBlob@ this)
     if (isClient())
     {
         string tex_name = "banner"+this.getNetworkID();
-        if (!Texture::exists(tex_name))
+        if (this.isOnScreen() && !Texture::exists(tex_name))
         {
             CBitStream params;
             this.SendCommand(this.getCommandID("init_sync"), params);

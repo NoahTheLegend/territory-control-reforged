@@ -41,7 +41,4 @@ void onInit(CBlob@ this)
 	settings.MUZZLE_OFFSET = Vec2f(-21, -1.8); //Where the muzzle flash appears
 
 	this.set("gun_settings", @settings);
-
-	//Custom
-	this.set_u8("CustomKnock", 8);
 }

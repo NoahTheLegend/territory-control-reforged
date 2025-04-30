@@ -93,7 +93,7 @@ void DoExplosion(CBlob@ this)
 		{
 			boom.setPosition(this.getPosition());
 			boom.set_u8("boom_start", 10);
-			boom.set_u8("boom_end", 30);
+			boom.set_u8("boom_end", 45);
 			boom.set_u8("boom_frequency", 1);
 			boom.set_u32("boom_delay", 0);
 			boom.set_u32("flash_delay", 0);

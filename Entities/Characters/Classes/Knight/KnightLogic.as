@@ -87,9 +87,9 @@ void onInit(CBlob@ this)
 	this.getShape().getConsts().net_threshold_multiplier = 0.5f;
 	this.Tag("player");
 	this.Tag("flesh");
+	this.set_u8("charge_increment", 1);
 
 	this.addCommandID("activate/throw bomb");
-
 	this.push("names to activate", "keg");
 
 	this.set_u8("bomb type", 255);
@@ -166,7 +166,6 @@ void RunStateMachine(CBlob@ this, KnightInfo@ knight, RunnerMoveVars@ moveVars)
 					this.set_s32("currentKnightState", serverStateIndex);
 					currentStateIndex = serverStateIndex;
 				}
-
 			}
 		}
 	}
@@ -742,12 +741,13 @@ class ShieldSlideState : KnightState
 	}
 }
 
-s32 getSwordTimerDelta(KnightInfo@ knight)
+s32 getSwordTimerDelta(CBlob@ this, KnightInfo@ knight)
 {
 	s32 delta = knight.swordTimer;
 	if (knight.swordTimer < 128)
 	{
-		knight.swordTimer++;
+		u8 increment = Maths::Min(2, this.get_u8("charge_increment"));
+		knight.swordTimer += increment;
 	}
 	return delta;
 }
@@ -814,7 +814,7 @@ class SwordDrawnState : KnightState
 		}
 
 		AttackMovement(this, knight, moveVars);
-		s32 delta = getSwordTimerDelta(knight);
+		s32 delta = getSwordTimerDelta(this, knight);
 
 		if (!pressed_a1(this))
 		{
@@ -882,7 +882,7 @@ class CutState : KnightState
 		this.Tag("prevent crouch");
 
 		AttackMovement(this, knight, moveVars);
-		s32 delta = getSwordTimerDelta(knight);
+		s32 delta = getSwordTimerDelta(this, knight);
 
 		if (delta == DELTA_BEGIN_ATTACK)
 		{
@@ -962,7 +962,7 @@ class SlashState : KnightState
 		this.Tag("prevent crouch");
 
 		AttackMovement(this, knight, moveVars);
-		s32 delta = getSwordTimerDelta(knight);
+		s32 delta = getSwordTimerDelta(this, knight);
 
 		if (knight.state == KnightStates::sword_power_super
 			&& pressed_a1(this))
@@ -1042,7 +1042,7 @@ class ResheathState : KnightState
 		}
 
 		AttackMovement(this, knight, moveVars);
-		s32 delta = getSwordTimerDelta(knight);
+		s32 delta = getSwordTimerDelta(this, knight);
 
 		if (delta > time)
 		{

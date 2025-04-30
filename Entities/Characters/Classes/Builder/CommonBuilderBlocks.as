@@ -269,18 +269,23 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 		blocks[0].push_back(b);
 	}
 	{
-		BuildBlock b(0, "spikes", "$spikes$", "Spikes:\n\nPlace on Stone Block\nfor Retracting Trap");
-		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 30);
-		blocks[0].push_back(b);
-	}
-	{
 		BuildBlock b(0, "trap_block", "$icon_trapblock$", "Trap Block:\n\nOnly enemies can pass it.");
 		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 25);
 		blocks[0].push_back(b);
 	}
 	{
+		BuildBlock b(0, "spikes", "$spikes$", "Spikes:\n\nPlace on Stone Block\nfor Retracting Trap");
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 30);
+		blocks[0].push_back(b);
+	}
+	{
 		BuildBlock b(0, "iron_trap_block", "$icon_irontrapblock$", "Trap Block:\n\nOnly enemies can pass it like the regular trap block, but it's more durable.");
 		AddRequirement(b.reqs, "blob", "mat_ironingot", "Iron ingot", 8);
+		blocks[0].push_back(b);
+	}
+	{
+		BuildBlock b(0, "iron_platform", "$icon_ironplatform$", "Iron Platform:\n\nReinforced one-way platform. Unbreakable by peasants.");
+		AddRequirement(b.reqs, "blob", "mat_ironingot", "Iron Ingots", 3);
 		blocks[0].push_back(b);
 	}
 	{
@@ -291,11 +296,6 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int teamnum = 7)
 	{
 		BuildBlock b(0, "plasteel_door", "$icon_plasteel_door$", "Plasteel Door:\n\nAn extremely durable plasteel door.\nDoesn't have to be placed next to walls!");
 		AddRequirement(b.reqs, "blob", "mat_plasteel", "Plasteel Sheet", 8);
-		blocks[0].push_back(b);
-	}
-	{
-		BuildBlock b(0, "iron_platform", "$icon_ironplatform$", "Iron Platform:\n\nReinforced one-way platform. Unbreakable by peasants.");
-		AddRequirement(b.reqs, "blob", "mat_ironingot", "Iron Ingots", 3);
 		blocks[0].push_back(b);
 	}
 	{

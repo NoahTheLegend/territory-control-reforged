@@ -343,6 +343,9 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 {
 	switch (customData)
 	{
+		case Hitters::explosion:
+			return damage * 0.5f;
+			break;
 		case HittersTC::radiation:
 			return 0;
 			break;

@@ -12,7 +12,6 @@ void onInit(CBlob@ this)
 {
 	this.getCurrentScript().removeIfTag = "dead";
 	this.Tag("medium weight");
-	this.Tag("grapplable");
 
 	this.addCommandID("jetpackv1_effects_client");
 	this.addCommandID("jetpackv1_effects");

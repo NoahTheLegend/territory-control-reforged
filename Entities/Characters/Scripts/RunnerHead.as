@@ -188,52 +188,42 @@ void ReloadHead(CSprite@ this)
 		
 		else if (ply.getUsername() == "NoahTheLegend")
 		{	
-		
 			head_index = 129;
+		}
+		
+		else if (ply.getUsername() == "vladkvs193")
+		{
+			head_index = 130;
 		}
 
 		else if (ply.getUsername() == "Markoss")
 		{	
-		
 			head_index = 122;
 		}
 
 		else if (ply.getUsername() == "Bohdanu")
 		{	
-		
 			head_index = 123;
 		}
 		
 		else if (ply.getUsername() == "cbryant21")
 		{	
-		
 			head_index = 36;
-
 		}
 		
 		else if (ply.getUsername() == "FrankStain")
 		{	
-		
 			head_index = 116;
-
 		}
 		
 		else if (ply.getUsername() == "GoldenGuy")
 		{	
-		
 			head_index = 118;
-
 		}
 		
-		//if (ply.getUsername() == "TheCustomerMan")
-		//{	
-		//	head_index = 119;
-		//}
 		else if (ply.getUsername() == "strangelizard")
 		{	
-		
 			head_index = 126;
-
 		}
 		
 		u8 deity_id = blob.get_u8("deity_id");

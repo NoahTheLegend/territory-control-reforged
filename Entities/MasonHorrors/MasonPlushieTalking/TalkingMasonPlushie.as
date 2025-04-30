@@ -59,8 +59,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	if (this.getDistanceTo(caller) > 96.0f) return;
 
 	AttachmentPoint@ pickup = this.getAttachments().getAttachmentPointByName("PICKUP");
-	if (pickup !is null) return;
-
+	if (pickup is null) return;
 	if (this.isAttached() && caller !is pickup.getOccupied()) return;
 
  	CBitStream params;
