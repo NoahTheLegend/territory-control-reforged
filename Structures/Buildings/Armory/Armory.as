@@ -6,6 +6,7 @@
 #include "CheckSpam.as";
 #include "CTFShopCommon.as";
 #include "MakeMat.as";
+#include "ArmorCommon.as";
 
 Random traderRandom(Time());
 
@@ -239,7 +240,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 }
 
 const int[] costs = {75,150,50,250,250,150,500,500,500};
-const string[] repair_blobnames = {"militaryhelmet", "bulletproofvest", "combatboots", "carbonhelmet", "carbonvest", "carbonboots", "wilmethelmet", "wilmetvest", "wilmetboots"};
+const string[] repair_blobnames = {"militaryhelmet", "bulletproofvest", "combatboots", "carbonhelmet", "carbonvest", "carbonboots"};
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
@@ -294,75 +295,72 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				string blobName = spl[0];
 				
 				if (spll[0] == "repair")
-					{	
-						
+				{	
+					int type;
+					int armor;
+					int cost_coins;
+					string blob_name;
+					CBitStream reqs, missing;
 
-						int type;
-						int armor;
-						int cost_coins;
-						string blob_name;
-						CBitStream reqs, missing;
+					type = spll[1] == "head" ? 0 : spll[1] == "body" ? 1 : 2;
+					armor = spll[2] == "steel" ? 0 : spll[2] == "carbon" ? 1 : 0;
+					cost_coins = costs[type + 3*armor];
+					blob_name = repair_blobnames[type+3*armor];
 
-						type = spll[1] == "head" ? 0 : spll[1] == "body" ? 1 : 2;
-						armor = spll[2] == "steel" ? 0 : spll[2] == "carbon" ? 1 : 2;
-						cost_coins = costs[type + 3*armor];
-						blob_name = repair_blobnames[type+3*armor];
-
-						//print('headname: '+callerBlob.get_f32(headname+"_health"));
-						//print('torsoname: '+callerBlob.get_f32(torsoname+"_health"));
-						//print('torso2name: '+callerBlob.get_f32(torso2name+"_health"));
-						//print('bootsname: '+callerBlob.get_f32(bootsname+"_health"));
-
-						if (callerBlob.get_f32(blob_name+"_health") != 0)
+					if (callerBlob.get_f32(blob_name+"_health") != 0)
+					{
+						AddRequirement(reqs, "coin", "", "Coins", cost_coins);
+						if (hasRequirements(callerBlob.getInventory(), reqs, missing))
 						{
-							AddRequirement(reqs, "coin", "", "Coins", cost_coins);
+							server_TakeRequirements(callerBlob.getInventory(), reqs);
+							this.SendCommand(this.getCommandID("make sound1"));
+							
+							f32 max_hp, min_hp;
+							SetArmorHealth(this, blob_name, max_hp, min_hp);
+
+							callerBlob.set_f32(blob_name+"_health", max_hp);
+							callerBlob.Sync(blob_name+"_health", true);
+							return;
+						}
+					}	
+
+					if (callerBlob.getInventory().getItem(blob_name) !is null) 
+					{
+						CBlob@ item_blob = callerBlob.getInventory().getItem(blob_name);
+						if (item_blob.get_f32("health") != 0)
+						{
+							AddRequirement(reqs, "coin", "", "Coins", cost_coins);	
 							if (hasRequirements(callerBlob.getInventory(), reqs, missing))
 							{
 								server_TakeRequirements(callerBlob.getInventory(),reqs);
 								this.SendCommand(this.getCommandID("make sound1"));
-								callerBlob.set_f32(blob_name+"_health", 0);
-								callerBlob.Sync(blob_name+"_health", true);
+								item_blob.set_f32("health", 0);
 								return;
-							}
-						}	
-
-						if (callerBlob.getInventory().getItem(blob_name) !is null) 
-						{
-							CBlob@ item_blob = callerBlob.getInventory().getItem(blob_name);
-							if (item_blob.get_f32("health") != 0)
-							{
-								AddRequirement(reqs, "coin", "", "Coins", cost_coins);	
-								if (hasRequirements(callerBlob.getInventory(), reqs, missing))
-								{
-									server_TakeRequirements(callerBlob.getInventory(),reqs);
-									this.SendCommand(this.getCommandID("make sound1"));
-									item_blob.set_f32("health", 0);
-									return;
-								}			
-								else this.SendCommand(this.getCommandID("make sound"));
-							}
-							else 
-							{
-								this.SendCommand(this.getCommandID("make sound"));
-								return;				
-							}
-						}
-						
-						AddRequirement(reqs, "blob", blob_name, blob_name, 1);
-						AddRequirement(reqs, "coin", "", "Coins", cost_coins);
-						if (hasRequirements(callerBlob.getInventory(), reqs, missing))
-						{
-							server_TakeRequirements(callerBlob.getInventory(),reqs);
-							this.SendCommand(this.getCommandID("make sound1"));
-							blobName = blob_name;
-							//this.getSprite().PlaySound("ConstructShort");
+							}			
+							else this.SendCommand(this.getCommandID("make sound"));
 						}
 						else 
 						{
-							this.SendCommand(this.getCommandID("make sound")); //Sound::Play("NoAmmo.ogg");
-							return;
+							this.SendCommand(this.getCommandID("make sound"));
+							return;				
 						}
 					}
+					
+					AddRequirement(reqs, "blob", blob_name, blob_name, 1);
+					AddRequirement(reqs, "coin", "", "Coins", cost_coins);
+					if (hasRequirements(callerBlob.getInventory(), reqs, missing))
+					{
+						server_TakeRequirements(callerBlob.getInventory(),reqs);
+						this.SendCommand(this.getCommandID("make sound1"));
+						blobName = blob_name;
+						//this.getSprite().PlaySound("ConstructShort");
+					}
+					else 
+					{
+						this.SendCommand(this.getCommandID("make sound")); //Sound::Play("NoAmmo.ogg");
+						return;
+					}
+				}
 				
 				bool mask = false;
 				if (blobName == "bushyhelm")

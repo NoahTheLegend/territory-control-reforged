@@ -31,15 +31,7 @@ void onTick(CBlob@ this)
 		UpdateScript(this);
 		this.set_string("reload_script", "");
 	}
-
-	if (this.get_f32("fedora_health") >= 10.0f)
-	{
-		this.getSprite().PlaySound("woodheavyhit1");
-		this.set_string("equipment_head", "");
-		this.set_f32("fedora_health", 9.9f);
-		this.RemoveScript("fedora_effect.as");
-	}
-
+	
 	CSpriteLayer@ fedora = this.getSprite().getSpriteLayer("fedora");
 	
 	if (fedora !is null)

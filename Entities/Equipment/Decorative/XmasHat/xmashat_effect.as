@@ -31,17 +31,8 @@ void onTick(CBlob@ this)
 		UpdateScript(this);
 		this.set_string("reload_script", "");
 	}
-
-	if (this.get_f32("xmashat_health") >= 10.0f)
-	{
-		this.getSprite().PlaySound("woodheavyhit1");
-		this.set_string("equipment_head", "");
-		this.set_f32("xmashat_health", 9.9f);
-		this.RemoveScript("xmashat_effect.as");
-	}
-
-	CSpriteLayer@ xmashat = this.getSprite().getSpriteLayer("xmashat");
 	
+	CSpriteLayer@ xmashat = this.getSprite().getSpriteLayer("xmashat");
 	if (xmashat !is null)
 	{
 		Vec2f headoffset(this.getSprite().getFrameWidth() / 2, -this.getSprite().getFrameHeight() / 2);

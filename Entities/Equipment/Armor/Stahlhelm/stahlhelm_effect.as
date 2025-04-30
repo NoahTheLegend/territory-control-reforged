@@ -41,11 +41,15 @@ void onTick(CBlob@ this)
         stahlhelm.SetOffset(headoffset);
     }
    
-    if(this.get_f32("sh_health") >= 120.0f)
+    f32 hp = this.get_f32("sh_health");
+    f32 max_health = this.get_f32("sh_maxhealth");
+    f32 min_health = this.get_f32("sh_minhealth");
+
+    if(this.get_f32("sh_health") > max_health)
     {
         this.getSprite().PlaySound("ricochet_" + XORRandom(3));
         this.set_string("equipment_head", "");
-        this.set_f32("sh_health", 0.0f);
+        this.set_f32("sh_health", max_health);
 		if (stahlhelm !is null)
 		{
 			this.getSprite().RemoveSpriteLayer("stahlhelm");

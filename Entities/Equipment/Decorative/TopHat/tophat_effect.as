@@ -33,16 +33,7 @@ void onTick(CBlob@ this)
 		this.set_string("reload_script", "");
 	}
 
-	if (this.get_f32("tophat_health") >= 10.0f)
-	{
-		this.getSprite().PlaySound("woodheavyhit1");
-		this.set_string("equipment_head", "");
-		this.set_f32("tophat_health", 9.9f);
-		this.RemoveScript("tophat_effect.as");
-	}
-
 	CSpriteLayer@ tophat = this.getSprite().getSpriteLayer("tophat");
-	
 	if (tophat !is null)
 	{
 		Vec2f headoffset(this.getSprite().getFrameWidth() / 2, -this.getSprite().getFrameHeight() / 2);

@@ -3,15 +3,15 @@ void onTick(CBlob@ this)
     if (this.get_string("reload_script") == "bulletproofvest")
 		this.set_string("reload_script", "");
 	
-	//print("hp: "+this.get_f32("bpv_health"));
+	f32 hp = this.get_f32("bulletproofvest_health");
+    f32 max_health = this.get_f32("bulletproofvest_maxhealth");
+    f32 min_health = this.get_f32("bulletproofvest_minhealth");
 	
-	if (this.get_f32("bulletproofvest_health") >= 100.0f)
-	{
-		this.getSprite().PlaySound("ricochet_" + XORRandom(3));
-		this.set_string("equipment_torso", "");
-		this.set_f32("bulletproofvest_health", 99.9f);
+	if (hp > max_health)
+    {
+        this.getSprite().PlaySound("ricochet_" + XORRandom(3));
+        this.set_string("equipment_torso", "");
+        this.set_f32("bulletproofvest_health", max_health);
 		this.RemoveScript("bulletproofvest_effect.as");
-	}
-	// print("torso: "+this.get_f32("bpv_health"));
+    }
 }
-//all stuff for damage located in FleshHit.as

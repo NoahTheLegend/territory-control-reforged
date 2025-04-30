@@ -154,7 +154,7 @@ void onInit(CBlob@ this)
 
 			case 18:
 			case 19:
-				gun_config = "m40";
+				gun_config = "mp40";
 				ammo_config = "mat_pistolammo";
 
 				this.set_u8("attackDelay", 2);

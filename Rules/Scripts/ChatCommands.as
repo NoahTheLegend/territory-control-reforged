@@ -767,12 +767,6 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 					server_CreateBlob("carbonvest", blob.getTeamNum(), blob.getPosition());
 					server_CreateBlob("carbonboots", blob.getTeamNum(), blob.getPosition());
 				}
-				else if (tokens[0]=="!wilmetarmor")
-				{
-					server_CreateBlob("wilmethelmet", blob.getTeamNum(), blob.getPosition());
-					server_CreateBlob("wilmetvest", blob.getTeamNum(), blob.getPosition());
-					server_CreateBlob("wilmetboots", blob.getTeamNum(), blob.getPosition());
-				}
 				else if (tokens[0]=="!mats")
 				{
 					server_CreateBlob("mat_ironingot", -1, blob.getPosition()).server_SetQuantity(300);

@@ -33,16 +33,7 @@ void onTick(CBlob@ this)
 		this.set_string("reload_script", "");
 	}
 
-	if (this.get_f32("cowboyhat_health") >= 10.0f)
-	{
-		this.getSprite().PlaySound("woodheavyhit1");
-		this.set_string("equipment_head", "");
-		this.set_f32("cowboyhat_health", 9.9f);
-		this.RemoveScript("cowboyhat_effect.as");
-	}
-
 	CSpriteLayer@ cowhat = this.getSprite().getSpriteLayer("cowboyhat");
-	
 	if (cowhat !is null)
 	{
 		Vec2f headoffset(this.getSprite().getFrameWidth() / 2, -this.getSprite().getFrameHeight() / 2);
