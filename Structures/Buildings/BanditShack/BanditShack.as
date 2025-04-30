@@ -43,7 +43,7 @@ void onInit(CBlob@ this)
 	this.set_u8("shop icon", 25);
 
 	{
-		ShopItem@ s = addShopItem(this, "Some Badger", "$badger$", "badger", "I found ths guy under my bed.");
+		ShopItem@ s = addShopItem(this, "A Riding Badger", "$ridingbadger$", "ridingbadger", "This guy won me a few beers when I was young. Press right mouse button to jump.");
 		AddRequirement(s.requirements, "coin", "", "Coins", 1000);
 		s.buttonwidth = 4;
 		s.buttonheight = 1;
