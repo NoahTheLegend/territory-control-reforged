@@ -96,11 +96,6 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", 30);
 		s.spawnNothing = true;
 	}
-	{
-		ShopItem@ s = addShopItem(this, "A chemical book", "$t1_book$", "tips", "A book with drug and chemical laboratories tips in 3 parts.");
-		AddRequirement(s.requirements, "coin", "", "Coins", 7500);
-		s.spawnNothing = true;
-	}
 
 	CSprite@ sprite = this.getSprite();
 

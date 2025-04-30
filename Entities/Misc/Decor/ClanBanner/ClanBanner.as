@@ -1,7 +1,8 @@
+#include "BannerCommon.as"
+
 void onInit(CBlob@ this)
 {
 	this.Tag("builder always hit");
-
     CSpriteLayer@ l = this.getSprite().addSpriteLayer("l", "ClanBannerDecal.png", 16, 32);
     
     this.addCommandID("load_image");
@@ -19,22 +20,26 @@ void onInit(CBlob@ this)
         l.SetRelativeZ(-9.5f);
         l.SetVisible(false);
     }
+
+    this.set_string("last_user", "");
+    this.getCurrentScript().tickFrequency = 90;
 }
 
 void renderCanvas(CBlob@ this, int id)
 {
     if (!this.hasTag("created_texture")) return;
+    Vec2f canvas_size = this.get_Vec2f("canvas_size");
     
     float angle = this.getAngleDegrees();
-    Vec2f pos = this.getPosition() - Vec2f(4, 10).RotateBy(angle);
+    Vec2f pos = this.getPosition() - Vec2f(canvas_size.x/2, canvas_size.y/2).RotateBy(angle);
 
     Vec2f[] v_pos;
     Vec2f[] v_uv;
 
     v_uv.push_back(Vec2f(0, 0)); v_pos.push_back(pos + Vec2f(0, 0).RotateBy(angle)); //tl
-    v_uv.push_back(Vec2f(1, 0)); v_pos.push_back(pos + Vec2f(8, 0).RotateBy(angle)); //tr
-    v_uv.push_back(Vec2f(1, 1)); v_pos.push_back(pos + Vec2f(8, 16).RotateBy(angle)); //br
-    v_uv.push_back(Vec2f(0, 1)); v_pos.push_back(pos + Vec2f(0, 16).RotateBy(angle)); //bl
+    v_uv.push_back(Vec2f(1, 0)); v_pos.push_back(pos + Vec2f(canvas_size.x, 0).RotateBy(angle)); //tr
+    v_uv.push_back(Vec2f(1, 1)); v_pos.push_back(pos + Vec2f(canvas_size.x, canvas_size.y).RotateBy(angle)); //br
+    v_uv.push_back(Vec2f(0, 1)); v_pos.push_back(pos + Vec2f(0, canvas_size.y).RotateBy(angle)); //bl
 
     Render::Quads("banner" + this.getNetworkID(), -5.0f, v_pos, v_uv);
 
@@ -47,21 +52,36 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
     if (cmd == this.getCommandID("sync"))
     {
         if (!isClient()) return;
-        string tex_name = "banner"+this.getNetworkID();
 
-        if(Texture::exists(tex_name))
+        Vec2f canvas_size;
+        if (!params.saferead_Vec2f(canvas_size)) return;
+
+        if (canvas_size.x > max_canvas_size.x
+            || canvas_size.y > max_canvas_size.y)
+                return;
+
+        this.set_Vec2f("canvas_size", canvas_size);
+        int max_size = canvas_size.x * canvas_size.y;
+
+        string last_user = "";
+        if (!params.saferead_string(last_user)) return;
+
+        this.set_string("last_user", last_user);
+        this.setInventoryName("Last artist: "+last_user);
+
+        string tex_name = "banner"+this.getNetworkID();
+        if (Texture::exists(tex_name))
         {
             Texture::destroy(tex_name);
         }
-
-        if (!Texture::createBySize(tex_name, 8, 16))
+        
+        if (!Texture::createBySize(tex_name, canvas_size.x, canvas_size.y))
 		{
 			warn("Texture creation failed");
             return;
 		}
-
+        
         ImageData@ data = Texture::data(tex_name);
-
         if (data is null)
         {
             warn("Image data is null!");
@@ -69,7 +89,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
         }
 
         int skips = 0;
-        for (u8 i = 0; i < 128; i++)
+        for (int i = 0; i < max_size; i++)
         {
             int step;
             if (!params.saferead_s32(step))
@@ -78,7 +98,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
                 continue;
             }
 
-            data.put(i%8, Maths::Floor(i/8), SColor(step));
+            data.put(i%canvas_size.x, Maths::Floor(i/canvas_size.x), SColor(step));
         }
         
        // printf("Created texture '"+tex_name+"', size "+data.width()+" x "+data.height()+" with "+skips+" skips");
@@ -100,8 +120,15 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
     {
         if (!isServer()) return;
         int[] canvas;
-    
-        for (u8 i = 0; i < 128; i++)
+
+        Vec2f canvas_size = params.read_Vec2f();
+        this.set_Vec2f("canvas_size", canvas_size);
+
+        string username = params.read_string();
+        this.set_string("last_user", username);
+
+        int max_size = canvas_size.x * canvas_size.y;
+        for (int i = 0; i < max_size; i++)
         {
             int step;
             if (!params.saferead_s32(step))
@@ -119,15 +146,20 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 
 void Sync(CBlob@ this)
 {
+    Vec2f canvas_size = this.get_Vec2f("canvas_size");
+    int max_size = canvas_size.x * canvas_size.y;
+
     int[]@ canvas;
-    if (!this.get("canvas", @canvas) || canvas.size() != 128)
+    if (!this.get("canvas", @canvas) || canvas.size() != max_size)
     {
         //warn("Failed to load banner canvas array on sync");
         return;
     }
 
     CBitStream params;
-    for (u8 i = 0; i < 128; i++)
+    params.write_Vec2f(canvas_size);
+    params.write_string(this.get_string("last_user"));
+    for (int i = 0; i < max_size; i++)
     {
         params.write_s32(canvas[i]);
     }
@@ -139,7 +171,8 @@ void onTick(CBlob@ this)
 {
     if (isClient())
     {
-        if (this.getTickSinceCreated() == 1)
+        string tex_name = "banner"+this.getNetworkID();
+        if (!Texture::exists(tex_name))
         {
             CBitStream params;
             this.SendCommand(this.getCommandID("init_sync"), params);
@@ -147,7 +180,7 @@ void onTick(CBlob@ this)
     }
 }
 
-bool canBePickedUp( CBlob@ this, CBlob@ byBlob )
+bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 {
     return false;
 }

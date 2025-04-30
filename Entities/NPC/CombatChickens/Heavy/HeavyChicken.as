@@ -67,7 +67,7 @@ void onInit(CBlob@ this)
 	
 				this.set_u8("reactionTime", 0);
 				this.set_u8("attackDelay", 0);
-				this.set_f32("chaseDistance", 768);
+				this.set_f32("chaseDistance", 256);
 				this.set_f32("minDistance", 128);
 				this.set_f32("maxDistance", 768);
 				this.set_f32("inaccuracy", 0.05f);

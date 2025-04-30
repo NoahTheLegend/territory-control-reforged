@@ -1,0 +1,1 @@
+const Vec2f max_canvas_size = Vec2f(64, 64);

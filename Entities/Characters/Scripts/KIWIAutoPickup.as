@@ -27,10 +27,14 @@ bool SoldiPickup(CBlob@ this)
 
 void Take(CBlob@ this, CBlob@ blob)
 {
+	if (!isServer()) return;
+
 	CRules@ rules = getRules();
 	CPlayer@ player = this.getPlayer();
+
 	const string blobName = blob.getName();
 	if (this is null || rules is null || blob is null) return;
+	
 	CBlob@ carried = this.getCarriedBlob();
 	bool canPutInInventory = true;
 	
@@ -118,7 +122,6 @@ bool SendTagCommand(CBlob@ this, s32 blob_id)
 	if (blob_id < 0) return false;
 	CBitStream params;
 	params.write_u16(blob_id);
-	
 	this.SendCommand(this.getCommandID("give picking up tag"), params);
 	
 	return true;

@@ -6,6 +6,7 @@
 #include "MiscCommon.as";
 #include "BasePNGLoader.as";
 #include "LoadWarPNG.as";
+#include "BannerCommon.as";
 
 void onInit(CRules@ this)
 {
@@ -15,8 +16,6 @@ void onInit(CRules@ this)
 	this.addCommandID("mute_sv");
 	this.addCommandID("mute_cl");
 	this.addCommandID("playsound");
-	this.addCommandID("nukevent");
-	this.addCommandID("callputin");
 	this.addCommandID("nightevent");
 	this.addCommandID("get_localtime");
 	//this.addCommandID("startInfection");
@@ -66,12 +65,6 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 				ParticleZombieLightning(destBlob.getPosition());
 			}
 		}
-	}
-	else if (cmd==this.getCommandID("nukevent"))
-	{
-			Sound::Play("airraid.ogg", Vec2f(getMap().tilemapwidth*4,0), 99999999.0f, 999999999.0f);
-		
-		if (isClient()) client_AddToChat("Putin sent russian nuke-bomber planes! You have 45 seconds to get to your bunker!", SColor(255, 255, 0, 0));
 	}
 	else if (cmd == this.getCommandID("get_localtime"))
 	{
@@ -1164,10 +1157,10 @@ bool onClientProcessChat(CRules@ this,const string& in text_in,string& out text_
 				if (file != "")
 				{
 					CBlob@[] nearby;
-					getMap().getBlobsInRadius(blob.getPosition(), 32.0f, @nearby);
+					getMap().getBlobsInRadius(blob.getPosition(), 48.0f, @nearby);
 
 					u16 closest = 0;
-					f32 temp_dist = 32.0f;
+					f32 temp_dist = 48.0f;
 
 					for (u16 i = 0; i < nearby.size(); i++)
 					{
@@ -1187,29 +1180,40 @@ bool onClientProcessChat(CRules@ this,const string& in text_in,string& out text_
 						CBlob@ banner = getBlobByNetworkID(closest);
 						if (banner !is null)
 						{
-							CBitStream params;
-							
-							CFileImage@ image = CFileImage(file);
-							if(image.isLoaded())
+							if (!CFileImage(file).canRead())
 							{
-								f32 width = image.getWidth();
-								f32 height = image.getHeight();
+								client_AddToChat("Couldn't read the image, make sure you specified it with .png format", SColor(255,255,0,0));
+							}
+							else
+							{
+								CBitStream params;
 
-								if (width != 8 || height != 16)
+								CFileImage@ image = CFileImage(file);
+								if(image.isLoaded())
 								{
-									client_AddToChat("Could not load a banner image - file size should be 8x16! Current w x h - "+width+" x "+height, SColor(255,255,0,0));
-								}
-								else
-								{
-									while(image.nextPixel())
+									f32 width = image.getWidth();
+									f32 height = image.getHeight();
+
+									params.write_Vec2f(Vec2f(width, height));
+									params.write_string(player.getUsername());
+
+									if (width > max_canvas_size.x || height > max_canvas_size.y)
 									{
-										const SColor pixel = image.readPixel();
-										params.write_s32(pixel.color);
+										client_AddToChat("Could not load a banner image - file size should be lesser than "+max_canvas_size.x+"x"+max_canvas_size.y+"! Current w x h - "+width+" x "+height, SColor(255,255,0,0));
+										client_AddToChat("Please, note that prohibited and NSFW images will automatically report admins to investigate and take actions", SColor(255,255,0,0));
+									}
+									else
+									{
+										while (image.nextPixel())
+										{
+											const SColor pixel = image.readPixel();
+											params.write_s32(pixel.color);
+										}
 									}
 								}
-							}
 
-							banner.SendCommand(banner.getCommandID("load_image"), params);
+								banner.SendCommand(banner.getCommandID("load_image"), params);
+							}
 						}
 					}
 				}
