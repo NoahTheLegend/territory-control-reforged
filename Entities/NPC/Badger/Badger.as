@@ -92,11 +92,11 @@ void onInit(CBlob@ this)
 	AnimalVars@ vars;
 	if (!this.get("vars", @vars))
 		return;
-	vars.walkForce.Set(43.0f, -4.4f);
-	vars.runForce.Set(96.0f, -43.0f);
+	vars.walkForce.Set(80.0f, -4.4f);
+	vars.runForce.Set(120.0f, -43.0f);
 	vars.slowForce.Set(12.0f, 0.0f);
-	vars.jumpForce.Set(0.0f, -200.0f);
-	vars.maxVelocity = 1.8f;
+	vars.jumpForce.Set(0.0f, -300.0f);
+	vars.maxVelocity = 2.8f;
 
 	AttachmentPoint@[] aps;
 	if (this.getAttachmentPoints(@aps))
@@ -207,11 +207,11 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 			this.getSprite().PlaySound("ZombieBite.ogg", 1.0f, 1.2f);
 			this.getSprite().PlaySound("badger_pissed.ogg", 1, (1 + XORRandom(100) / 400.0f) * this.get_f32("voice pitch"));
-			this.server_Hit(blob, point1, vel, 0.70f, Hitters::bite, false);
+			this.server_Hit(blob, point1, vel, 1.70f, Hitters::bite, false);
 
 			MadAt(this, blob);
 
-			this.set_u32("next bite", getGameTime() + 30);
+			this.set_u32("next bite", getGameTime() + 20);
 			this.set_u32("next growl", getGameTime() + 100);
 		}
 	}
