@@ -9,6 +9,7 @@ const f32 SCALE_FACTOR = 1.0f;
 void onInit(CSprite@ this)
 {
 	this.SetZ(-50);
+	updateIconLayer(this);
 }
 
 void onInit(CBlob@ this)
@@ -26,12 +27,22 @@ void onInit(CBlob@ this)
 	this.addCommandID("compactor_withdraw");
 	this.addCommandID("add_filter_item");
 	this.addCommandID("compactor_sync");
+	this.addCommandID("client_promp_sync");
 
 	this.set_string("filtername", "anything");
 	this.set_string("invname", "anything");
 	
 	this.Tag("remote_storage");
 	AddSignLayerFrom(this.getSprite());
+
+	client_PromptSync(this);
+}
+
+void client_PromptSync(CBlob@ this)
+{
+	if (isServer()) return;
+
+	this.SendCommand(this.getCommandID("client_promp_sync"));
 }
 
 void onTick(CBlob@ this)
@@ -220,6 +231,10 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 			client_UpdateName(this);
 			updateIconLayer(this.getSprite());
 		}
+	}
+	else if (cmd == this.getCommandID("client_promp_sync"))
+	{
+		server_Sync(this);
 	}
 }
 
