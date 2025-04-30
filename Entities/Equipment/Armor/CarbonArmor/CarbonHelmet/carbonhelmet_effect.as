@@ -1,6 +1,5 @@
 #include "PixelOffsets.as"
 #include "RunnerTextures.as"
-#include "RunnerCommon.as"
 
 void onInit(CBlob@ this)
 {
@@ -34,39 +33,32 @@ void onTick(CBlob@ this)
         this.set_string("reload_script", "");
     }
 
-    RunnerMoveVars@ moveVars;
-    if (this.get("moveVars", @moveVars))
-    {
-        moveVars.walkFactor *= 0.95f;
-    }
+    f32 hp = this.get_f32("carbonhelmet_health");
+    f32 max_health = this.get_f32("carbonhelmet_maxhealth");
+    f32 min_health = this.get_f32("carbonhelmet_minhealth");
  
     CSpriteLayer@ milhelmet = this.getSprite().getSpriteLayer("carbonhelmet");
-    
     if (milhelmet !is null)
     {
         Vec2f headoffset(this.getSprite().getFrameWidth() / 2, -this.getSprite().getFrameHeight() / 2);
         Vec2f head_offset = getHeadOffset(this, -1, 0);
-       
+        
         headoffset += this.getSprite().getOffset();
         headoffset += Vec2f(-head_offset.x, head_offset.y);
         headoffset += Vec2f(0, -1);
         milhelmet.SetOffset(headoffset);
-        milhelmet.SetFrameIndex(Maths::Floor(this.get_f32("carbonhelmet_health") / 10.0f));
+        milhelmet.animation.frame = Maths::Floor((hp * 3.0f) / max_health) / 3.0f;
     }
-   
-    if (this.get_f32("carbonhelmet_health") >= 190.0f)
+
+    if (hp > max_health)
     {
         this.getSprite().PlaySound("ricochet_" + XORRandom(3));
         this.set_string("equipment_head", "");
-        this.set_f32("carbonhelmet_health", 189.9f);
-		if (milhelmet !is null)
-		{
-			this.getSprite().RemoveSpriteLayer("carbonhelmet");
-		}
+        this.set_f32("carbonhelmet_health", max_health);
+
+		if (milhelmet !is null) this.getSprite().RemoveSpriteLayer("carbonhelmet");
         this.RemoveScript("carbonhelmet_effect.as");
     }
-    
-	// print("helmet: "+this.get_f32("mh_health"));
 }
  
 void onDie(CBlob@ this)
@@ -76,10 +68,11 @@ void onDie(CBlob@ this)
 		CBlob@ item = server_CreateBlob("carbonhelmet", this.getTeamNum(), this.getPosition());
 		if (item !is null)
 		{
-			item.set_f32("health", this.get_f32("carbonhelmet_health"));
-			item.getSprite().SetFrameIndex(Maths::Floor(this.get_f32("carbonhelmet_health") / 15.75f));
+            f32 hp = this.get_f32("carbonhelmet_health");
+			item.set_f32("health", hp);
 		}
 	}
 	
+	if (this.getSprite().getSpriteLayer("carbonhelmet") !is null) this.getSprite().RemoveSpriteLayer("carbonhelmet");
     this.RemoveScript("carbonhelmet_effect.as");
 }

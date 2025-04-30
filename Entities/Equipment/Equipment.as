@@ -1,4 +1,5 @@
 #include "RunnerCommon.as"
+#include "ArmorCommon.as"
 
 // Made by GoldenGuy 
 
@@ -155,13 +156,24 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 		CBlob@ item = caller.getCarriedBlob();
 		if (item !is null)
 		{
+			f32 health_max, health_min;
+			SetArmorHealth(this, item.getName(), health_max, health_min);
+
+			if (!item.exists("health") || item.get_f32("health") <= 0)
+			{
+				item.set_f32("health", health_max);
+			}
+
 			string eqName = item.getName();
 			if (getEquipmentType(item) == "head" && cmd == this.getCommandID("equip_head"))
 			{
 				addHead(caller, eqName);
-				if (eqName == "militaryhelmet" || eqName == "stahlhelm" || eqName == "carbonhelmet" || eqName == "wilmethelmet" || eqName == "bucket" || eqName == "pumpkin" || 
-					eqName == "scubagear" || eqName == "minershelmet") 
+				if (eqName == "militaryhelmet" || eqName == "stahlhelm" || eqName == "carbonhelmet" || eqName == "bucket" || eqName == "pumpkin" || 
+					eqName == "scubagear" || eqName == "minershelmet")
+				{
 					caller.set_f32(eqName+"_health", item.get_f32("health"));
+					//print("added "+caller.get_f32(eqName+"_health"));
+				}
 
 				if (item.hasTag("bushy")) caller.Tag("bushy");
 				if (item.getQuantity() <= 1) item.server_Die();
@@ -170,19 +182,31 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 			else if (getEquipmentType(item) == "torso" && cmd == this.getCommandID("equip_torso") && eqName != "backpack")
 			{
 				addTorso(caller, eqName);
-				if (eqName == "bulletproofvest" || eqName == "carbonvest" || eqName == "wilmetvest" || eqName == "keg") caller.set_f32(eqName+"_health", item.get_f32("health"));
+				if (eqName == "bulletproofvest" || eqName == "carbonvest" || eqName == "keg")
+				{
+					caller.set_f32(eqName+"_health", item.get_f32("health"));
+					//print("added "+caller.get_f32(eqName+"_health"));
+				}
 				item.server_Die();
 			}
 			else if (getEquipmentType(item) == "torso" && canWearSecondaryTorso(item) && cmd == this.getCommandID("equip2_torso"))
 			{
 				add2Torso(caller, eqName);
-				if (eqName == "keg") caller.set_f32(eqName+"_health", item.get_f32("health"));
+				if (eqName == "keg")
+				{
+					caller.set_f32(eqName+"_health", item.get_f32("health"));
+					//print("added "+caller.get_f32(eqName+"_health"));
+				}
 				item.server_Die();
 			}
 			else if (getEquipmentType(item) == "boots" && cmd == this.getCommandID("equip_boots"))
 			{
 				addBoots(caller, eqName);
-				if (eqName == "combatboots" || eqName == "carbonboots" || eqName == "wilmetboots") caller.set_f32(eqName+"_health", item.get_f32("health"));
+				if (eqName == "combatboots" || eqName == "carbonboots")
+				{
+					caller.set_f32(eqName+"_health", item.get_f32("health"));
+					//print("added "+caller.get_f32(eqName+"_health"));
+				}
 				item.server_Die();
 			}
 			else if (caller.getSprite() !is null && caller.isMyPlayer()) caller.getSprite().PlaySound("NoAmmo.ogg", 1.0f);
@@ -194,7 +218,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 
 bool canWearSecondaryTorso(CBlob@ item)
 {
-	return getEquipmentType(item) == "torso" && item.getName() != "bulletproofvest" && item.getName() != "carbonvest" && item.getName() != "wilmetvest";
+	return getEquipmentType(item) == "torso" && item.getName() != "bulletproofvest" && item.getName() != "carbonvest";
 }
 
 string getEquipmentType(CBlob@ equipment)
@@ -237,8 +261,8 @@ void addHead(CBlob@ playerblob, string headname)	//Here you need to add head ove
 
 	playerblob.setHeadNum((playerblob.getHeadNum()+1) % 3);
 	playerblob.Tag(headname);
-	playerblob.set_string("reload_script", headname);
 
+	playerblob.set_string("reload_script", headname);
 	playerblob.AddScript(headname+"_effect.as");
 
 	playerblob.set_string("equipment_head", headname);
@@ -259,11 +283,12 @@ void removeHead(CBlob@ playerblob, string headname)
 		{
 			if (playerblob.hasTag("bushy")) oldeq.Tag("bushy");
 			oldeq.set_f32("health", playerblob.get_f32(headname+"_health"));
-			oldeq.getSprite().SetFrameIndex(Maths::Floor(playerblob.get_f32(headname+"_health") / 6.26f));
+			oldeq.set_f32("max_health", playerblob.get_f32(headname+"_maxhealth"));
 		}
-		else if (headname == "carbonhelmet" || headname == "wilmethelmet" || headname == "bucket" || headname == "pumpkin" || headname == "scubagear" || headname == "minershelmet")
+		else if (headname == "carbonhelmet" || headname == "bucket" || headname == "pumpkin" || headname == "scubagear" || headname == "minershelmet")
 		{
 			oldeq.set_f32("health", playerblob.get_f32(headname+"_health"));
+			oldeq.set_f32("max_health", playerblob.get_f32(headname+"_maxhealth"));
 		}
 		playerblob.server_PutInInventory(oldeq);
 	}
@@ -337,8 +362,11 @@ void removeTorso(CBlob@ playerblob, string torsoname)		//Same stuff with removin
 	if (isServer())
 	{
 		CBlob@ oldeq = server_CreateBlob(torsoname, playerblob.getTeamNum(), playerblob.getPosition());
-		if (torsoname == "bulletproofvest" || torsoname == "carbonvest" || torsoname == "wilmetvest" || torsoname == "keg") 
+		if (torsoname == "bulletproofvest" || torsoname == "carbonvest" || torsoname == "keg")
+		{
 			oldeq.set_f32("health", playerblob.get_f32(torsoname+"_health"));
+			oldeq.set_f32("max_health", playerblob.get_f32(torsoname+"_maxhealth"));
+		}
 		playerblob.server_PutInInventory(oldeq);
 	}
 	
@@ -374,8 +402,11 @@ void remove2Torso(CBlob@ playerblob, string torsoname)		//Same stuff with removi
 	if (isServer())
 	{
 		CBlob@ oldeq = server_CreateBlob(torsoname, playerblob.getTeamNum(), playerblob.getPosition());
-		if (torsoname == "bulletproofvest" || torsoname == "carbonvest" || torsoname == "wilmetvest" || torsoname == "keg") 
+		if (torsoname == "bulletproofvest" || torsoname == "carbonvest" || torsoname == "keg")
+		{
 			oldeq.set_f32("health", playerblob.get_f32(torsoname+"_health"));
+			oldeq.set_f32("max_health", playerblob.get_f32(torsoname+"_maxhealth"));
+		}
 		playerblob.server_PutInInventory(oldeq);
 	}
 	
@@ -404,7 +435,11 @@ void removeBoots(CBlob@ playerblob, string bootsname)		//I think you should alre
 	if (isServer())
 	{
 		CBlob@ oldeq = server_CreateBlob(bootsname, playerblob.getTeamNum(), playerblob.getPosition());
-		if (bootsname == "combatboots" || bootsname == "carbonboots" || bootsname == "wilmetboots") oldeq.set_f32("health", playerblob.get_f32(bootsname+"_health"));
+		if (bootsname == "combatboots" || bootsname == "carbonboots")
+		{
+			oldeq.set_f32("health", playerblob.get_f32(bootsname+"_health"));
+			oldeq.set_f32("max_health", playerblob.get_f32(bootsname+"_maxhealth"));
+		}
 		playerblob.server_PutInInventory(oldeq);		
 	}
 	playerblob.set_string("equipment_boots", "");
@@ -431,7 +466,7 @@ void onDie(CBlob@ this)
 		}
 		if (torsoname != "")
 		{
-			if (torsoname == "bulletproofvest" || torsoname == "carbonvest" || torsoname == "wilmetvest")
+			if (torsoname == "bulletproofvest" || torsoname == "carbonvest")
 			{
 				CBlob@ item = server_CreateBlob(torsoname, this.getTeamNum(), this.getPosition());
 				if (item !is null) item.set_f32("health", this.get_f32(torsoname+"_health"));
@@ -442,21 +477,19 @@ void onDie(CBlob@ this)
 		}
 		if (torso2name != "")
 		{
-			/*if (torso2name == "bulletproofvest" || torso2name == "carbonvest" || torso2name == "wilmetvest")
-			{
-				CBlob@ item = server_CreateBlob(torso2name, this.getTeamNum(), this.getPosition());
-				if (item !is null) item.set_f32("health", this.get_f32(torso2name+"_health"));
-				this.RemoveScript(torso2name+"_effect.as");
-			}
-			else*/ if (!this.exists("vest_explode") && torso2name != "keg")
+			if (!this.exists("vest_explode") && torso2name != "keg")
 				server_CreateBlob(torso2name, this.getTeamNum(), this.getPosition());
 		}
 		if (bootsname != "")
 		{
-			if (bootsname == "combatboots" || bootsname == "carbonboots" || bootsname == "wilmetboots")
+			if (bootsname == "combatboots" || bootsname == "carbonboots")
 			{
 				CBlob@ item = server_CreateBlob(bootsname, this.getTeamNum(), this.getPosition());
-				if (item !is null) item.set_f32("health", this.get_f32(bootsname+"_health"));
+				if (item !is null)
+				{
+					item.set_f32("health", this.get_f32(bootsname+"_health"));
+					item.set_f32("max_health", this.get_f32(bootsname+"_health"));
+				}
 				this.RemoveScript(bootsname+"_effect.as");
 			}
 			else server_CreateBlob(bootsname, this.getTeamNum(), this.getPosition());

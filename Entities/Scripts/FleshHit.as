@@ -2,10 +2,14 @@
 
 #include "Hitters.as";
 #include "HittersTC.as";
+#include "ArmorCommon.as";
+
+const f32 armor_damage_mod = 0.5f;
 
 void onInit(CBlob@ this)
 {
 	this.Tag("flesh");
+	this.addCommandID("sync_f32_armorhealth");
 }
 
 f32 getGibHealth(CBlob@ this)
@@ -130,21 +134,17 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			hit_dir.Normalize();
 			hit_angle = 360 - hit_dir.Angle();
 		}
-		//print(this.getName()+" "+is_propesko+" "+(hitterBlob !is null ? hitterBlob.getName() : "null") + " "+hit_angle+" "+(customData == Hitters::explosion)+" "+hitterBlob.hasTag("propesko_explosion"));
-		
+
 		if (headname != "" && this.exists(headname+"_health"))
 		{
-			//print("head '"+headname+"'");
-			f32 armorMaxHealth = 100.0f;
+			f32 armorMaxHealth = this.get_f32(headname+"_maxhealth");
+			f32 min_armor_health = this.get_f32(headname+"_minhealth");
+			if (armorMaxHealth == 0 || min_armor_health == 0)
+			{
+				SetArmorHealth(this, headname, armorMaxHealth, min_armor_health);
+			}
+			
 			f32 ratio = 0.0f;
-
-			if (headname == "militaryhelmet" || headname == "nvd") armorMaxHealth = 85.0f;
-			else if (headname == "carbonhelmet") armorMaxHealth = 190.0f;
-			else if (headname == "wilmethelmet") armorMaxHealth = 120.0f;
-			else if (headname == "scubagear") armorMaxHealth = 10.0f;
-			else if (headname == "bucket") armorMaxHealth = 10.0f;
-			else if (headname == "pumpkin") armorMaxHealth = 5.0f;
-			else if (headname == "minershelmet") armorMaxHealth = 10.0f;
 			bool cool_hat = headname == "stahlhelm";
 
 			if ((headname == "militaryhelmet" || headname == "nvd"))
@@ -240,40 +240,18 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 						break;
 				}
 			}
-			else if ((headname == "wilmethelmet"))
-			{
-				switch (customData)
-				{
-					case HittersTC::bullet_low_cal:
-					case HittersTC::shotgun:
-					case HittersTC::bullet_high_cal:
-						ratio = 0.6f;
-						break;
-
-					case HittersTC::railgun_lance:
-					case HittersTC::plasma:
-					case HittersTC::electric:
-						ratio = 0.85f;
-						break;
-
-					case Hitters::explosion:
-						ratio = 0.35f;
-						break;
-
-					default:
-						ratio = 0.15f;
-						break;
-				}
-			}
 			else if (headname == "scubagear" || headname == "bucket" || headname == "pumpkin" || headname == "minershelmet")
 					ratio = 0.20f;
 			
 			if (!cool_hat) {
-				f32 armorHealth = armorMaxHealth - this.get_f32(headname+"_health");
-				if (armorHealth < armorMaxHealth/3.5f) armorHealth = armorMaxHealth/3.5f;
+				f32 armorHealth = this.get_f32(headname+"_health");
+				if (armorHealth < min_armor_health) armorHealth = min_armor_health;
 				ratio *= armorHealth / armorMaxHealth;
+				//print("helm "+armorHealth+" min "+min_armor_health +" max "+armorMaxHealth);
 	
-				this.add_f32(headname+"_health", (ratio*dmg)/2);
+				this.sub_f32(headname+"_health", dmg * armor_damage_mod);
+				if (this.get_f32(headname+"_health") < min_armor_health) this.set_f32(headname+"_health", min_armor_health);
+				SyncArmorHealth(this, headname+"_health", this.get_f32(headname+"_health"));
 			}
 
 			f32 playerDamage = Maths::Clamp((1.00f - ratio) * dmg, 0, dmg);
@@ -281,13 +259,13 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		}
 		if (torsoname != "" && this.exists(torsoname+"_health"))
 		{
-			f32 armorMaxHealth = 100.0f;
+			f32 armorMaxHealth = this.get_f32(torsoname+"_maxhealth");
+			f32 min_armor_health = this.get_f32(torsoname+"_minhealth");
+			if (armorMaxHealth == 0 || min_armor_health == 0)
+			{
+				SetArmorHealth(this, torsoname, armorMaxHealth, min_armor_health);
+			}
 			f32 ratio = 0.0f;
-
-			if (torsoname == "bulletproofvest") armorMaxHealth = 100.0f;
-			else if (torsoname == "carbonvest") armorMaxHealth = 200.0f;
-			else if (torsoname == "wilmetvest") armorMaxHealth = 146.0f;
-			else if (torsoname == "keg") armorMaxHealth = 10.0f;
 
 			if (torsoname == "bulletproofvest")
 			{
@@ -360,38 +338,6 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 						break;
 				}
 			}
-			else if (torsoname == "wilmetvest")
-			{
-				switch (customData)
-				{
-					case HittersTC::bullet_low_cal:
-					case HittersTC::shotgun:
-					case HittersTC::bullet_high_cal:
-					case Hitters::sword:
-					case Hitters::keg:
-					case Hitters::mine:
-					case Hitters::mine_special:
-					case Hitters::bomb:
-					case Hitters::arrow:
-						ratio = 0.65f;
-						break;
-
-					case HittersTC::railgun_lance:
-					case HittersTC::plasma:
-					case HittersTC::electric:
-					case HittersTC::radiation:
-						ratio = 0.85f;
-						break;
-
-					case Hitters::explosion:
-						ratio = 0.35f;
-						break;
-
-					default:
-						ratio = 0.35f;
-						break;
-				}
-			}
 			else if (torsoname == "keg")
 			{
 				if ((customData == Hitters::fire || customData == Hitters::burn || customData == Hitters::explosion || 
@@ -405,24 +351,30 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 				}
 				else ratio = 0.45f;
 			}
-			f32 armorHealth = armorMaxHealth - this.get_f32(torsoname+"_health");
-			if (armorHealth < armorMaxHealth/3.5f) armorHealth = armorMaxHealth/3.5f;
+
+			f32 armorHealth = this.get_f32(torsoname+"_health");
+
+			if (armorHealth < min_armor_health) armorHealth = min_armor_health;
 			ratio *= armorHealth / armorMaxHealth;
 
-			this.add_f32(torsoname+"_health", (ratio*dmg)/2);
+			this.sub_f32(torsoname+"_health", dmg * armor_damage_mod);
+			if (this.get_f32(torsoname+"_health") < min_armor_health) this.set_f32(torsoname+"_health", min_armor_health);
+			SyncArmorHealth(this, torsoname+"_health", this.get_f32(torsoname+"_health"));
+			//print("vest "+armorHealth+" min "+min_armor_health +" max "+armorMaxHealth);
+
 			f32 playerDamage = Maths::Clamp((1.00f - ratio) * dmg, 0, dmg);
 			dmg = playerDamage;
 		}
 
 		if (torso2name != "" && this.exists(torso2name+"_health"))
 		{
-			f32 armorMaxHealth = 100.0f;
+			f32 armorMaxHealth = this.get_f32(torso2name+"_maxhealth");
+			f32 min_armor_health = this.get_f32(torso2name+"_minhealth");
+			if (armorMaxHealth == 0 || min_armor_health == 0)
+			{
+				SetArmorHealth(this, torso2name, armorMaxHealth, min_armor_health);
+			}
 			f32 ratio = 0.0f;
-
-			if (torso2name == "bulletproofvest") armorMaxHealth = 75.0f;
-			else if (torso2name == "carbonvest") armorMaxHealth = 200.0f;
-			else if (torso2name == "wilmetvest") armorMaxHealth = 146.0f;
-			else if (torso2name == "keg") armorMaxHealth = 10.0f;
 
 			if (torso2name == "bulletproofvest")
 			{
@@ -482,38 +434,6 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 						break;
 				}
 			}
-			else if (torso2name == "wilmetvest")
-			{
-				switch (customData)
-				{
-					case HittersTC::bullet_low_cal:
-					case HittersTC::shotgun:
-					case HittersTC::bullet_high_cal:
-					case Hitters::sword:
-					case Hitters::keg:
-					case Hitters::mine:
-					case Hitters::mine_special:
-					case Hitters::bomb:
-					case Hitters::arrow:
-						ratio = 0.65f;
-						break;
-
-					case HittersTC::railgun_lance:
-					case HittersTC::plasma:
-					case HittersTC::electric:
-					case HittersTC::radiation:
-						ratio = 0.85f;
-						break;
-
-					case Hitters::explosion:
-						ratio = 0.35f;
-						break;
-
-					default:
-						ratio = 0.35f;
-						break;
-				}
-			}
 			if (torso2name == "keg" && !isBullet && customData != HittersTC::radiation)
 			{
 				if ((customData == Hitters::fire || customData == Hitters::burn || customData == Hitters::explosion || 
@@ -527,22 +447,31 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 				}
 				else ratio = 0.45f;
 			}
-			f32 armorHealth = armorMaxHealth - this.get_f32(torso2name+"_health");
-			if (armorHealth < armorMaxHealth/3.5f) armorHealth = armorMaxHealth/3.5f;
+
+			f32 armorHealth = this.get_f32(torso2name+"_health");
+
+			if (armorHealth < min_armor_health) armorHealth = min_armor_health;
 			ratio *= armorHealth / armorMaxHealth;
 
-			this.add_f32(torso2name+"_health", (ratio*dmg)/2);
+			this.sub_f32(torso2name+"_health", dmg * armor_damage_mod);
+			if (this.get_f32(torso2name+"_health") < min_armor_health) this.set_f32(torso2name+"_health", min_armor_health);
+			SyncArmorHealth(this, torso2name+"_health", this.get_f32(torso2name+"_health"));
+			//print("vest2 "+armorHealth+" min "+min_armor_health +" max "+armorMaxHealth);
+
 			f32 playerDamage = Maths::Clamp((1.00f - ratio) * dmg, 0, dmg);
 			dmg = playerDamage;
 		}
 
 		if (bootsname != "" && this.exists(bootsname+"_health"))
 		{
-			f32 armorMaxHealth = 48.0f;
+			f32 armorMaxHealth = this.get_f32(bootsname+"_maxhealth");
+			f32 min_armor_health = this.get_f32(bootsname+"_minhealth");
+			if (armorMaxHealth == 0 || min_armor_health == 0)
+			{
+				SetArmorHealth(this, bootsname, armorMaxHealth, min_armor_health);
+			}
 			f32 ratio = 0.0f;
-			if (bootsname == "combatboots") armorMaxHealth = 48.0f;
-			else if (bootsname == "carbonboots") armorMaxHealth = 98.0f;
-			else if (bootsname == "wilmetboots") armorMaxHealth =  85.0f;
+
 			if (bootsname == "combatboots")
 			{
 				switch (customData)
@@ -584,25 +513,16 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 						break;
 				}
 			}
-			else if (bootsname == "wilmetboots")
-			{
-				switch (customData)
-				{
-					case Hitters::fall:
-					case HittersTC::radiation:
-						ratio = 0.99f;
-						break;
+			f32 armorHealth =  this.get_f32(bootsname+"_health");
 
-					default: ratio = 0.15f;
-						break;
-				}
-			}
-
-			f32 armorHealth = armorMaxHealth - this.get_f32(bootsname+"_health");
-			if (armorHealth < armorMaxHealth/3.5f) armorHealth = armorMaxHealth/3.5f;
+			if (armorHealth < min_armor_health) armorHealth = min_armor_health;
 			ratio *= armorHealth / armorMaxHealth;
 
-			this.add_f32(bootsname+"_health", (ratio*dmg)/2);
+			this.sub_f32(bootsname+"_health", dmg * armor_damage_mod);
+			if (this.get_f32(bootsname+"_health") < min_armor_health) this.set_f32(bootsname+"_health", min_armor_health);
+			SyncArmorHealth(this, bootsname+"_health", this.get_f32(bootsname+"_health"));
+			//print("boots "+armorHealth+" min "+min_armor_health +" max "+armorMaxHealth);
+
 			f32 playerDamage = Maths::Clamp((1.00f - ratio) * dmg, 0, dmg);
 			dmg = playerDamage;
 		}
@@ -622,6 +542,40 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 	}
 
 	return 0.0f; //done, we've used all the damage
+}
+
+void SyncArmorHealth(CBlob@ this, string prop, f32 hp)
+{
+	if (!isServer()) return;
+
+	CBitStream params;
+	params.write_string(prop);
+	params.write_f32(hp);
+	this.SendCommand(this.getCommandID("sync_f32_armorhealth"), params);
+}
+
+void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
+{
+	if (cmd == this.getCommandID("sync_f32_armorhealth"))
+	{
+		if (!isClient()) return;
+
+		string prop;
+		if (!params.saferead_string(prop))
+		{
+			warn("Failed to read 'prop' to sync in FleshHit.as");
+			return;
+		}
+
+		f32 hp;
+		if (!params.saferead_f32(hp))
+		{
+			warn("Failed to read 'hp' to sync in FleshHit.as");
+			return;
+		}
+
+		this.set_f32(prop, hp);
+	}
 }
 
 void onDie(CBlob@ this)

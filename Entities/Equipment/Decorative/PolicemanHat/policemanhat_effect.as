@@ -32,16 +32,7 @@ void onTick(CBlob@ this)
 		this.set_string("reload_script", "");
 	}
 
-	if (this.get_f32("policemanhat_health") >= 10.0f)
-	{
-		this.getSprite().PlaySound("woodheavyhit1");
-		this.set_string("equipment_head", "");
-		this.set_f32("policemanhat_health", 9.9f);
-		this.RemoveScript("policemanhat_effect.as");
-	}
-
 	CSpriteLayer@ policemanhat = this.getSprite().getSpriteLayer("policemanhat");
-	
 	if (policemanhat !is null)
 	{
 		Vec2f headoffset(this.getSprite().getFrameWidth() / 2, -this.getSprite().getFrameHeight() / 2);
