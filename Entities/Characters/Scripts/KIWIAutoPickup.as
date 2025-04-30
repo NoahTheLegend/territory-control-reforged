@@ -16,7 +16,7 @@ bool EngiPickup(CBlob@ this, CBlob@ item)
 	
 	if (!this.hasScript("BlockPlacement.as")) return false;
 	
-	return item.hasScript("MaterialStandard.as") && !item.hasTag("ammo");
+	return (item.hasScript("MaterialStandard.as") || item.hasTag("builder pickup")) && !item.hasTag("ammo");
 }
 
 bool SoldiPickup(CBlob@ this)

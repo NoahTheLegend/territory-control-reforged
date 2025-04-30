@@ -304,6 +304,8 @@ const string[] shift_needed = {
 
 void updateIconLayer(CSprite@ this)
 {
+	if (!isClient()) return;
+
 	CBlob@ blob = this.getBlob();
 	if (blob is null) return;
 	
@@ -311,8 +313,10 @@ void updateIconLayer(CSprite@ this)
 	if (icon_name.empty()) return;
 	icon_name = CFileMatcher(blob.get_string("compactor_icon_name")).getFirst();
 	Vec2f icon_dims = blob.get_Vec2f("compactor_icon_dims");
+
 	CSpriteLayer@ icon = this.getSpriteLayer("icon");
 	CSpriteLayer@ sign = this.getSpriteLayer("sign");
+	
 	if (icon is null || icon.getFilename()!=icon_name) {
 		this.RemoveSpriteLayer("icon");
 		@icon = this.addSpriteLayer("icon", icon_name, icon_dims.x, icon_dims.y, blob.getTeamNum(), 0);
@@ -332,6 +336,7 @@ void updateIconLayer(CSprite@ this)
 		icon.SetRelativeZ(2.2f);
 		if (!blob.get_string("compactor_resource").empty())
 			icon.SetOffset(icon.getOffset()+(shift_needed.find(blob.get_string("compactor_resource"))>-1?Vec2f(0, -3):Vec2f_zero));
+			
 		icon.RotateBy(blob.get_f32("rot"), Vec2f());
 		icon.SetFrameIndex(blob.get_u8("compactor_icon_frame"));
 		icon.ScaleBy(SCALE_FACTOR, SCALE_FACTOR);
