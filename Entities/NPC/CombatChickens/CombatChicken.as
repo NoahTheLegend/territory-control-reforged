@@ -45,11 +45,6 @@ void onInit(CBlob@ this)
 	this.Tag("ignore saw");
 }
 
-void onSetPlayer(CBlob@ this, CPlayer@ player)
-{
-	this.Untag("ignore saw");
-}
-
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
 {
 	if (isServer())
@@ -99,4 +94,35 @@ void onTick(CBlob@ this)
 			else this.server_Heal(0.25f);
 		}
 	}
+}
+
+void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint@ ap)
+{
+	if (!isServer()) return;
+	if (attached !is null && attached.hasTag("weapon") && this.getPlayer() is null)
+	{
+		attached.Tag("fakeweapon");
+	}
+}
+
+void onDetach(CBlob@ this, CBlob@ attached, AttachmentPoint@ ap)
+{
+	if (!isServer()) return;
+	if (attached !is null && attached.hasTag("fakeweapon") && this.getPlayer() is null)
+	{
+		attached.server_Die();
+	}
+}
+
+void onRemoveFromInventory(CBlob@ this, CBlob@ blob)
+{
+	if (!isServer()) return;
+	if (blob.hasTag("fakeweapon")) blob.server_Die();
+}
+
+void onSetPlayer(CBlob@ this, CPlayer@ player)
+{
+	this.Untag("ignore saw");
+	CBlob@ carried = this.getCarriedBlob();
+	if (carried !is null) carried.Untag("fakeweapon");
 }

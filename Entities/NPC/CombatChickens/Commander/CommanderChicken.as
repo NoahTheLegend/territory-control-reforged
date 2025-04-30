@@ -183,19 +183,6 @@ bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 
 void onTick(CBlob@ this)
 {
-	if (this.getName() == "commanderchicken")
-	{
-		if (this.getCarriedBlob() !is null && this !is null && this.getPlayer() is null) this.getCarriedBlob().Tag("fakeweapon");
-	}
-
-	CBlob@[] fakeweapons;
-	getBlobsByTag("fakeweapon", fakeweapons);
-
-	for (int i = 0; i < fakeweapons.length; i++)
-	{
-		if (!fakeweapons[i].isAttached() && fakeweapons[i] !is null) fakeweapons[i].server_Die();
-	}
-
 	RunnerMoveVars@ moveVars;
 	if (this.get("moveVars", @moveVars))
 	{

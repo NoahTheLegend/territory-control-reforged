@@ -216,6 +216,9 @@ void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint @attachedPoint)
 
 void onDetach(CBlob@ this, CBlob@ detached, AttachmentPoint @detachedPoint) 
 {
+	if (detachedPoint !is null && detachedPoint.name == "PICKUP" && this.hasTag("fakeweapon"))
+		this.server_Die();
+		
 	if (isClient())
 	{
 		this.getSprite().ResetTransform();

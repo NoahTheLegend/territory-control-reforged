@@ -312,7 +312,7 @@ void Attack(CBrain@ this, CBlob@ target, bool useBombs)
 	f32 dist = (target.getPosition() - blob.getPosition()).Length();
 	f32 jitter = blob.get_f32("inaccuracy") * Maths::Sqrt(dist);
 	Vec2f randomness = getRandomVelocity(0, (XORRandom(1000) * 0.001f) * jitter * 20.00f, 360);	
-	blob.setAimPos(Vec2f_lerp(blob.getAimPos(), target.getPosition() + randomness, 0.20f));
+	blob.setAimPos(Vec2f_lerp(blob.getAimPos(), target.getPosition() + randomness, 0.5f));
 	
 	if (blob.get_u32("nextAttack") < getGameTime())
 	{

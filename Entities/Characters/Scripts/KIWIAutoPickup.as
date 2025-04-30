@@ -82,6 +82,15 @@ void Take(CBlob@ this, CBlob@ blob)
 			
 			//tagging so gun doesn't stop reloading
 			SendTagCommand(this, blob_id);
+
+			if (carried !is null)
+			{
+				if (carried.exists("doReload")
+					&& carried.get_bool("doReload"))
+				{
+					return;
+				}
+			}
 			
 			//if inventory is full to the brim
 			if (!this.server_PutInInventory(blob)) {

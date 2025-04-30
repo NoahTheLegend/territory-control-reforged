@@ -50,7 +50,6 @@ void onInit(CBlob@ this)
 			case 1:
 			case 2:
 			case 3:
-			case 4:
 				gun_config = "assaultrifle";
 				ammo_config = "mat_rifleammo";
 
@@ -61,16 +60,18 @@ void onInit(CBlob@ this)
 				this.set_bool("bomber", false);
 
 				break;
-
+			
+			case 4:
 			case 5:
 			case 6:
-				gun_config = "shotgun";
-				ammo_config = "mat_shotgunammo";
+				gun_config = "silencedak";
+				ammo_config = "mat_rifleammo";
 
-				this.set_u8("attackDelay", 35);
-				this.set_f32("chaseDistance", 88);
+				this.set_u8("attackDelay", 2);
+				this.set_f32("chaseDistance", 128);
 				this.set_f32("minDistance", 128);
-				this.set_f32("maxDistance", 256);
+				this.set_f32("maxDistance", 512);
+				this.set_bool("bomber", false);
 
 				break;
 
@@ -86,6 +87,7 @@ void onInit(CBlob@ this)
 
 				break;
 
+			case 9:
 			case 10:
 				gun_config = "sniper";
 				ammo_config = "mat_sniperammo";
@@ -208,19 +210,6 @@ bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 
 void onTick(CBlob@ this)
 {
-	if (this.getName() == "soldierchicken")
-	{
-		if (this.getCarriedBlob() !is null && this !is null && this.getPlayer() is null) this.getCarriedBlob().Tag("fakeweapon");
-	}
-
-	CBlob@[] fakeweapons;
-	getBlobsByTag("fakeweapon", fakeweapons);
-
-	for (int i = 0; i < fakeweapons.length; i++)
-	{
-		if (!fakeweapons[i].isAttached() && fakeweapons[i] !is null) fakeweapons[i].server_Die();
-	}
-
 	RunnerMoveVars@ moveVars;
 	if (this.get("moveVars", @moveVars))
 	{
