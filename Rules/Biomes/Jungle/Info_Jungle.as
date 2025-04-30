@@ -43,23 +43,23 @@ void onInit(CBlob@ this)
 	}
 
 	// Disabled to reduce lag
-	// if (isServer())
-	// {
-	// 	CBlob@[] blobs;
-	//  getBlobsByName("grain_plant", @blobs);
-	// 	getBlobsByName("pumpkin_plant", @blobs);
+	if (isServer())
+	{
+	 	CBlob@[] blobs;
+	    getBlobsByName("grain_plant", @blobs);
+	 	getBlobsByName("pumpkin_plant", @blobs);
 		
-	// 	for (int i = 0; i < blobs.length; i++)
-	// 	{
-	// 		CBlob@ b = blobs[i];
-	// 		if (XORRandom(3) == 0)
-	// 		{
-	// 			CBlob@ tree = server_CreateBlob("badger", b.getTeamNum(), b.getPosition());
-	// 			b.Tag("no drop");
-	// 			b.server_Die();
-	// 		}
-	// 	}
-	// }
+	 	for (int i = 0; i < blobs.length; i++)
+	 	{
+	 		CBlob@ b = blobs[i];
+	 		if (XORRandom(3) == 0)
+	 		{
+	 			CBlob@ tree = server_CreateBlob("badger", b.getTeamNum(), b.getPosition());
+	 			b.Tag("no drop");
+	 			b.server_Die();
+			}
+		}
+	}
 
 	if (isClient())
 	{
