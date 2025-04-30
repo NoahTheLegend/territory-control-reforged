@@ -86,6 +86,11 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 
 				blob.Tag("dead");
 				blob.server_Die();
+
+				this.set_string("compactor_icon_name", blob.inventoryIconName);
+				this.set_Vec2f("compactor_icon_dims", blob.inventoryFrameDimension);
+				this.set_u8("compactor_icon_frame", blob.inventoryIconFrame);
+
 				server_Sync(this);
 			}
 			
