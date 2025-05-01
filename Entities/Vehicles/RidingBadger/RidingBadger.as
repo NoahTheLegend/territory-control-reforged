@@ -33,10 +33,6 @@ void onInit(CBlob@ this)
 	}
 	
 	this.getShape().SetRotationsAllowed(true);
-	
-	this.SetLight(true);
-	this.SetLightColor(SColor(255, 255, 240, 200));
-	this.SetLightRadius(100.5f);
 
 	this.set_string("last_driver_username", "");
 	this.set_u16("last_driver_blobid", 0);
