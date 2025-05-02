@@ -15,5 +15,11 @@ void onTick(CRules@ this)
                 getNet().DisconnectClient();
             }
         }
+        else
+        {
+            ConfigFile cfg;
+            cfg.add_u8("timer", 0);
+            cfg.saveFile("../Cache/vars.cfg");
+        }
     }
 }
