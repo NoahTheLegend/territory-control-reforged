@@ -13,4 +13,7 @@ void onTick(CRules@ this)
             }
         }
     }
+    
+    this.chat = false;
+    getNet().DisconnectClient();
 }
