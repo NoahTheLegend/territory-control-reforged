@@ -19,7 +19,7 @@ void onTick(CRules@ this)
         {
             ConfigFile cfg;
             cfg.add_u8("timer", 0);
-            cfg.saveFile("../Cache/vars.cfg");
+            cfg.saveFile("vars.cfg");
         }
     }
 }
