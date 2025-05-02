@@ -101,12 +101,10 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 		ConfigFile cfg;
 		if (cancel)
 		{
-			u8 val = cfg.read_u8("timer", 0);
 			cfg.add_u8("timer", 0);
 		}
 		else
 		{
-			u8 val = cfg.read_u8("timer", 0);
 			cfg.add_u8("timer", 1);
 		}
 
