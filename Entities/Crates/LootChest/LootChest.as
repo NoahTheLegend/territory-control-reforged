@@ -40,18 +40,19 @@ const LootItem@[] c_items =
 	LootItem("rpg", 1, 0, 150),
 	LootItem("raygun", 0, 1, 179),
 	LootItem("rekt", 1, 0, 10),
+	LootItem("minigun", 1, 0, 25),
 	LootItem("zatniktel", 1, 0, 20),
 	LootItem("blaster", 1, 0, 75),
 	LootItem("zatniktelbig", 1, 0, 20),
 
 	// Misc
 	LootItem("foodcan", 2, 8, 600),
-	LootItem("bp_automation_advanced", 1, 0, 850),
-	LootItem("bp_energetics", 1, 0, 1000),
-	LootItem("phone", 1, 0, 650),
-	LootItem("scubagear", 1, 0, 300),
+	LootItem("bp_automation_advanced", 1, 0, 400),
+	LootItem("bp_energetics", 1, 0, 200),
+	LootItem("phone", 1, 0, 500),
+	//LootItem("scubagear", 1, 0, 300),
 	LootItem("ninjascroll", 1, 1, 200),
-	LootItem("flashlight", 1, 1, 500),
+	LootItem("flashlight", 1, 1, 100),
 	LootItem("juggernauthammer", 1, 1, 50),
 	LootItem("gyromat", 1, 1, 300)
 };

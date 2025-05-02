@@ -315,6 +315,7 @@ const string[] shift_needed = {
 	"mat_stone",
 	"mat_dirt",
 	"mat_matter",
+	"mat_carbon"
 };
 
 void updateIconLayer(CSprite@ this)
