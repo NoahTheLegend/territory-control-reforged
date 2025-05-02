@@ -38,7 +38,7 @@ void onInit(CBlob@ this)
 	if (isClient())
 	{
 		CSprite@ sprite = this.getSprite();
-		sprite.SetEmitSoundVolume(10.0f);
+		sprite.SetEmitSoundVolume(5.0f);
 		sprite.SetEmitSound("Train_Loop.ogg");
 		sprite.SetEmitSoundPaused(false);
 		sprite.RewindEmitSound();
