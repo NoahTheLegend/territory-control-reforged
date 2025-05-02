@@ -37,6 +37,7 @@ const string[] OffiMaps = {
 	"Goldy_TC_Netherland_v2",
 	"Goldy_TC_ThomasMega",
 	"Skemonde_TC_Gooby_v3fM",
+	"Skemonde_TC_Morgenland_v4",
 	"Goldy_TC_Hollows",
 	"Ginger_TC_Lagoon",
 	"Ginger_TC_Pirates",
@@ -67,8 +68,7 @@ const string[] MemeMaps = {
 	"Goldy_TC_Hollows",
 	"Xeno_TC_AncientTemple",
 	"Vamfistorio_Noah",
-	"TFlippy_TC_Dung",
-	"Skemonde_TC_Morgenland_v3"
+	"TFlippy_TC_Dung"
 };
 
 const string[] OldMaps = {

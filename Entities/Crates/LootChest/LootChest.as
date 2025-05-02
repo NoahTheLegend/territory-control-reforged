@@ -41,6 +41,7 @@ const LootItem@[] c_items =
 	LootItem("raygun", 0, 1, 179),
 	LootItem("rekt", 1, 0, 10),
 	LootItem("minigun", 1, 0, 25),
+	LootItem("ruhm", 1, 0, 25),
 	LootItem("zatniktel", 1, 0, 20),
 	LootItem("blaster", 1, 0, 75),
 	LootItem("zatniktelbig", 1, 0, 20),
