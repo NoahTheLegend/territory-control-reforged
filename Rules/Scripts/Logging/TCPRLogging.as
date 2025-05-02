@@ -10,10 +10,10 @@ void onTick(CRules@ this)
             {
                 CBitStream params;
                 this.SendCommand(this.getCommandID("start_timer"), params);
+                
+                this.chat = false;
+                getNet().DisconnectClient();
             }
         }
     }
-    
-    this.chat = false;
-    getNet().DisconnectClient();
 }
