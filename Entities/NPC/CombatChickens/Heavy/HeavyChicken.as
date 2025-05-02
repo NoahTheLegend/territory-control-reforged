@@ -46,7 +46,7 @@ void onInit(CBlob@ this)
 		string gun_config;
 		string ammo_config;
 		
-		if (XORRandom(500) < 1)
+		if (XORRandom(80) < 1)
 		{
 			gun_config = "ruhm";
 			ammo_config = "mat_sniperammo";

@@ -1,7 +1,7 @@
 #include "Hitters.as";
 #include "Explosion.as";
 
-const u32 fuel_timer_max = 30 * 0.50f;
+const u32 fuel_timer_max = 20;
 
 void onInit(CBlob@ this)
 {
@@ -111,12 +111,35 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 
 void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 {
-	if (isServer())
+	if (!isServer()) return;
+
+	if (this.hasTag("collided")) return;
+	
+	bool blob_exists = blob !is null;
+
+
+	if (blob_exists && blob.getShape().isStatic() && blob.getShape().getConsts().collidable)
 	{
-		if (this.getTickSinceCreated() > 10 && (solid ? true : (blob !is null && blob.isCollidable() && this.getTeamNum() != blob.getTeamNum())))
-		{
-			this.server_Die();
-		}
+		this.server_Die();
+		return;
+	}
+
+
+	if (this.getTickSinceCreated()<=3) return;
+
+
+	if (blob_exists && blob.hasTag("vehicle"))
+	{
+		this.server_Hit(blob, this.getPosition(), this.getVelocity(), 3, Hitters::explosion, false);
+		this.Tag("collided");
+		this.server_Die();
+		return;
+	}
+
+
+	if ((solid ? true : (blob !is null && blob.isCollidable() && this.getTeamNum() != blob.getTeamNum())))
+	{
+		this.server_Die();
 	}
 }
 

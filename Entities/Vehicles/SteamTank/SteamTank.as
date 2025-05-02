@@ -1,6 +1,7 @@
 #include "VehicleCommon.as"
 #include "CargoAttachmentCommon.as"
 #include "Hitters.as";
+#include "HittersTC.as";
 #include "Explosion.as";
 
 const Vec2f arm_offset = Vec2f(-2, -4);
@@ -277,6 +278,13 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		case Hitters::flying: // boat ram
 			dmg *= 0.5f;
 			break;
+
+		case HittersTC::bullet_low_cal:
+		case HittersTC::shotgun:
+		case HittersTC::bullet_high_cal:
+			dmg *= 0.1;
+			break;
+
 	}
 
 	return dmg;
