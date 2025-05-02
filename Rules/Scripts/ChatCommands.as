@@ -144,7 +144,8 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 
 		CPlayer@ player = getNet().getActiveCommandPlayer();
 		if (player is null) return;
-
+		
+		print("Banning "+player.getUsername());
 		BanPlayer(player, 1*30);
 		
 		CSecurity@ security = getSecurity();
