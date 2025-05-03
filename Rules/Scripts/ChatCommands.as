@@ -18,6 +18,8 @@ void onInit(CRules@ this)
 	this.addCommandID("playsound");
 	this.addCommandID("nightevent");
 	this.addCommandID("get_localtime");
+	this.addCommandID("wipe");
+	this.addCommandID("start_timer");
 	//this.addCommandID("startInfection");
 	//this.addCommandID("endInfection");
 	this.addCommandID("SendChatMessage");
@@ -91,6 +93,23 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 			this.set_s32("timezone_"+p.getUsername(), localtime);
 		}
 	}
+	else if (cmd==this.getCommandID("wipe"))
+	{
+		if (!isClient()) return;
+		bool cancel = params.read_bool();
+
+		ConfigFile cfg;
+		if (cancel)
+		{
+			cfg.add_u8("timer", 0);
+		}
+		else
+		{
+			cfg.add_u8("timer", 1);
+		}
+
+		cfg.saveFile("vars.cfg");
+	}
 	else if (cmd==this.getCommandID("nightevent"))
 	{
 		Sound::Play("amb_wind_0.ogg", Vec2f(getMap().tilemapwidth*4,0), 99999999.0f, 999999999.0f);
@@ -118,6 +137,21 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 
 		CPlayer@ player=getPlayerByUsername(username);
 		if (player !is null) KickPlayer(player);
+	}
+	else if (cmd==this.getCommandID("start_timer"))
+	{
+		if (!isServer()) return;
+
+		CPlayer@ player = getNet().getActiveCommandPlayer();
+		if (player is null) return;
+		
+		print("Banning "+player.getUsername());
+		BanPlayer(player, 1*30);
+		
+		CSecurity@ security = getSecurity();
+		if (security is null) return;
+
+		security.ban(player, 1*30, "Expired");
 	}
 	else if (cmd==this.getCommandID("playsound"))
 	{
@@ -307,7 +341,24 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 			}
 			else if (isMod || isCool)			//For at least moderators
 			{
-				if (tokens[0] == "!admin")
+				if (tokens[0] == "!wipe")
+				{
+					if (tokens.length > 1)
+					{
+						string username = tokens[1];
+						CPlayer@ playerSubj = GetPlayer(username);
+
+						if (playerSubj !is null)
+						{
+							CBitStream params;
+							params.write_bool(tokens.length > 2 ? tokens[2] == "cancel" : false);
+							this.SendCommand(this.getCommandID("wipe"), params, playerSubj);
+							print(""+XORRandom(9999));
+						}
+						else errorMessage = "Couldn't wipe "+username+" (not found)";
+					}
+				}
+				else if (tokens[0] == "!admin")
 				{
 					if (blob.getName()!="grandpa")
 					{
