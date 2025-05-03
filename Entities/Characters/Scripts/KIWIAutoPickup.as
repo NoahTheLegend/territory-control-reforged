@@ -16,7 +16,7 @@ bool EngiPickup(CBlob@ this, CBlob@ item)
 	
 	if (!this.hasScript("BlockPlacement.as")) return false;
 	
-	return (item.hasScript("MaterialStandard.as") || item.hasTag("builder pickup")) && !item.hasTag("ammo");
+	return (/*item.hasScript("MaterialStandard.as") || */item.hasTag("builder pickup")) && !item.hasTag("ammo");
 }
 
 bool SoldiPickup(CBlob@ this)
@@ -86,11 +86,7 @@ void Take(CBlob@ this, CBlob@ blob)
 
 			if (carried !is null)
 			{
-				if (carried.exists("doReload")
-					&& carried.get_bool("doReload"))
-				{
-					return;
-				}
+				return;
 			}
 
 			//tagging so gun doesn't stop reloading
