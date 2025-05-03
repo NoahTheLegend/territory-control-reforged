@@ -1,4 +1,5 @@
 #include "AnimalConsts.as";
+#include "HittersTC.as";
 
 const u8 DEFAULT_PERSONALITY = AGGRO_BIT;
 
@@ -165,6 +166,12 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 {
 	this.set_u8(personality_property, AGGRO_BIT);
 	MadAt(this, hitterBlob);
+
+	if (isGunHitter(customData)||isAlienGunHitter(customData))
+	{
+		damage *= 4;
+	}
+
 	return damage;
 }
 

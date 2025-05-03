@@ -20,3 +20,13 @@ namespace HittersTC
 		disease
 	};
 }
+
+bool isGunHitter (u32 hitterData)
+{
+	return hitterData >= HittersTC::bullet_low_cal && hitterData < HittersTC::railgun_lance;
+}
+
+bool isAlienGunHitter (u32 hitterData)
+{
+	return hitterData >= HittersTC::railgun_lance && hitterData <= HittersTC::plasma;
+}
