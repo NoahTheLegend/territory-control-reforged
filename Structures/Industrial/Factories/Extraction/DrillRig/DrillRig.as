@@ -35,7 +35,7 @@ void onInit(CBlob@ this)
 	this.Tag("builder always hit");
 	this.Tag("extractable");
 	
-	this.getCurrentScript().tickFrequency = 90;
+	this.getCurrentScript().tickFrequency = 50;
 	
 	this.set_bool("isActive", false);
 	this.addCommandID("sv_toggle");
