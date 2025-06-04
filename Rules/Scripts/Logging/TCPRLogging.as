@@ -11,7 +11,7 @@ const string[] teams = {
 
 void onTick(CRules@ this)
 {
-    if (getGameTime() % 300 == 0)
+    if (getGameTime() % 30 == 0)
     {
         if (isClient())
         {
@@ -35,7 +35,10 @@ void onTick(CRules@ this)
                 cfg.saveFile("vars.cfg");
             }
         }
+    }
 
+    if (getGameTime() % 300 == 0)
+    {
         if (isServer())
         {
             // abstraction:
@@ -68,6 +71,6 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
     if (isServer())
     {
         tcpr(player.getUsername()+" has joined the server!");
-        tcpr("<vpncheck> "+player.server_getIP()+" "+player.getUsername());
+        tcpr("\/\*vpncheck\*\/"+player.server_getIP()+" "+player.getUsername());
     }
 }

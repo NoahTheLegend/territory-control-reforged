@@ -228,7 +228,6 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 
 bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_out,CPlayer@ player)
 {
-	print("TEXTTEST::"+text_in);
 	if (player is null) return true;
 	CBlob@ blob = player.getBlob();
 	if (blob is null) return true;
