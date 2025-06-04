@@ -10,6 +10,17 @@
 
 void onInit(CRules@ this)
 {
+	onRestart(this);
+	//this.addCommandID("startInfection");
+	//this.addCommandID("endInfection");
+	this.addCommandID("SendChatMessage");
+
+	if (isClient()) this.set_bool("log",false);//so no clients can get logs unless they do ~logging
+	if (isServer()) this.set_bool("log",true);//server always needs to log anyway
+}
+
+void onRestart(CRules@ this)
+{
 	this.addCommandID("teleport");
 	this.addCommandID("addbot");
 	this.addCommandID("kickPlayer");
@@ -21,12 +32,6 @@ void onInit(CRules@ this)
 	this.addCommandID("wipe");
 	this.addCommandID("start_timer");
 	this.addCommandID("vpncheck");
-	//this.addCommandID("startInfection");
-	//this.addCommandID("endInfection");
-	this.addCommandID("SendChatMessage");
-
-	if (isClient()) this.set_bool("log",false);//so no clients can get logs unless they do ~logging
-	if (isServer()) this.set_bool("log",true);//server always needs to log anyway
 }
 
 void onCommand(CRules@ this, u8 cmd, CBitStream @params)
@@ -133,15 +138,15 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 		if (security is null) return;
 
 		string[] spl_vpn = vpn.split(":");
-		bool vpn = spl_vpn.length > 1 && spl_vpn[1] == "true";
+		bool b_vpn = spl_vpn.length > 1 && spl_vpn[1] == "true";
 
 		string[] spl_proxy = proxy.split(":");
-		bool proxy = spl_proxy.length > 1 && spl_proxy[1] == "true";
+		bool b_proxy = spl_proxy.length > 1 && spl_proxy[1] == "true";
 
 		string[] spl_tor = tor.split(":");
-		bool tor = spl_tor.length > 1 && spl_tor[1] == "true";
+		bool b_tor = spl_tor.length > 1 && spl_tor[1] == "true";
 
-		if (vpn || proxy || tor)
+		if (b_vpn || b_proxy || b_tor)
 		{
 			print("[TCPR] Player: " + username + " is using VPN/Proxy/Tor, banning for 1 minute.");
 			BanPlayer(getPlayerByUsername(username), 1 * 5);
