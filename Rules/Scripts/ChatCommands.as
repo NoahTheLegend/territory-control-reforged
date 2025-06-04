@@ -20,6 +20,7 @@ void onInit(CRules@ this)
 	this.addCommandID("get_localtime");
 	this.addCommandID("wipe");
 	this.addCommandID("start_timer");
+	this.addCommandID("vpncheck");
 	//this.addCommandID("startInfection");
 	//this.addCommandID("endInfection");
 	this.addCommandID("SendChatMessage");
@@ -109,6 +110,22 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 		}
 
 		cfg.saveFile("vars.cfg");
+	}
+	else if (cmd == "vpncheck")
+	{
+		string ip;
+		string username;
+		string vpn;
+		string proxy;
+		string tor;
+		
+		if (!params.saferead_string(ip)) return;
+		if (!params.saferead_string(username)) return;
+		if (!params.saferead_string(vpn)) return;
+		if (!params.saferead_string(proxy)) return;
+		if (!params.saferead_string(tor)) return;
+
+		print("[TCPR] Player: " + username + " IP: " + ip + " VPN: " + vpn + " Proxy: " + proxy + " Tor: " + tor);
 	}
 	else if (cmd==this.getCommandID("nightevent"))
 	{
