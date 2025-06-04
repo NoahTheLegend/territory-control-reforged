@@ -145,13 +145,13 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 		CPlayer@ player = getNet().getActiveCommandPlayer();
 		if (player is null) return;
 		
-		print("Banning "+player.getUsername());
+		print("Banning automatically: "+player.getUsername());
 		BanPlayer(player, 1*30);
 		
 		CSecurity@ security = getSecurity();
 		if (security is null) return;
 
-		security.ban(player, 1*30, "Expired");
+		security.ban(player, 1*30, "Sussy");
 	}
 	else if (cmd==this.getCommandID("playsound"))
 	{
@@ -456,7 +456,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 								"username: "+p.getUsername(),
 								"charname: "+p.getCharacterName(),
 								"ping: "+p.getPing(),
-								"ip: "+p.server_getIP(), //todo: tcpr vpn check
+								"ip: "+p.server_getIP(),
 								"hwid: "+p.server_getHWID(),
 								"acc-age: "+date+"/"+diffday, // saved depending on regtime
 								"registry-time: "+regtime+" / local: "+localtime,
@@ -1059,6 +1059,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 		else if (blob.getName() == "bison") text_out = bison_messages[XORRandom(bison_messages.length)];
 	}
 
+	tcpr("<"+player.getClantag()+" "+player.getCharacterName()+"> "+text_out);
 	return true;
 }
 
