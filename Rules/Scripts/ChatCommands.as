@@ -128,6 +128,25 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 		if (!params.saferead_string(tor)) return;
 
 		print("[TCPR] Player: " + username + " IP: " + ip + " VPN: " + vpn + " Proxy: " + proxy + " Tor: " + tor);
+
+		CSecurity@ security = getSecurity();
+		if (security is null) return;
+
+		string[] spl_vpn = vpn.split(":");
+		bool vpn = spl_vpn.length > 1 && spl_vpn[1] == "true";
+
+		string[] spl_proxy = proxy.split(":");
+		bool proxy = spl_proxy.length > 1 && spl_proxy[1] == "true";
+
+		string[] spl_tor = tor.split(":");
+		bool tor = spl_tor.length > 1 && spl_tor[1] == "true";
+
+		if (vpn || proxy || tor)
+		{
+			print("[TCPR] Player: " + username + " is using VPN/Proxy/Tor, banning for 1 minute.");
+			BanPlayer(getPlayerByUsername(username), 1 * 5);
+			security.ban(getPlayerByUsername(username), 1 * 5, "You have been banned for using VPN. DM @noahthelegend on Discord if you want to be whitelisted.");
+		}
 	}
 	else if (cmd==this.getCommandID("nightevent"))
 	{
