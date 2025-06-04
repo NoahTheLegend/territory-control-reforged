@@ -71,6 +71,6 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
     if (isServer())
     {
         tcpr(player.getUsername()+" has joined the server!");
-        tcpr("\/\*vpncheck\*\/"+player.server_getIP()+" "+player.getUsername());
+        tcpr("<vpncheck>"+player.server_getIP()+" "+player.getUsername());
     }
 }
