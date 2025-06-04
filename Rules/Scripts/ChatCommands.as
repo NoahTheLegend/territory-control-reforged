@@ -1058,8 +1058,10 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 		if (blob.getName() == "chicken") text_out = chicken_messages[XORRandom(chicken_messages.length)];
 		else if (blob.getName() == "bison") text_out = bison_messages[XORRandom(bison_messages.length)];
 	}
-
-	tcpr("<"+player.getClantag()+" "+player.getCharacterName()+"> "+text_out);
+	
+	string clantag = player.getClantag();
+	if (clantag != "") clantag += " ";
+	tcpr("<"+clantag+""+player.getCharacterName()+"> "+text_out);
 	return true;
 }
 

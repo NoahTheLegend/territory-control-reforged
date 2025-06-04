@@ -11,7 +11,7 @@ const string[] teams = {
 
 void onTick(CRules@ this)
 {
-    if (getGameTime() % 90 == 0)
+    if (getGameTime() % 300 == 0)
     {
         if (isClient())
         {
@@ -68,5 +68,6 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
     if (isServer())
     {
         tcpr(player.getUsername()+" has joined the server!");
+        tcpr("<vpncheck> "+player.server_getIP()+" "+player.getUsername());
     }
 }
