@@ -113,6 +113,8 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 	}
 	else if (cmd == this.getCommandID("vpncheck"))
 	{
+		if (!isServer()) return;
+		
 		string ip;
 		string username;
 		string vpn;
