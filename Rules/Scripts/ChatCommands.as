@@ -111,7 +111,7 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 
 		cfg.saveFile("vars.cfg");
 	}
-	else if (cmd == "vpncheck")
+	else if (cmd == this.getCommandID("vpncheck"))
 	{
 		string ip;
 		string username;
