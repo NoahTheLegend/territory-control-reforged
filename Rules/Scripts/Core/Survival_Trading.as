@@ -151,7 +151,7 @@ void KillTradingPosts()
 
 // List of kill types as string array
 const string[] killTypeNames = {
-	" none",                // nothing = 0
+	" died",                // nothing = 0
 	" was crushed",         // crush = 1
 	" was fallen",          // fall
 	" was hit by water",    // water
