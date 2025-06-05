@@ -183,7 +183,7 @@ const string[] killTypeNames = {
 	"was sawed",
 	"was drilled",
 	"was muscled",
-	"was suddenly gibbed", // index 31
+	"was suddenly gibbed", // index 33
 	// TC custom hitters
 	"was shot with low caliber bullet", // enum 100-115
 	"was shot with high caliber bullet",
@@ -204,7 +204,7 @@ const string[] killTypeNames = {
 
 string getKillNameType(u16 customData)
 {
-	if (customData <= 30)
+	if (customData <= 32)
 	{
 		return killTypeNames[customData];
 	}
