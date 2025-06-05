@@ -205,18 +205,18 @@ const string[] killTypeNames = {
 
 string getKillNameType(u16 customData)
 {
-	if (customData <= 32)
+	if (customData <= 33)
 	{
 		return killTypeNames[customData];
 	}
 	else
 	{
-		if (customData < 70 || customData - 70 >= killTypeNames.length)
+		if (customData < 0 || (customData >= 33 && customData < 100))
 		{
 			return "was killed";
 		}
 
-		return killTypeNames[customData - 70]; // custom hitters start at 100, so we subtract 70 to get the correct index
+		return killTypeNames[customData - 100 + 33]; // custom kill types start at 100, so we need to offset the index
 	}
 }
 

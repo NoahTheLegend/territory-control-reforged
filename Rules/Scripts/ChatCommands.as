@@ -1159,7 +1159,11 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 
 	bool neutral = (player.getTeamNum() > 6 || player.getTeamNum() < 0);
 	bool neutral_team_chat = neutral && player.exists(CHAT_CHANNEL_PROP) && player.get_u8(CHAT_CHANNEL_PROP) == 1;
-	if (neutral_team_chat)
+	bool private_message = false;
+	string[] pspl = text_in.split(":");
+	if (pspl.length > 0 && hasPlayerWithSignature(pspl[0])) private_message = true;
+	
+	if (neutral_team_chat && !private_message)
 	{
 		// send this to all clients and compare the neutral team on their side
 		CBitStream params1;
@@ -1169,6 +1173,19 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 	}
 
 	return true;
+}
+
+bool hasPlayerWithSignature(string signature)
+{
+	for (int i = 0; i < getPlayerCount(); i++)
+	{
+		CPlayer@ p = getPlayer(i);
+		if (p !is null && (p.getCharacterName() == signature || p.getUsername() == signature))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 // void onNewPlayerJoin(CRules@ this, CPlayer@ p)
