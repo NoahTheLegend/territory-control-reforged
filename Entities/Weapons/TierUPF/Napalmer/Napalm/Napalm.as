@@ -4,7 +4,7 @@ void onInit(CBlob@ this)
 {
 	this.server_SetTimeToDie(5 + XORRandom(11));
 	
-	this.getCurrentScript().tickFrequency = 10;
+	this.getCurrentScript().tickFrequency = 8;
 	
 	this.SetLight(true);
 	this.SetLightRadius(64.0f);
@@ -69,8 +69,6 @@ void onTick(CSprite@ this)
 
 void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 {
-	if (isServer() && (solid && XORRandom(100) < 4 || blob !is null && blob.hasTag("flesh")))
-		server_CreateBlob("firegas", this.getTeamNum(), this.getPosition()-Vec2f(0, 8));
 	if (this.getTickSinceCreated() < 3 ? (blob !is null ? blob.getTeamNum() != this.getTeamNum() : true) : true)
 	{
 		CBlob@ attachedBlob = getBlobByNetworkID(this.get_u16("attached_blob"));
