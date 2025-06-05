@@ -149,7 +149,73 @@ void KillTradingPosts()
 	}
 }
 
-// give coins for killing
+// List of kill types as string array
+const string[] killTypeNames = {
+	"none", //enum 0-29
+	"crushed",
+	"threw",
+	"drowned",
+	"burned",
+	"burned",
+	"flew",
+	"stomped",
+	"suicided",
+	"bitten",
+	"built",
+	"slashed",
+	"shielded",
+	"bombed",
+	"stabbed",
+	"arrowed",
+	"exploded with bomb arrow",
+	"penetrated with ballista bolt",
+	"smashed",
+	"bouldered",
+	"bouldered",
+	"rammed",
+	"exploded",
+	"kegged",
+	"killed with mine",
+	"killed with mine",
+	"spiked",
+	"sawed",
+	"drilled",
+	"muscled",
+	"suddenly gibbed", // index 31
+	// TC custom hitters
+	"shot", // enum 100-115
+	"killed with high caliber bullet",
+	"shotgunned",
+	"killed with railgun lance",
+	"plasmaed",
+	"forcefielded",
+	"electrocuted",
+	"irradiated",
+	"killed with nanobots",
+	"killed with magic",
+	"staffed",
+	"hammered",
+	"foofed",
+	"poisoned",
+	"diseased" // index 44
+};
+
+string getKillNameType(u16 customData)
+{
+	if (customData <= 30)
+	{
+		return killTypeNames[customData];
+	}
+	else
+	{
+		if (customData < 70 || customData - 70 >= killTypeNames.length)
+		{
+			return "killed";
+		}
+
+		return killTypeNames[customData - 70]; // custom hitters start at 100, so we subtract 70 to get the correct index
+	}
+}
 
 void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 {
@@ -164,6 +230,14 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 		u32 dropped_coins = 0.00f;
 	
 		const bool hasKiller = killer !is null;
+		if (hasKiller && killer !is victim)
+		{
+			tcpr(victim.getUsername() + " was " + getKillNameType(customData) + " by " + killer.getUsername()+"!");
+		}
+		else
+		{
+			tcpr(victim.getUsername() + " was " + getKillNameType(customData) + "!");
+		}
 	
 		if (victim.getTeamNum() < 7)
 		{

@@ -54,9 +54,6 @@ void onTick(CBlob@ this)
 			}
 		}
 	}
-	
-	if (isServer() && XORRandom(100) < 4 && this.getTickSinceCreated()>45)
-		server_CreateBlob("firegas", this.getTeamNum(), this.getPosition()-Vec2f(0, 8));
 }
 
 void onTick(CSprite@ this)

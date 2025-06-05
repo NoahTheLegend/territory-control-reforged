@@ -8,6 +8,8 @@
 #include "LoadWarPNG.as";
 #include "BannerCommon.as";
 
+const string CHAT_CHANNEL_PROP = "client_channel";
+
 void onInit(CRules@ this)
 {
 	onRestart(this);
@@ -32,6 +34,8 @@ void onRestart(CRules@ this)
 	this.addCommandID("wipe");
 	this.addCommandID("start_timer");
 	this.addCommandID("vpncheck");
+	this.addCommandID("sync_chat_channel");
+	this.addCommandID("send_neutral_chat_message");
 }
 
 void onCommand(CRules@ this, u8 cmd, CBitStream @params)
@@ -46,7 +50,49 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 	ParticleZombieLightning(destBlob.getPosition());
 	destBlob.getSprite().PlaySound("MagicWand.ogg");*/
 
-	if (cmd == this.getCommandID("teleport"))
+	if (cmd == this.getCommandID("send_neutral_chat_message"))
+	{
+		// receive a neutral chat message
+		if (!isClient()) return;
+
+		string message;
+		if (!params.saferead_string(message)) return;
+
+		u16 pid;
+		if (!params.saferead_u16(pid)) return;
+
+		CPlayer@ sender = getPlayerByNetworkId(pid);
+		if (sender is null) return;
+
+		CPlayer@ local = getLocalPlayer();
+		if (local is null) return;
+
+		string clantag = sender.getClantag();
+		if (clantag != "") clantag += " ";
+		string formattedMessage = "<" + clantag + sender.getCharacterName() + "> * " + message + " *";
+
+		if ((local.getTeamNum() < 0 || local.getTeamNum() > 6) && local !is sender)
+		{
+			client_AddToChat(formattedMessage, SColor(255, 0, 0, 0));
+		}
+	}
+	else if (cmd == this.getCommandID("sync_chat_channel"))
+    {
+		if (!isServer()) return;
+
+        u8 channel;
+        if (!params.saferead_u8(channel)) return;
+
+		u16 pid;
+		if (!params.saferead_u16(pid)) return;
+
+        CPlayer@ player = getPlayerByNetworkId(pid);
+        if (player is null) return;
+
+        player.set_u8(CHAT_CHANNEL_PROP, channel);
+		// we only need it on server, so dont sync
+    }
+	else if (cmd == this.getCommandID("teleport"))
 	{
 		u16 tpBlobId, destBlobId;
 
@@ -1102,9 +1148,26 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 		else if (blob.getName() == "bison") text_out = bison_messages[XORRandom(bison_messages.length)];
 	}
 	
-	string clantag = player.getClantag();
-	if (clantag != "") clantag += " ";
-	tcpr("<"+clantag+""+player.getCharacterName()+"> "+text_out);
+	bool send = player.exists(CHAT_CHANNEL_PROP) && player.get_u8(CHAT_CHANNEL_PROP) == 0; // global
+	if (send)
+	{
+		string clantag = player.getClantag();
+		if (clantag != "") clantag += " ";
+
+		tcpr("<"+clantag+""+player.getCharacterName()+"> "+text_out);
+	}
+
+	bool neutral = (player.getTeamNum() > 6 || player.getTeamNum() < 0);
+	bool neutral_team_chat = neutral && player.exists(CHAT_CHANNEL_PROP) && player.get_u8(CHAT_CHANNEL_PROP) == 1;
+	if (neutral_team_chat)
+	{
+		// send this to all clients and compare the neutral team on their side
+		CBitStream params1;
+		params1.write_string(text_out);
+		params1.write_u16(player.getNetworkID());
+		this.SendCommand(this.getCommandID("send_neutral_chat_message"), params1);
+	}
+
 	return true;
 }
 
@@ -1371,4 +1434,17 @@ bool onClientProcessChat(CRules@ this,const string& in text_in,string& out text_
 		if (player.isRCON()) this.set_bool("log",!this.get_bool("log"));
 
 	return true;
+}
+
+void onEnterChat(CRules@ this)
+{
+    if (!isClient()) return;
+    
+	CPlayer@ local = getLocalPlayer();
+	if (local is null) return;
+
+    CBitStream params;
+    params.write_u8(getChatChannel());
+	params.write_u16(local.getNetworkID());
+    this.SendCommand(this.getCommandID("sync_chat_channel"), params);
 }
