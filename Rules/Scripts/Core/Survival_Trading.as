@@ -152,52 +152,54 @@ void KillTradingPosts()
 // List of kill types as string array
 const string[] killTypeNames = {
 	"none", //enum 0-29
-	"crushed",
-	"threw",
-	"drowned",
-	"burned",
-	"burned",
-	"flew",
-	"stomped",
+	"was crushed",
+	"was thrown",
+	"was drowned",
+	"was drwoned",
+	"was drowned",
+	"was burned",
+	"was burned",
+	"was flown",
+	"was stomped",
 	"suicided",
-	"bitten",
-	"built",
-	"slashed",
-	"shielded",
-	"bombed",
-	"stabbed",
-	"arrowed",
-	"exploded with bomb arrow",
-	"penetrated with ballista bolt",
-	"smashed",
-	"bouldered",
-	"bouldered",
-	"rammed",
-	"exploded",
-	"kegged",
-	"killed with mine",
-	"killed with mine",
-	"spiked",
-	"sawed",
-	"drilled",
-	"muscled",
-	"suddenly gibbed", // index 31
+	"was bitten",
+	"was smashed",
+	"was slashed",
+	"was shielded",
+	"was bombed",
+	"was stabbed",
+	"was arrowed",
+	"was exploded with bomb arrow",
+	"was penetrated with ballista bolt",
+	"was smashed",
+	"was bouldered",
+	"was bouldered",
+	"was rammed",
+	"was exploded",
+	"was kegged",
+	"was killed with mine",
+	"was killed with mine",
+	"was spiked",
+	"was sawed",
+	"was drilled",
+	"was muscled",
+	"was suddenly gibbed", // index 31
 	// TC custom hitters
-	"shot", // enum 100-115
-	"killed with high caliber bullet",
-	"shotgunned",
-	"killed with railgun lance",
-	"plasmaed",
-	"forcefielded",
-	"electrocuted",
-	"irradiated",
-	"killed with nanobots",
-	"killed with magic",
-	"staffed",
-	"hammered",
-	"foofed",
-	"poisoned",
-	"diseased" // index 44
+	"was shot with low caliber bullet", // enum 100-115
+	"was shot with high caliber bullet",
+	"was shot with shotgun",
+	"was shot with railgun lance",
+	"was shot with plasma",
+	"was forcefielded",
+	"was electrocuted",
+	"was irradiated",
+	"was killed with nanobots",
+	"was killed with magic",
+	"was staffed",
+	"was hammered",
+	"was foofed",
+	"was poisoned",
+	"was diseased" // index 44
 };
 
 string getKillNameType(u16 customData)
@@ -210,7 +212,7 @@ string getKillNameType(u16 customData)
 	{
 		if (customData < 70 || customData - 70 >= killTypeNames.length)
 		{
-			return "killed";
+			return "was killed";
 		}
 
 		return killTypeNames[customData - 70]; // custom hitters start at 100, so we subtract 70 to get the correct index
@@ -232,11 +234,11 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 		const bool hasKiller = killer !is null;
 		if (hasKiller && killer !is victim)
 		{
-			tcpr(victim.getUsername() + " was " + getKillNameType(customData) + " by " + killer.getUsername()+"!");
+			tcpr(victim.getUsername() + getKillNameType(customData) + " by " + killer.getUsername()+"!");
 		}
 		else
 		{
-			tcpr(victim.getUsername() + " was " + getKillNameType(customData) + "!");
+			tcpr(victim.getUsername() + getKillNameType(customData) + "!");
 		}
 	
 		if (victim.getTeamNum() < 7)
