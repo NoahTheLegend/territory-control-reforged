@@ -151,38 +151,40 @@ void KillTradingPosts()
 
 // List of kill types as string array
 const string[] killTypeNames = {
-	"none", //enum 0-32
-	"was crushed",
-	"was thrown",
-	"was drowned",
-	"was drwoned",
-	"was burned",
-	"was burned",
-	"was flown",
-	"was stomped",
-	"suicided",
-	"was bitten",
-	"was smashed",
-	"was slashed",
-	"was shielded",
-	"was bombed",
-	"was stabbed",
-	"was arrowed",
-	"was exploded with bomb arrow",
-	"was penetrated with ballista bolt",
-	"was smashed",
-	"was bouldered",
-	"was bouldered",
-	"was rammed",
-	"was exploded",
-	"was kegged",
-	"was killed with mine",
-	"was killed with mine",
-	"was spiked",
-	"was sawed",
-	"was drilled",
-	"was muscled",
-	"was suddenly gibbed", // index 32
+	"none",                // nothing = 0
+	"was crushed",         // crush = 1
+	"was fallen",          // fall
+	"was hit by water",    // water
+	"was stunned by water",// water_stun
+	"was forcefully stunned by water", // water_stun_force
+	"was drowned",         // drown
+	"was set on fire",     // fire
+	"was burned",          // burn
+	"was flown",           // flying
+	"was stomped",         // stomp
+	"suicided",            // suicide = 11
+	"was bitten",          // bite
+	"was smashed by builder", // builder
+	"was slashed",         // sword
+	"was shield bashed",   // shield
+	"was bombed",          // bomb
+	"was stabbed",         // stab
+	"was arrowed",         // arrow
+	"was exploded with bomb arrow", // bomb_arrow
+	"was penetrated with ballista bolt", // ballista
+	"was smashed with catapult stones", // cata_stones
+	"was smashed with catapult boulder", // cata_boulder
+	"was bouldered",       // boulder
+	"was rammed",          // ram
+	"was exploded",        // explosion
+	"was kegged",          // keg
+	"was killed with mine",// mine
+	"was killed with special mine", // mine_special
+	"was spiked",          // spikes
+	"was sawed",           // saw
+	"was drilled",         // drill
+	"was muscled",         // muscles
+	"was suddenly gibbed", // suddengib
 	// TC custom hitters
 	"was shot with low caliber bullet", // enum 100-115
 	"was shot with high caliber bullet",
