@@ -160,10 +160,10 @@ const string[] killTypeNames = {
 	" was drowned",         // drown
 	" was burned",     // fire
 	" was burned",          // burn
-	" was flown",           // flying
+	" was flown to death",           // flying
 	" was stomped",         // stomp
 	" suicided",            // suicide = 11
-	" was bitten",          // bite
+	" was bitten to death",          // bite
 	" was pickaxed", // builder
 	" was slashed",         // sword
 	" was shield bashed",   // shield
