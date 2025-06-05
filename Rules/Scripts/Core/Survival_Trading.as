@@ -151,56 +151,56 @@ void KillTradingPosts()
 
 // List of kill types as string array
 const string[] killTypeNames = {
-	"none",                // nothing = 0
-	"was crushed",         // crush = 1
-	"was fallen",          // fall
-	"was hit by water",    // water
-	"was stunned by water",// water_stun
-	"was forcefully stunned by water", // water_stun_force
-	"was drowned",         // drown
-	"was set on fire",     // fire
-	"was burned",          // burn
-	"was flown",           // flying
-	"was stomped",         // stomp
-	"suicided",            // suicide = 11
-	"was bitten",          // bite
-	"was smashed by builder", // builder
-	"was slashed",         // sword
-	"was shield bashed",   // shield
-	"was bombed",          // bomb
-	"was stabbed",         // stab
-	"was arrowed",         // arrow
-	"was exploded with bomb arrow", // bomb_arrow
-	"was penetrated with ballista bolt", // ballista
-	"was smashed with catapult stones", // cata_stones
-	"was smashed with catapult boulder", // cata_boulder
-	"was bouldered",       // boulder
-	"was rammed",          // ram
-	"was exploded",        // explosion
-	"was kegged",          // keg
-	"was killed with mine",// mine
-	"was killed with special mine", // mine_special
-	"was spiked",          // spikes
-	"was sawed",           // saw
-	"was drilled",         // drill
-	"was muscled",         // muscles
-	"was suddenly gibbed", // suddengib
+	" none",                // nothing = 0
+	" was crushed",         // crush = 1
+	" was fallen",          // fall
+	" was hit by water",    // water
+	" was stunned by water",// water_stun
+	" was forcefully stunned by water", // water_stun_force
+	" was drowned",         // drown
+	" was set on fire",     // fire
+	" was burned",          // burn
+	" was flown",           // flying
+	" was stomped",         // stomp
+	" suicided",            // suicide = 11
+	" was bitten",          // bite
+	" was smashed by builder", // builder
+	" was slashed",         // sword
+	" was shield bashed",   // shield
+	" was bombed",          // bomb
+	" was stabbed",         // stab
+	" was arrowed",         // arrow
+	" was exploded with bomb arrow", // bomb_arrow
+	" was penetrated with ballista bolt", // ballista
+	" was smashed with catapult stones", // cata_stones
+	" was smashed with catapult boulder", // cata_boulder
+	" was bouldered",       // boulder
+	" was rammed",          // ram
+	" was exploded",        // explosion
+	" was kegged",          // keg
+	" was killed with mine",// mine
+	" was killed with special mine", // mine_special
+	" was spiked",          // spikes
+	" was sawed",           // saw
+	" was drilled",         // drill
+	" was muscled",         // muscles
+	" was suddenly gibbed", // suddengib
 	// TC custom hitters
-	"was shot with low caliber bullet", // enum 100-115
-	"was shot with high caliber bullet",
-	"was shot with shotgun",
-	"was shot with railgun lance",
-	"was shot with plasma",
-	"was forcefielded",
-	"was electrocuted",
-	"was irradiated",
-	"was killed with nanobots",
-	"was killed with magic",
-	"was staffed",
-	"was hammered",
-	"was foofed",
-	"was poisoned",
-	"was diseased" // index 44
+	" was shot with low caliber bullet", // enum 100-115
+	" was shot with high caliber bullet",
+	" was shot with shotgun",
+	" was shot with railgun lance",
+	" was shot with plasma",
+	" was forcefielded",
+	" was electrocuted",
+	" was irradiated",
+	" was killed with nanobots",
+	" was killed with magic",
+	" was staffed",
+	" was hammered",
+	" was foofed",
+	" was poisoned",
+	" was diseased" // index 44
 };
 
 string getKillNameType(u16 customData)
