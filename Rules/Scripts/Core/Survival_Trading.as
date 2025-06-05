@@ -151,12 +151,11 @@ void KillTradingPosts()
 
 // List of kill types as string array
 const string[] killTypeNames = {
-	"none", //enum 0-29
+	"none", //enum 0-32
 	"was crushed",
 	"was thrown",
 	"was drowned",
 	"was drwoned",
-	"was drowned",
 	"was burned",
 	"was burned",
 	"was flown",
@@ -183,7 +182,7 @@ const string[] killTypeNames = {
 	"was sawed",
 	"was drilled",
 	"was muscled",
-	"was suddenly gibbed", // index 33
+	"was suddenly gibbed", // index 32
 	// TC custom hitters
 	"was shot with low caliber bullet", // enum 100-115
 	"was shot with high caliber bullet",
