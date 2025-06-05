@@ -155,16 +155,16 @@ const string[] killTypeNames = {
 	" was crushed",         // crush = 1
 	" was fallen",          // fall
 	" was hit by water",    // water
-	" was stunned by water",// water_stun
-	" was forcefully stunned by water", // water_stun_force
+	" was hit by water",// water_stun
+	" was hit by water", // water_stun_force
 	" was drowned",         // drown
-	" was set on fire",     // fire
+	" was burned",     // fire
 	" was burned",          // burn
 	" was flown",           // flying
 	" was stomped",         // stomp
 	" suicided",            // suicide = 11
 	" was bitten",          // bite
-	" was smashed by builder", // builder
+	" was pickaxed", // builder
 	" was slashed",         // sword
 	" was shield bashed",   // shield
 	" was bombed",          // bomb
@@ -176,15 +176,15 @@ const string[] killTypeNames = {
 	" was smashed with catapult boulder", // cata_boulder
 	" was bouldered",       // boulder
 	" was rammed",          // ram
-	" was exploded",        // explosion
+	" exploded",        // explosion
 	" was kegged",          // keg
 	" was killed with mine",// mine
-	" was killed with special mine", // mine_special
+	" was killed with mine", // mine_special
 	" was spiked",          // spikes
-	" was sawed",           // saw
+	" was grinded",           // saw
 	" was drilled",         // drill
-	" was muscled",         // muscles
-	" was suddenly gibbed", // suddengib
+	" was smashed",         // muscles
+	" was gibbed", // suddengib
 	// TC custom hitters
 	" was shot with low caliber bullet", // enum 100-115
 	" was shot with high caliber bullet",
