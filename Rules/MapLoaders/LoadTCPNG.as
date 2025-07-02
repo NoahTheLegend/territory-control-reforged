@@ -6,6 +6,16 @@
 #include "Explosion.as";
 #include "Hitters.as";
 #include "CustomBlocks.as";
+#include "RopeMapper.as";
+
+void onTick(CRules@ this)
+{
+	if (rope_map_updated)
+	{
+		rope_map_updated = false;
+		SaveMap(getMap());
+	}
+}
 
 // #include "PrettyMap.as";
 namespace tc_colors
@@ -681,7 +691,6 @@ bool LoadMap(CMap@ map, const string& in fileName)
 	print("LOADING TC PNG MAP " + fileName);
 
 	TCPNGLoader loader();
-
 	bool result = loader.loadMap(map , fileName);
 
 	// if (isServer())
@@ -2083,6 +2092,8 @@ TileType server_onTileHit(CMap@ map, f32 damage, u32 index, TileType oldTileType
 
 void onSetTile(CMap@ map, u32 index, TileType tile_new, TileType tile_old)
 {
+	UpdateMap(map, index, tile_new);
+	
 	if (tile_new == CMap::tile_ground && isClient()) Sound::Play("dig_dirt" + (1 + XORRandom(3)) + ".ogg", map.getTileWorldPosition(index), 1.0f, 1.0f);
 	Vec2f pos = map.getTileWorldPosition(index);
 

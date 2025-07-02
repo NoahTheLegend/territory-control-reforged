@@ -275,6 +275,16 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 								callerBlob.server_Pickup(item);
 							}
 						}
+						else if (data == "mat_bd")
+						{
+							this.add_f32("deity_power", 1000);
+
+							if (isServer())
+							{
+								CBlob@ item = server_CreateBlob("mat_bd", this.getTeamNum(), this.getPosition());
+								callerBlob.server_Pickup(item);
+							}
+						}
 					}
 				}
 			}
