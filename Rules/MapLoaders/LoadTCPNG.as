@@ -6,7 +6,7 @@
 #include "Explosion.as";
 #include "Hitters.as";
 #include "CustomBlocks.as";
-//#include "RopeMapper.as";
+#include "RopeMapper.as";
 
 void onTick(CRules@ this)
 {
