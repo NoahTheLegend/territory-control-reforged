@@ -8,14 +8,14 @@
 #include "CustomBlocks.as";
 #include "RopeMapper.as";
 
-void onTick(CRules@ this)
-{
-	if (rope_map_updated)
-	{
-		rope_map_updated = false;
-		SaveMap(getMap());
-	}
-}
+//void onTick(CRules@ this)
+//{
+//	if (rope_map_updated)
+//	{
+//		rope_map_updated = false;
+//		SaveMap(getMap());
+//	}
+//}
 
 // #include "PrettyMap.as";
 namespace tc_colors
@@ -1398,6 +1398,7 @@ bool onMapTileCollapse(CMap@ map, u32 offset)
 		{
 			blob.server_Die();
 		}
+
 		CRules@ rules = getRules();
 		if(map.getTile(offset).type == CMap::tile_matter)
 		{
@@ -1408,7 +1409,6 @@ bool onMapTileCollapse(CMap@ map, u32 offset)
 	}
 
 	// print("collapse");
-
 	return true;
 }
 
@@ -2092,7 +2092,7 @@ TileType server_onTileHit(CMap@ map, f32 damage, u32 index, TileType oldTileType
 
 void onSetTile(CMap@ map, u32 index, TileType tile_new, TileType tile_old)
 {
-	UpdateMap(map, index, tile_new);
+	//UpdateMap(map, index, tile_new);
 	
 	if (tile_new == CMap::tile_ground && isClient()) Sound::Play("dig_dirt" + (1 + XORRandom(3)) + ".ogg", map.getTileWorldPosition(index), 1.0f, 1.0f);
 	Vec2f pos = map.getTileWorldPosition(index);
