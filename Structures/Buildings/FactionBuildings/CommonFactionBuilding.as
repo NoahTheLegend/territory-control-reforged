@@ -373,6 +373,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ inParams)
 				GetTeamData(team, @team_data);
 
 				team_data.leader_name = old_leader_name;
+				old_leader_name = "";
 			}
 
 			CBlob@[] sleepers;
