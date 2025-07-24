@@ -355,8 +355,13 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ inParams)
 		{
 			for (u8 i = 0; i < getPlayersCount(); i++)
 			{
+				TeamData@ team_data;
+				GetTeamData(this.getTeamNum(), @team_data);
+
 				CPlayer@ p = getPlayer(i);
 				if (p is null) continue;
+
+				string old_leader_name = team_data.leader_name;
 
 				if (p.getTeamNum() != this.getTeamNum()) continue;
 				p.server_setTeamNum(team);
@@ -365,6 +370,10 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ inParams)
 				if (b is null) continue;
 
 				b.server_setTeamNum(team);
+				GetTeamData(team, @team_data);
+
+				team_data.leader_name = old_leader_name;
+				old_leader_name = "";
 			}
 
 			CBlob@[] sleepers;
