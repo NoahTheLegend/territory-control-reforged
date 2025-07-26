@@ -53,7 +53,7 @@ void updateCoinMessage(CPlayer@ player)
 
 	if (rules.exists(prop_name))
 	{
-		const int quantity_diff = player.getCoins() - rules.get_u32(prop_name);
+		const int quantity_diff = getRules().get_u32(player.getUsername()+"coins") - getRules().get_u32(prop_name);
 
 		if (Maths::Abs(quantity_diff) > 10)
 		{
@@ -61,7 +61,7 @@ void updateCoinMessage(CPlayer@ player)
 		}
 	}
 
-	rules.set_u32(prop_name, player.getCoins());
+	getRules().set_u32(prop_name, getRules().get_u32(player.getUsername()+"coins"));
 }
 
 void onInit(CBlob@ this)

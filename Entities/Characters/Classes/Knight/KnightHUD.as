@@ -59,7 +59,7 @@ void onRender( CSprite@ this )
 
 	// draw coins
 
-	const int coins = player !is null ? player.getCoins() : 0;
+	const int coins = player !is null ? getRules().get_u32(player.getUsername()+"coins") : 0;
 	DrawCoinsOnHUD( blob, coins, tl, slotsSize-2 );
 
 	// draw class icon

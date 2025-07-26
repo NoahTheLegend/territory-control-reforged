@@ -38,7 +38,7 @@ void onInit(CBlob@ this)
 
 	if (isServer())
 	{
-		this.set_u16("stolen coins", 400);
+		this.set_u32("stolen coins", 400);
 
 		this.server_setTeamNum(220);
 
@@ -98,7 +98,7 @@ void onTick(CBlob@ this)
 		if (isServer())
 		{
 			this.server_SetPlayer(null);
-			server_DropCoins(this.getPosition(), Maths::Max(0, Maths::Min(this.get_u16("stolen coins"), 5000)));
+			server_DropCoins(this.getPosition(), Maths::Max(0, Maths::Min(this.get_u32("stolen coins"), 5000)));
 			CBlob@ carried = this.getCarriedBlob();
 
 			if (carried !is null)

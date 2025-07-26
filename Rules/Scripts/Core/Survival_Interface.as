@@ -210,7 +210,7 @@ void onRenderScoreboard(CRules@ this)
 			SColor tempGrey = grey;
 			SColor customCol = grey;
 			const s32 ping_in_ms = s32(p.getPing() * 1000.0f / 30.0f);
-			const u16 coins = p.getCoins();
+			const u32 coins = getRules().get_u32(p.getUsername()+"coins");
 			const string username = p.getUsername();
 			const string rank = getRank(username, customCol, p);
 			
