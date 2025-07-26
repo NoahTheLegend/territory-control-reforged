@@ -277,7 +277,7 @@ void onTick(CBrain@ this)
 			
 			if (targetPlayer !is null && target.hasTag("dead"))
 			{
-				blob.set_u16("stolen coins", blob.get_u16("stolen coins") + (targetPlayer.getCoins() * 0.9f));
+				blob.set_u32("stolen coins", blob.get_u32("stolen coins") + (getRules().get_u32(targetPlayer.getUsername()+"coins") * 0.9f));
 			}
 		
 			ResetTarget(this);

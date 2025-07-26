@@ -171,7 +171,7 @@ void onTick(CBlob@ this)
 		// {
 			// CPlayer@ ply = players[i].getPlayer();
 
-			// if (ply !is null) ply.server_setCoins(ply.getCoins() + 10);
+			// if (ply !is null) getRules().set_u32(ply.getUsername()+"coins",getRules().get_u32(ply.getUsername()+"coins") + 10);
 		// }
 	// }
 }
@@ -213,7 +213,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				CPlayer@ callerPlayer = callerBlob.getPlayer();
 				if (callerPlayer is null || spl.length <= 1) return;
 
-				callerPlayer.server_setCoins(callerPlayer.getCoins() +  parseInt(spl[1]));
+				getRules().set_u32(callerPlayer.getUsername()+"coins",getRules().get_u32(callerPlayer.getUsername()+"coins") +  parseInt(spl[1]));
 			}
 			else if (spl[0] == "lotteryticket")
 			{
@@ -256,7 +256,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 						if (owner !is null && spl.length > 2)
 						{
-							owner.server_setCoins(owner.getCoins() + parseInt(spl[2]));
+							getRules().set_u32(owner.getUsername()+"coins",getRules().get_u32(owner.getUsername()+"coins") + parseInt(spl[2]));
 						}
 					}
 				}
@@ -269,7 +269,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 					if (owner !is null && spl.length > 1)
 					{
-						owner.server_setCoins(owner.getCoins() + parseInt(spl[1]));
+						getRules().set_u32(owner.getUsername()+"coins",getRules().get_u32(owner.getUsername()+"coins") + parseInt(spl[1]));
 					}
 				}
 

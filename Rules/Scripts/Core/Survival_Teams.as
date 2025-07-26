@@ -209,7 +209,7 @@ void onTick(CRules@ this)
 					
 					team_list[team].upkeep += team_list[team].player_count-(team_list[team].player_count > 2 ? 1 : 0); //+ (team_list[team].player_count * 5);
 					team_list[team].player_count++;
-					team_list[team].wealth += p.getCoins();
+					team_list[team].wealth += getRules().get_u32(p.getUsername()+"coins");
 				}
 			}
 		

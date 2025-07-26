@@ -199,8 +199,8 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						}
 						if (stop && isServer())
 						{
-							if (amount < 20) ownerPlayer.server_setCoins(ownerPlayer.getCoins()+12999);
-							else ownerPlayer.server_setCoins(ownerPlayer.getCoins()+24999);
+							if (amount < 20) getRules().set_u32(ownerPlayer.getUsername()+"coins",getRules().get_u32(ownerPlayer.getUsername()+"coins")+12999);
+							else getRules().set_u32(ownerPlayer.getUsername()+"coins",getRules().get_u32(ownerPlayer.getUsername()+"coins")+24999);
 							return;
 						}
 					}
@@ -240,7 +240,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 							CPlayer@ p = callerBlob.getPlayer();
 							if (p !is null)
 							{
-								p.server_setCoins(p.getCoins()+2099);
+								getRules().set_u32(p.getUsername()+"coins",getRules().get_u32(p.getUsername()+"coins")+2099);
 								return;
 							}
 						}
@@ -271,7 +271,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 							CPlayer@ p = callerBlob.getPlayer();
 							if (p !is null)
 							{
-								p.server_setCoins(p.getCoins()+4099);
+								getRules().set_u32(p.getUsername()+"coins",getRules().get_u32(p.getUsername()+"coins")+4099);
 								return;
 							}
 						}

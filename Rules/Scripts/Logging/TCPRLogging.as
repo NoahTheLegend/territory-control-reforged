@@ -55,7 +55,7 @@ void onTick(CRules@ this)
                     string username = player.getUsername();
                     int tn = player.getTeamNum();
                     string teamName = tn >= 0 && tn <= 6 ? teams[tn] : teams[teams.length - 1];
-                    u16 coins = player.getCoins();
+                    u32 coins = getRules().get_u32(player.getUsername()+"coins");
 
                     data += clantag + " | " + characterName + " | " + username + " | " + teamName + " | " + coins + ";\n";
                 }

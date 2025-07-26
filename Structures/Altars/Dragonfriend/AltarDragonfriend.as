@@ -413,7 +413,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 							{
 								if (isServer())
 								{
-									callerPlayer.server_setCoins(callerPlayer.getCoins() + sell_price);
+									getRules().set_u32(callerPlayer.getUsername()+"coins",getRules().get_u32(callerPlayer.getUsername()+"coins") + sell_price);
 									// this.set_f32("stonks_value", Maths::Clamp(stonks_value - (sell_price * 0.02f), stonks_base_value_min, stonks_base_value_max));
 									// this.Sync("stonks_value", false);
 								}

@@ -70,7 +70,7 @@ void onPlayerLeave(CRules@ this, CPlayer@ player)
 		{
 			blob.server_SetPlayer(null);
 
-			blob.set_u16("sleeper_coins", player.getCoins());
+			blob.set_u32("sleeper_coins", getRules().get_u32(player.getUsername()+"coins"));
 			blob.set_bool("sleeper_sleeping", true);
 			blob.set_string("sleeper_name", player.getUsername());
 
@@ -133,7 +133,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData
 	string victimName = victim.getUsername() + " (team " + victim.getTeamNum() + ")";
 	string attackerName = attacker !is null ? (attacker.getUsername() + " (team " + attacker.getTeamNum() + ")") : "world";
 	u8 victimTeam = victim.getTeamNum();
-	int coins = victim.getCoins();
+	int coins = getRules().get_u32(victim.getUsername()+"coins");
 
 	if (isServer())
 	{
@@ -141,7 +141,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData
 		
 		// Drop 50% on death + what ever else kag takes away on death
 		// if (victimTeam >= 100 && coins != 0)
-			// victim.server_setCoins(coins / 2);
+			// getRules().set_u32(victim.getUsername()+"coins",coins / 2);
 	}
 	// printf(victimName + " has been killed by " + attackerName + "; damage type: " + customData);
 
@@ -331,7 +331,7 @@ void onTick(CRules@ this)
 						CBlob@ tavern = getBlobByNetworkID(player.get_u16("tavern_netid"));
 						const bool isTavernOwner = tavern !is null && player.getUsername() == tavern.get_string("Owner");
 
-						if (tavern !is null && tavern.getName() == "tavern" && (player.getCoins() >= 20 || isTavernOwner))
+						if (tavern !is null && tavern.getName() == "tavern" && (getRules().get_u32(player.getUsername()+"coins") >= 20 || isTavernOwner))
 						{
 							printf("Respawning " + player.getUsername() + " at a tavern as team " + player.get_u8("tavern_team"));
 
@@ -346,12 +346,12 @@ void onTick(CRules@ this)
 
 								if (!isTavernOwner)
 								{
-									player.server_setCoins(player.getCoins() - 20);
+									getRules().set_u32(player.getUsername()+"coins",getRules().get_u32(player.getUsername()+"coins") - 20);
 
 									CPlayer@ tavern_owner = getPlayerByUsername(tavern.get_string("Owner"));
 									if (tavern_owner !is null)
 									{
-										tavern_owner.server_setCoins(tavern_owner.getCoins() + 20);
+										getRules().set_u32(tavern_owner.getUsername()+"coins",getRules().get_u32(tavern_owner.getUsername()+"coins") + 20);
 									}
 								}
 
@@ -497,7 +497,7 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 				found_sleeper = true;
 
 				player.server_setTeamNum(sleeper.getTeamNum());
-				player.server_setCoins(sleeper.get_u16("sleeper_coins"));
+				getRules().set_u32(player.getUsername()+"coins",sleeper.get_u32("sleeper_coins"));
 
 				sleeper.server_SetPlayer(player);
 				sleeper.set_bool("sleeper_sleeping", false);
@@ -508,7 +508,7 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 
 				sleeper.SendCommand(sleeper.getCommandID("sleeper_set"), bt);
 
-				// sleeper.set_u16("sleeper_coins", player.getCoins());
+				// sleeper.set_u32("sleeper_coins", getRules().get_u32(player.getUsername()+"coins"));
 
 				// sleeper.Sync("sleeper", false);
 				// sleeper.Sync("sleeper_name", false);
@@ -554,10 +554,10 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 			}
 		}
 
-		player.server_setCoins(500);
+		getRules().set_u32(player.getUsername()+"coins",500);
 	}
 
-	// player.server_setCoins(150);
+	// getRules().set_u32(player.getUsername()+"coins",150);
 }
 
 void onInit(CRules@ this)
@@ -792,8 +792,8 @@ void Reset(CRules@ this)
 		if(p !is null)
 		{
 			p.set_u32("respawn time", getGameTime() + (30 * 1));
-			p.server_setCoins(Maths::Max(1000, p.getCoins() * 0.75f)); // Half of your fortune is lost by spending it on drugs.
-
+			//getRules().set_u32(p.getUsername()+"coins",Maths::Max(1000, getRules().get_u32(p.getUsername()+"coins") * 0.75f)); // Half of your fortune is lost by spending it on drugs.
+			getRules().set_u32(p.getUsername()+"coins",Maths::Clamp(getRules().get_u32(p.getUsername()+"coins") * 0.75f, 1000, 30000));
 			// SetToRandomExistingTeam(this, p);
 			p.server_setTeamNum(100 + XORRandom(100));
 			players.list.push_back(CTFPlayerInfo(p.getUsername(),0,""));

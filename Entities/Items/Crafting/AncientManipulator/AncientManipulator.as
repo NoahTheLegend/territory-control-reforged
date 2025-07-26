@@ -147,7 +147,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				CPlayer@ callerPlayer = callerBlob.getPlayer();
 				if (callerPlayer is null) return;
 
-				callerPlayer.server_setCoins(callerPlayer.getCoins() +  parseInt(spl[1]));
+				getRules().set_u32(callerPlayer.getUsername()+"coins",getRules().get_u32(callerPlayer.getUsername()+"coins") +  parseInt(spl[1]));
 			}
 			else if(spl[0] == "scyther")
 			{

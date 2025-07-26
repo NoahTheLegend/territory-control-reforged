@@ -177,11 +177,11 @@ class Bullet
                                     {
                                         if (gunBlob.exists("CustomCoinFlesh"))
                                         {
-                                            if (blob.hasTag("player")) p.server_setCoins(p.getCoins() + gunBlob.get_u32("CustomCoinFlesh"));
+                                            if (blob.hasTag("player")) getRules().set_u32(p.getUsername()+"coins",getRules().get_u32(p.getUsername()+"coins") + gunBlob.get_u32("CustomCoinFlesh"));
                                         }
                                         if (gunBlob.exists("CustomCoinObject"))
                                         {
-                                            if (blob.hasTag("vehicle")) p.server_setCoins(p.getCoins() + gunBlob.get_u32("CustomCoinObject"));
+                                            if (blob.hasTag("vehicle")) getRules().set_u32(p.getUsername()+"coins",getRules().get_u32(p.getUsername()+"coins") + gunBlob.get_u32("CustomCoinObject"));
                                         }
                                     }
                                 }

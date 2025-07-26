@@ -332,14 +332,26 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 				has = false;
 			}
 		}
-		else if (req == "coin") 
+		/*else if (req == "coin") 
 		{
 			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
 			CPlayer@ player2 = inv2 !is null ? inv2.getBlob().getPlayer() : null;
-			u16 sum = (player1 !is null ? player1.getCoins() : 0)+(player2 !is null ? player2.getCoins() : 0);
+			u16 sum = (player1 !is null ? getRules().get_u32(player1.getUsername()+"coins") : 0)+(player2 !is null ? getRules().get_u32(player2.getUsername()+"coins") : 0);
 			if (sum<quantity) 
 			{
 				AddRequirement(missingBs,req,blobName,friendlyName,quantity);
+				has=false;
+			}
+		}*/
+		else if(req=="coin") 
+		{
+			CPlayer@ player1=	inv1 !is null ? inv1.getBlob().getPlayer() : null;
+			CPlayer@ player2=	inv2 !is null ? inv2.getBlob().getPlayer() : null;
+			CRules@ rules = getRules();
+			u32 sum=			(player1 !is null ? getRules().get_u32(player1.getUsername()+"coins") : 0)+(player2 !is null ? getRules().get_u32(player2.getUsername()+"coins") : 0);
+			if(sum<quantity) 
+			{
+				AddRequirement(missingBs,req,blobName,friendlyName,quantity-sum);
 				has=false;
 			}
 		}
@@ -661,21 +673,41 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 				
 			}
 		}
-		else if (req == "coin") 
+		/*else if (req == "coin") 
 		{ // TODO...
 			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
 			CPlayer@ player2 = inv2 !is null ? inv2.getBlob().getPlayer() : null;
 			int taken = 0;
 			if (player1 !is null) 
 			{
-				taken = Maths::Min(player1.getCoins(), quantity);
-				player1.server_setCoins(player1.getCoins() - taken);
+				taken = Maths::Min(getRules().get_u32(player1.getUsername()+"coins"), quantity);
+				getRules().set_u32(player1.getUsername()+"coins", getRules().get_u32(player1.getUsername()+"coins") - taken);
 			}
 			if (player2 !is null) 
 			{
 				taken = quantity - taken;
-				taken = Maths::Min(player2.getCoins(), quantity);
-				player2.server_setCoins(player2.getCoins() - taken);
+				taken = Maths::Min(getRules().get_u32(player2.getUsername()+"coins"), quantity);
+				getRules().set_u32(player2.getUsername()+"coins", getRules().get_u32(player2.getUsername()+"coins") - taken);
+			}
+		}*/
+		else if(req == "coin")
+		{ // TODO...
+			CPlayer@ player1=inv1 !is null ? inv1.getBlob().getPlayer() : null;
+			CPlayer@ player2=inv2 !is null ? inv2.getBlob().getPlayer() : null;
+			CRules@ rules = getRules();
+			int taken = 0;
+			if (player1 !is null) 
+			{
+				u32 current_coins = getRules().get_u32(player1.getUsername()+"coins");
+				taken=Maths::Min(current_coins, quantity);
+				getRules().set_u32(player1.getUsername()+"coins", (current_coins - taken));
+			}
+			if (player2 !is null) 
+			{
+				u32 current_coins = getRules().get_u32(player2.getUsername()+"coins");
+				taken=quantity-taken;
+				taken=Maths::Min(current_coins, quantity);
+				getRules().set_u32(player2.getUsername()+"coins", (current_coins - taken));
 			}
 		}
 	}
