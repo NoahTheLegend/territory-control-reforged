@@ -35,7 +35,7 @@ void onInit(CBlob@ this)
 	this.getSprite().addSpriteLayer("isOnScreen","NoTexture.png",1,1);
 	if (isServer())
 	{
-		this.set_u16("stolen coins", 800);
+		this.set_u32("stolen coins", 800);
 		this.server_setTeamNum(250);
 
 		string gun_config;
@@ -121,7 +121,7 @@ void onTick(CBlob@ this)
 		
 		if (isServer())
 		{
-			server_DropCoins(this.getPosition(), Maths::Max(0, Maths::Min(this.get_u16("stolen coins"), 5000)));
+			server_DropCoins(this.getPosition(), Maths::Max(0, Maths::Min(this.get_u32("stolen coins"), 5000)));
 			CBlob@ carried = this.getCarriedBlob();
 			
 			if (carried !is null)

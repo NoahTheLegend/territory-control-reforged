@@ -28,7 +28,8 @@ const int coinsOnBuildWorkshop = 20;
 
 const int warmupFactor = 3;
 
-const u32 MAX_COINS = 32765;
+//const u32 MAX_COINS = 32765;
+const u32 MAX_COINS = 4294967295;
 
 //
 bool kill_traders_and_shops = false;
@@ -116,7 +117,7 @@ void Reset(CRules@ this)
 		CPlayer@ player = getPlayer(i);
 		if (player is null) continue;
 
-		//player.server_setCoins(Maths::Max(player.getCoins(), min_coins));
+		//getRules().set_u32(player.getUsername()+"coins",Maths::Max(getRules().get_u32(player.getUsername()+"coins"), min_coins));
 	}*/
 
 	//not needed ^
@@ -134,6 +135,16 @@ void onInit(CRules@ this)
 	Reset(this);
 }
 
+void onTick(CRules@ this){
+	if (!isServer()) return;
+	for (int i = 0; i < getPlayerCount(); i++){
+		CPlayer@ p = getPlayer(i);
+		if (p is null) continue;
+		this.set_u32(p.getUsername()+"coins", Maths::Clamp(this.get_u32(p.getUsername()+"coins")+p.getCoins(), 0, 4294967295));
+		p.server_setCoins(0);
+		this.Sync(p.getUsername()+"coins", true);
+	}
+}
 
 void KillTradingPosts()
 {
@@ -227,7 +238,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 	{
 		CBlob@ victimBlob = victim.getBlob();
 		
-		const u32 victim_coins = victim.getCoins();
+		const u32 victim_coins = getRules().get_u32(victim.getUsername()+"coins");
 		
 		f32 reward_factor = 0.1f;
 		u32 dropped_coins = 0.00f;
@@ -285,13 +296,13 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 			save_coins = true;
 		}
 		dropped_coins = save_coins ? XORRandom(50) : victim_coins * reward_factor;
-		
 		if (!save_coins)
 		{
 			if (hasKiller)
 			{
 				f32 killer_reward = dropped_coins;
-
+				killer_reward /= 2;
+				dropped_coins - killer_reward;
 				if (killer.getTeamNum() < 7 && killer !is victim)
 				{
 					TeamData@ team_data;
@@ -305,18 +316,23 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 							if (leader !is null)
 							{
 								killer_reward *= 0.50f;
-								leader.server_setCoins(Maths::Clamp(leader.getCoins() + killer_reward, 0, MAX_COINS));
+								getRules().set_u32(leader.getUsername()+"coins",Maths::Clamp(getRules().get_u32(leader.getUsername()+"coins") + killer_reward, 0, MAX_COINS));
 							}
 						}
 					}
 				}
 
 				mod = killer_reward;
-				if (killer !is victim) killer.server_setCoins(Maths::Clamp(killer.getCoins() + 100 + killer_reward, 0, MAX_COINS));
+				if (killer !is victim) getRules().set_u32(killer.getUsername()+"coins",Maths::Clamp(getRules().get_u32(killer.getUsername()+"coins") + 100 + killer_reward, 0, MAX_COINS));
+				getRules().set_u32(victim.getUsername()+"coins",Maths::Clamp(getRules().get_u32(victim.getUsername()+"coins") - (100 + mod + dropped_coins), 0, MAX_COINS));
+				server_DropCoins(victimBlob.getPosition(), dropped_coins);
 			}
-			else if (victimBlob !is null) server_DropCoins(victimBlob.getPosition(), dropped_coins);
+			else if (victimBlob !is null) {
+				server_DropCoins(victimBlob.getPosition(), dropped_coins);
+				getRules().set_u32(victim.getUsername()+"coins",Maths::Clamp(getRules().get_u32(victim.getUsername()+"coins") - (100 + dropped_coins), 0, MAX_COINS));
+			};
 
-			victim.server_setCoins(Maths::Clamp(victim.getCoins() - (100 + mod) / 2, 0, MAX_COINS));
+			
 		}
 	}
 }
@@ -329,7 +345,7 @@ f32 onPlayerTakeDamage(CRules@ this, CPlayer@ victim, CPlayer@ attacker, f32 Dam
 	{
 		CBlob@ blob = attacker.getBlob();
 	
-		if (blob !is null) attacker.server_setCoins(attacker.getCoins() + DamageScale * coinsOnDamageAdd / this.attackdamage_modifier + (blob.getName() == "bandit" ? 10 : 0));
+		if (blob !is null) getRules().set_u32(attacker.getUsername()+"coins",getRules().get_u32(attacker.getUsername()+"coins") + DamageScale * coinsOnDamageAdd / this.attackdamage_modifier + (blob.getName() == "bandit" ? 10 : 0));
 	}
 
 	return DamageScale;
@@ -390,7 +406,7 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 
 				if (coins > 0)
 				{
-					p.server_setCoins(p.getCoins() + coins);
+					getRules().set_u32(p.getUsername()+"coins",getRules().get_u32(p.getUsername()+"coins") + coins);
 				}
 			}
 		}

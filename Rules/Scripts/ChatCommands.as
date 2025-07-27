@@ -392,7 +392,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 			{
 				if (getGameTime() > this.get_u32("nextwrite"))
 				{
-					if (player.getCoins() >= 50)
+					if (getRules().get_u32(player.getUsername()+"coins") >= 50)
 					{
 						string text = "";
 
@@ -412,7 +412,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 							paper.set_string("text", text);
 							paper.Init();
 
-							player.server_setCoins(player.getCoins() - 50);
+							getRules().set_u32(player.getUsername()+"coins",getRules().get_u32(player.getUsername()+"coins") - 50);
 							this.set_u32("nextwrite", getGameTime() + 100);
 
 							errorMessage = "Written: " + text;
@@ -760,7 +760,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 				if (tokens[0]=="!coins")
 				{
 					int amount=	tokens.length>=2 ? parseInt(tokens[1]) : 100;
-					player.server_setCoins(player.getCoins()+amount);
+					getRules().set_u32(player.getUsername()+"coins",getRules().get_u32(player.getUsername()+"coins")+amount);
 				}
 				else if (tokens[0] == "!spacecrate")
 				{
