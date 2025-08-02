@@ -849,6 +849,7 @@ void RenderTeamInventoryHUD(CBlob@ this)
 
 			Vec2f bomb_icon_dim;
 			GUI::GetIconDimensions(itemName, bomb_icon_dim);
+
 #ifdef STAGING
 			Vec2f itemPos = Vec2f(getScreenWidth() / 1.52 - 54 + b * 46, getScreenHeight() - 57) + hudPos2;
 			if (bigBombs.find(itemName)>-1)
