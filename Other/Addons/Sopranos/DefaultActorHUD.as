@@ -849,7 +849,7 @@ void RenderTeamInventoryHUD(CBlob@ this)
 
 			Vec2f bomb_icon_dim;
 			GUI::GetIconDimensions(itemName, bomb_icon_dim);
-#ifdef STAGGING
+#ifdef STAGING
 			Vec2f itemPos = Vec2f(getScreenWidth() / 1.52 - 54 + b * 46, getScreenHeight() - 57) + hudPos2;
 			if (bigBombs.find(itemName)>-1)
 			{
@@ -863,7 +863,7 @@ void RenderTeamInventoryHUD(CBlob@ this)
 				GUI::DrawIconByName("$"+itemName+"$", itemPos + Vec2f(8, 8), 1.0f, 1.0f, 0, SColor(0xffffffff));
 			}
 #endif
-#ifndef STAGGING
+#ifndef STAGING
 			Vec2f itemPos = Vec2f(getScreenWidth() / 1.52 - 54 + b * 46, getScreenHeight() - 57) + hudPos2;
 			if (bigBombs.find(itemName)>-1)
 			{
