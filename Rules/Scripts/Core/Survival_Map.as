@@ -13,6 +13,7 @@ const string[] OffiMaps = {
 	"Xeno_TC_LostAtlantis",
     "Xeno_Plains&Hills",
 	"Xeno_TC_Graveyard",
+	"Xeno_TC_Graveyard_v2",
 	"Tenshi_TC_DeadEchoSeven_v1",
 	"Imbalol_TC_OilRig",
 	"Imbalol_TC_LongForgotten",
