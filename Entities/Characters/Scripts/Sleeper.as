@@ -5,7 +5,7 @@ void onInit(CBlob@ this)
 	this.Tag("sleeper");
 	this.set_string("sleeper_name", "");
 	this.set_bool("sleeper_sleeping", false);
-	this.set_u16("sleeper_coins", 0);
+	this.set_u32("sleeper_coins", 0);
 
 	CSprite@ sprite = this.getSprite();
 	
@@ -38,8 +38,8 @@ void onTick(CBlob@ this)
 		
 		if (isServer())
 		{
-			server_DropCoins(this.getPosition(), this.get_u16("sleeper_coins"));
-			this.set_u16("sleeper_coins", 0);
+			server_DropCoins(this.getPosition(), this.get_u32("sleeper_coins"));
+			this.set_u32("sleeper_coins", 0);
 		}
 	}
 	else if (sleeping)

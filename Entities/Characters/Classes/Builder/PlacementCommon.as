@@ -91,9 +91,10 @@ bool isBuildableAtPos(CBlob@ this, Vec2f p, TileType buildTile, CBlob @blob, boo
 	}*/
 
 	//check height + edge proximity
-	if (p.y < 2 * map.tilesize ||
+	/*if (p.y < 2 * map.tilesize ||
 	        p.x < 2 * map.tilesize ||
-	        p.x > (map.tilemapwidth - 2.0f)*map.tilesize)
+	        p.x > (map.tilemapwidth - 2.0f)*map.tilesize)*/
+	if (p.y < 2 * map.tilesize)
 	{
 		return false;
 	}

@@ -8,7 +8,20 @@
 #include "LoadWarPNG.as";
 #include "BannerCommon.as";
 
+const string CHAT_CHANNEL_PROP = "client_channel";
+
 void onInit(CRules@ this)
+{
+	onRestart(this);
+	//this.addCommandID("startInfection");
+	//this.addCommandID("endInfection");
+	this.addCommandID("SendChatMessage");
+
+	if (isClient()) this.set_bool("log",false);//so no clients can get logs unless they do ~logging
+	if (isServer()) this.set_bool("log",true);//server always needs to log anyway
+}
+
+void onRestart(CRules@ this)
 {
 	this.addCommandID("teleport");
 	this.addCommandID("addbot");
@@ -20,12 +33,9 @@ void onInit(CRules@ this)
 	this.addCommandID("get_localtime");
 	this.addCommandID("wipe");
 	this.addCommandID("start_timer");
-	//this.addCommandID("startInfection");
-	//this.addCommandID("endInfection");
-	this.addCommandID("SendChatMessage");
-
-	if (isClient()) this.set_bool("log",false);//so no clients can get logs unless they do ~logging
-	if (isServer()) this.set_bool("log",true);//server always needs to log anyway
+	this.addCommandID("vpncheck");
+	this.addCommandID("sync_chat_channel");
+	this.addCommandID("send_neutral_chat_message");
 }
 
 void onCommand(CRules@ this, u8 cmd, CBitStream @params)
@@ -40,7 +50,49 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 	ParticleZombieLightning(destBlob.getPosition());
 	destBlob.getSprite().PlaySound("MagicWand.ogg");*/
 
-	if (cmd == this.getCommandID("teleport"))
+	if (cmd == this.getCommandID("send_neutral_chat_message"))
+	{
+		// receive a neutral chat message
+		if (!isClient()) return;
+
+		string message;
+		if (!params.saferead_string(message)) return;
+
+		u16 pid;
+		if (!params.saferead_u16(pid)) return;
+
+		CPlayer@ sender = getPlayerByNetworkId(pid);
+		if (sender is null) return;
+
+		CPlayer@ local = getLocalPlayer();
+		if (local is null) return;
+
+		string clantag = sender.getClantag();
+		if (clantag != "") clantag += " ";
+		string formattedMessage = "<" + clantag + sender.getCharacterName() + "> * " + message + " *";
+
+		if ((local.getTeamNum() < 0 || local.getTeamNum() > 6) && local !is sender)
+		{
+			client_AddToChat(formattedMessage, SColor(255, 0, 0, 0));
+		}
+	}
+	else if (cmd == this.getCommandID("sync_chat_channel"))
+    {
+		if (!isServer()) return;
+
+        u8 channel;
+        if (!params.saferead_u8(channel)) return;
+
+		u16 pid;
+		if (!params.saferead_u16(pid)) return;
+
+        CPlayer@ player = getPlayerByNetworkId(pid);
+        if (player is null) return;
+
+        player.set_u8(CHAT_CHANNEL_PROP, channel);
+		// we only need it on server, so dont sync
+    }
+	else if (cmd == this.getCommandID("teleport"))
 	{
 		u16 tpBlobId, destBlobId;
 
@@ -110,6 +162,43 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 
 		cfg.saveFile("vars.cfg");
 	}
+	else if (cmd == this.getCommandID("vpncheck"))
+	{
+		if (!isServer()) return;
+		
+		string ip;
+		string username;
+		string vpn;
+		string proxy;
+		string tor;
+		
+		if (!params.saferead_string(ip)) return;
+		if (!params.saferead_string(username)) return;
+		if (!params.saferead_string(vpn)) return;
+		if (!params.saferead_string(proxy)) return;
+		if (!params.saferead_string(tor)) return;
+
+		print("[TCPR] Player: " + username + " IP: " + ip + " VPN: " + vpn + " Proxy: " + proxy + " Tor: " + tor);
+
+		CSecurity@ security = getSecurity();
+		if (security is null) return;
+
+		string[] spl_vpn = vpn.split(":");
+		bool b_vpn = spl_vpn.length > 1 && spl_vpn[1] == "true";
+
+		string[] spl_proxy = proxy.split(":");
+		bool b_proxy = spl_proxy.length > 1 && spl_proxy[1] == "true";
+
+		string[] spl_tor = tor.split(":");
+		bool b_tor = spl_tor.length > 1 && spl_tor[1] == "true";
+
+		if (b_vpn || b_proxy || b_tor)
+		{
+			print("[TCPR] Player: " + username + " is using VPN/Proxy/Tor, banning for 1 minute.");
+			//BanPlayer(getPlayerByUsername(username), 1 * 5);
+			security.ban(getPlayerByUsername(username), 1 * 5, "You're using VPN. DM @noahthelegend on Discord.");
+		}
+	}
 	else if (cmd==this.getCommandID("nightevent"))
 	{
 		Sound::Play("amb_wind_0.ogg", Vec2f(getMap().tilemapwidth*4,0), 99999999.0f, 999999999.0f);
@@ -145,13 +234,13 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 		CPlayer@ player = getNet().getActiveCommandPlayer();
 		if (player is null) return;
 		
-		print("Banning "+player.getUsername());
+		print("Banning automatically: "+player.getUsername());
 		BanPlayer(player, 1*30);
 		
 		CSecurity@ security = getSecurity();
 		if (security is null) return;
 
-		security.ban(player, 1*30, "Expired");
+		security.ban(player, 1*30, "Sussy");
 	}
 	else if (cmd==this.getCommandID("playsound"))
 	{
@@ -303,7 +392,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 			{
 				if (getGameTime() > this.get_u32("nextwrite"))
 				{
-					if (player.getCoins() >= 50)
+					if (getRules().get_u32(player.getUsername()+"coins") >= 50)
 					{
 						string text = "";
 
@@ -323,7 +412,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 							paper.set_string("text", text);
 							paper.Init();
 
-							player.server_setCoins(player.getCoins() - 50);
+							getRules().set_u32(player.getUsername()+"coins",getRules().get_u32(player.getUsername()+"coins") - 50);
 							this.set_u32("nextwrite", getGameTime() + 100);
 
 							errorMessage = "Written: " + text;
@@ -456,7 +545,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 								"username: "+p.getUsername(),
 								"charname: "+p.getCharacterName(),
 								"ping: "+p.getPing(),
-								"ip: "+p.server_getIP(), //todo: tcpr vpn check
+								"ip: "+p.server_getIP(),
 								"hwid: "+p.server_getHWID(),
 								"acc-age: "+date+"/"+diffday, // saved depending on regtime
 								"registry-time: "+regtime+" / local: "+localtime,
@@ -671,7 +760,7 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 				if (tokens[0]=="!coins")
 				{
 					int amount=	tokens.length>=2 ? parseInt(tokens[1]) : 100;
-					player.server_setCoins(player.getCoins()+amount);
+					getRules().set_u32(player.getUsername()+"coins",getRules().get_u32(player.getUsername()+"coins")+amount);
 				}
 				else if (tokens[0] == "!spacecrate")
 				{
@@ -1058,8 +1147,45 @@ bool onServerProcessChat(CRules@ this,const string& in text_in,string& out text_
 		if (blob.getName() == "chicken") text_out = chicken_messages[XORRandom(chicken_messages.length)];
 		else if (blob.getName() == "bison") text_out = bison_messages[XORRandom(bison_messages.length)];
 	}
+	
+	bool send = player.exists(CHAT_CHANNEL_PROP) && player.get_u8(CHAT_CHANNEL_PROP) == 0; // global
+	if (send)
+	{
+		string clantag = player.getClantag();
+		if (clantag != "") clantag += " ";
+
+		tcpr("<"+clantag+""+player.getCharacterName()+"> "+text_out);
+	}
+
+	bool neutral = (player.getTeamNum() > 6 || player.getTeamNum() < 0);
+	bool neutral_team_chat = neutral && player.exists(CHAT_CHANNEL_PROP) && player.get_u8(CHAT_CHANNEL_PROP) == 1;
+	bool private_message = false;
+	string[] pspl = text_in.split(":");
+	if (pspl.length > 0 && hasPlayerWithSignature(pspl[0])) private_message = true;
+	
+	if (neutral_team_chat && !private_message)
+	{
+		// send this to all clients and compare the neutral team on their side
+		CBitStream params1;
+		params1.write_string(text_out);
+		params1.write_u16(player.getNetworkID());
+		this.SendCommand(this.getCommandID("send_neutral_chat_message"), params1);
+	}
 
 	return true;
+}
+
+bool hasPlayerWithSignature(string signature)
+{
+	for (int i = 0; i < getPlayerCount(); i++)
+	{
+		CPlayer@ p = getPlayer(i);
+		if (p !is null && (p.getCharacterName() == signature || p.getUsername() == signature))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 // void onNewPlayerJoin(CRules@ this, CPlayer@ p)
@@ -1325,4 +1451,17 @@ bool onClientProcessChat(CRules@ this,const string& in text_in,string& out text_
 		if (player.isRCON()) this.set_bool("log",!this.get_bool("log"));
 
 	return true;
+}
+
+void onEnterChat(CRules@ this)
+{
+    if (!isClient()) return;
+    
+	CPlayer@ local = getLocalPlayer();
+	if (local is null) return;
+
+    CBitStream params;
+    params.write_u8(getChatChannel());
+	params.write_u16(local.getNetworkID());
+    this.SendCommand(this.getCommandID("sync_chat_channel"), params);
 }

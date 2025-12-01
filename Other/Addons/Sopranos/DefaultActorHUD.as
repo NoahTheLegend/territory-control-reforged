@@ -850,6 +850,21 @@ void RenderTeamInventoryHUD(CBlob@ this)
 			Vec2f bomb_icon_dim;
 			GUI::GetIconDimensions(itemName, bomb_icon_dim);
 
+#ifdef STAGING
+			Vec2f itemPos = Vec2f(getScreenWidth() / 1.52 - 54 + b * 46, getScreenHeight() - 57) + hudPos2;
+			if (bigBombs.find(itemName)>-1)
+			{
+				int xPos = (itemName == "fireboom" || itemName == "mat_bombita"  ? -6 : 8);
+				GUI::DrawIcon("GUI/jslot.png", 3, Vec2f(24, 42), itemPos + Vec2f(0, -34));
+				GUI::DrawIconByName("$"+itemName+"$", itemPos + Vec2f(xPos, -22), 1.0f, 1.0f, 0, SColor(0xffffffff));
+			}
+			else
+			{
+				GUI::DrawIcon("GUI/jslot.png", 0, Vec2f(32, 32), itemPos);
+				GUI::DrawIconByName("$"+itemName+"$", itemPos + Vec2f(8, 8), 1.0f, 1.0f, 0, SColor(0xffffffff));
+			}
+#endif
+#ifndef STAGING
 			Vec2f itemPos = Vec2f(getScreenWidth() / 1.52 - 54 + b * 46, getScreenHeight() - 57) + hudPos2;
 			if (bigBombs.find(itemName)>-1)
 			{
@@ -862,7 +877,7 @@ void RenderTeamInventoryHUD(CBlob@ this)
 				GUI::DrawIcon("GUI/jslot.png", 0, Vec2f(32, 32), itemPos);
 				GUI::DrawIconByName("$"+itemName+"$", itemPos + Vec2f(8, 8), 1.0f, 1.0f, this.getTeamNum(), SColor(0xffffffff));
 			}
-
+#endif
 			int quantity = itemAmounts[i];
 			f32 ratio = float(quantity) / 1000;
 			SColor col = SColor(255, 255, 255, 255);

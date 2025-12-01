@@ -94,12 +94,15 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream@ params)
 
 		if (caller !is null && isServer())
 		{
-			CBlob@ card = server_CreateBlobNoInit("securitycard");
-			card.setPosition(this.getPosition());
-			card.server_setTeamNum(this.getTeamNum());
-			card.set_u32("security_link_id", id);
-			card.Init();
-			caller.getPlayer().server_setCoins(caller.getPlayer().getCoins() - 200);
+			if (getRules().get_u32(caller.getPlayer().getUsername()+"coins") >= 200){
+				CBlob@ card = server_CreateBlobNoInit("securitycard");
+				card.setPosition(this.getPosition());
+				card.server_setTeamNum(this.getTeamNum());
+				card.set_u32("security_link_id", id);
+				card.Init();
+				getRules().set_u32(caller.getPlayer().getUsername()+"coins",getRules().get_u32(caller.getPlayer().getUsername()+"coins") - 200);
+			}
+			
 		}
 		//this.add_u32("elec", -125);
 	}

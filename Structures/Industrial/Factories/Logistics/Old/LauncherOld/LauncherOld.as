@@ -1,7 +1,3 @@
-// TrapBlock.as
-
-#include "TC_Translation.as";
-
 void onInit(CBlob@ this)
 {
 	this.getShape().SetRotationsAllowed(false);
