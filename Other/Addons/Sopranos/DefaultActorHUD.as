@@ -519,12 +519,12 @@ void RenderTeamInventoryHUD(CBlob@ this)
 			{
 				int xPos = (itemName == "fireboom" || itemName == "mat_bombita"  ? -6 : 8);
 				GUI::DrawIcon("GUI/jslot.png", 3, Vec2f(24, 42), itemPos + Vec2f(0, -34));
-				GUI::DrawIcon(bomb.inventoryIconName, bomb.inventoryIconFrame, bomb.inventoryFrameDimension, itemPos + Vec2f(xPos, -22), 1.0f, this.getTeamNum());
+				GUI::DrawIcon(bomb.inventoryIconName, bomb.inventoryIconFrame, bomb.inventoryFrameDimension, itemPos + Vec2f(xPos, -22), 1.0f);
 			}
 			else
 			{
 				GUI::DrawIcon("GUI/jslot.png", 0, Vec2f(32, 32), itemPos);
-				GUI::DrawIcon(bomb.inventoryIconName, bomb.inventoryIconFrame, bomb.inventoryFrameDimension, itemPos + Vec2f(8, 8), 1.0f, this.getTeamNum());
+				GUI::DrawIcon(bomb.inventoryIconName, bomb.inventoryIconFrame, bomb.inventoryFrameDimension, itemPos + Vec2f(8, 8), 1.0f);
 			}
 
 			int quantity = itemAmounts[i];

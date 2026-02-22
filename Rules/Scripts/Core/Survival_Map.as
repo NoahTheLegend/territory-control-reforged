@@ -39,6 +39,7 @@ const string[] OffiMaps = {
 	"Goldy_TC_ThomasMega",
 	"Skemonde_TC_Gooby_v3fM",
 	"Skemonde_TC_Morgenland_v4",
+	"Skemonde_TC_Klowitz",
 	"Goldy_TC_Hollows",
 	"Ginger_TC_Lagoon",
 	"Ginger_TC_Pirates",

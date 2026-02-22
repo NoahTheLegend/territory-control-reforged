@@ -119,7 +119,11 @@ namespace tc_colors
 		color_biome_jungle = 0xff327800,
 		color_biome_arctic = 0xff64b4ff,
 		color_biome_desert = 0xffffd364,
-		color_biome_dead = 0xff736e64
+		color_biome_dead = 0xff736e64,
+
+		//TC Reloaded Tile Colors
+		color_skystone = 0xff21b7c2,
+		color_heavybedrock = 0xff123812
 	};
 }
 
@@ -682,6 +686,18 @@ class TCPNGLoader : PNGLoader
 				blob.setPosition(Vec2f(0, 0));
 				break;
 			}
+
+			//TC Reloaded Tiles
+			case tc_colors::color_heavybedrock:
+			{
+				map.SetTile(offset, CMap::tile_heavybedrock);
+				break;
+			}
+			case tc_colors::color_skystone:
+			{
+				map.SetTile(offset, CMap::tile_skystone);
+				break;
+			}
 		};
 	}
 }
@@ -831,6 +847,7 @@ void CalculateMinimapColour(CMap@ this, u32 offset, TileType type, SColor &out c
 
 			// BEDROCK
 			case CMap::tile_bedrock:
+			case CMap::tile_heavybedrock:
 				col = c_bedrock;
 			break;
 
@@ -1348,6 +1365,11 @@ void CalculateMinimapColour(CMap@ this, u32 offset, TileType type, SColor &out c
 			case CMap::tile_ironingot_d1:
 				col = c_gold;
 			break;
+			
+			//SKY STONE
+			case CMap::tile_skystone:
+				col = c_castle;
+			break;
 
 
 			default:
@@ -1476,6 +1498,7 @@ TileType server_onTileHit(CMap@ map, f32 damage, u32 index, TileType oldTileType
 
 
 			case CMap::tile_matter:
+			case CMap::tile_skystone:
 				return CMap::tile_matter_d0;
 
 			case CMap::tile_matter_d0:
@@ -2886,6 +2909,20 @@ void onSetTile(CMap@ map, u32 index, TileType tile_new, TileType tile_old)
 			case CMap::tile_ironingot_d1:
 				Sound::Play("dig_stone.ogg", pos, 1.0f, 0.925f);
 				map.AddTileFlag(index, Tile::SOLID | Tile::COLLISION);
+				break;
+
+			case CMap::tile_heavybedrock:
+				map.AddTileFlag(index, Tile::SOLID | Tile::COLLISION);
+				map.RemoveTileFlag( index, Tile::LIGHT_PASSES | Tile::LIGHT_SOURCE | Tile::FLAMMABLE);
+				break;
+
+				
+			case CMap::tile_skystone:
+				map.AddTileFlag(index, Tile::SOLID | Tile::COLLISION);
+				map.RemoveTileFlag( index, Tile::LIGHT_PASSES | Tile::LIGHT_SOURCE | Tile::WATER_PASSES);
+				map.SetTileSupport(index, -1);
+				
+				if (isClient()) Sound::Play("build_wall.ogg", map.getTileWorldPosition(index), 1.0f, 1.0f);
 				break;
 		}
 	}

@@ -387,7 +387,10 @@ namespace CMap
 		tile_titanium_d5,
 		tile_titanium_d6,
 		tile_titanium_d7,
-		tile_titanium_d8
+		tile_titanium_d8,
+
+		tile_skystone = tile_rail_0 - 2,
+		tile_heavybedrock
 	};
 };
 
