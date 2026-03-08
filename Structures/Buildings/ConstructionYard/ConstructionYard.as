@@ -1,8 +1,8 @@
-﻿// Vehicle Workshop
+// Vehicle Workshop
 
 #include "Requirements.as";
 #include "Requirements_Tech.as";
-#include "ShopCommon.as";
+#include "ShopCommonTC.as";
 #include "Descriptions.as";
 #include "WARCosts.as";
 #include "CheckSpam.as";
@@ -35,13 +35,16 @@ void onInit(CBlob@ this)
 	AddIconToken("$icon_zeppelin$", "Zepplin.png", Vec2f(181, 90), 0);
 	AddIconToken("$icon_autocannon$", "AutocannonIcon.png", Vec2f(96, 48), 0);
 	AddIconToken("$icon_submarine$", "Submarine.png", Vec2f(90, 32), 0);
+	AddIconToken("$icon_submarine$", "Submarine.png", Vec2f(90, 32), 0);
+	AddIconToken("$icon_minicop$", "Minicopter_Icon.png", Vec2f(64, 32), 0);
+
 
 	AddIconToken("$mat_ironingot$", "Material_IronIngot.png", Vec2f(16, 16), 1);
 	AddIconToken("$antiair", "AntiAC_top.png", Vec2f(32, 16), 3);
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f(0, 8));
-	this.set_Vec2f("shop menu size", Vec2f(12, 7));
+	this.set_Vec2f("shop menu size", Vec2f(14, 8));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
@@ -169,6 +172,15 @@ void onInit(CBlob@ this)
 		s.buttonheight = 3;
 	}
 	{
+		ShopItem@ s = addShopItem(this, "Place Holder", "$icon_placeholder$", "1", "Coming Soon.", false, true); 
+
+		s.crate_icon = 13;
+		s.customButton = true;
+		s.buttonwidth = 6;
+		s.buttonheight = 1;
+		s.spawnNothing = true;
+	}
+	{
 		ShopItem@ s = addShopItem(this, "Spotter Airplane", "$icon_triplane$", "triplane", "$icon_triplane$\n\n\n\n" + "A fast airplane used for scouting and light bombing.\n\n[W]/[D] to accelerate\n[LMB] to shoot\n[Space] to drop items out of inventory\n[C] to leave", false, true);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 250);
 		AddRequirement(s.requirements, "blob", "mat_ironingot", "Iron Ingot", 4);
@@ -176,7 +188,7 @@ void onInit(CBlob@ this)
 
 		s.crate_icon = 14;
 		s.customButton = true;
-		s.buttonwidth = 4;
+		s.buttonwidth = 5;
 		s.buttonheight = 3;
 	}
 	{
@@ -201,7 +213,7 @@ void onInit(CBlob@ this)
 		//s.crate_icon = 0;
 		s.customButton = true;
 		s.buttonwidth = 4;
-		s.buttonheight = 3;
+		s.buttonheight = 2;
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Cargo Container", "$icon_cargocontainer$", "cargocontainer", "$icon_cargocontainer$\n\n\n\n" + "A large shipping container with a huge storage capacity.\n\nCan be moved around by vehicles.\nActs as a remote inventory.", false, true);
@@ -211,6 +223,15 @@ void onInit(CBlob@ this)
 		s.customButton = true;
 		s.buttonwidth = 4;
 		s.buttonheight = 2;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Place Holder", "$icon_placeholder$", "2", "Coming Soon.", false, true); 
+
+		s.crate_icon = 13;
+		s.customButton = true;
+		s.buttonwidth = 4;
+		s.buttonheight = 2;
+		s.spawnNothing = true;
 	}
 }
 
