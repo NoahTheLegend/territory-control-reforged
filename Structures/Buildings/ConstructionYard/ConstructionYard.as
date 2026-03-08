@@ -2,7 +2,7 @@
 
 #include "Requirements.as";
 #include "Requirements_Tech.as";
-#include "ShopCommonTC.as";
+#include "ShopCommon.as";
 #include "Descriptions.as";
 #include "WARCosts.as";
 #include "CheckSpam.as";
